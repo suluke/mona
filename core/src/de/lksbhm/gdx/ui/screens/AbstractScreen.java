@@ -63,7 +63,7 @@ public abstract class AbstractScreen implements ResettableConsumerScreen {
 		stage.act(delta);
 		stage.draw();
 		if (game.isDebug()) {
-			Table.drawDebug(stage);
+			stage.setDebugAll(true);
 		}
 	}
 

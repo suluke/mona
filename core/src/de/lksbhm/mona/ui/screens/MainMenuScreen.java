@@ -1,8 +1,10 @@
 package de.lksbhm.mona.ui.screens;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import de.lksbhm.gdx.LksBhmGame;
@@ -16,6 +18,13 @@ public class MainMenuScreen extends AbstractScreen {
 		playButton = new TextButton("play", LksBhmGame.getGame()
 				.getDefaultSkin(), "play");
 		playButton.getLabel().setFontScale(.75f);
+		playButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				LksBhmGame.getGame().getRouter()
+						.changeScreen(PuzzleScreen.class, null);
+			}
+		});
 	}
 
 	private void layoutWidgets() {

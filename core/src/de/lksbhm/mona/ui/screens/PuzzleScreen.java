@@ -1,10 +1,15 @@
 package de.lksbhm.mona.ui.screens;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
+import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.gdx.ui.screens.AbstractScreen;
+import de.lksbhm.mona.ui.actors.PuzzleActor;
 
 public class PuzzleScreen extends AbstractScreen {
+
+	private PuzzleActor puzzle;
 
 	@Override
 	public void hide() {
@@ -32,8 +37,13 @@ public class PuzzleScreen extends AbstractScreen {
 
 	@Override
 	public void onResourcesLoaded(AssetManager manager) {
-		// TODO Auto-generated method stub
+		setupWidgets();
+	}
 
+	private void setupWidgets() {
+		// TODO don't use default skin as it should be lightweight and without
+		// custom widgets
+		puzzle = new PuzzleActor(LksBhmGame.getGame().getDefaultSkin());
 	}
 
 	@Override
@@ -43,7 +53,6 @@ public class PuzzleScreen extends AbstractScreen {
 
 	@Override
 	public long getEstimatedMemoryUsage() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -61,8 +70,13 @@ public class PuzzleScreen extends AbstractScreen {
 
 	@Override
 	protected void onShow() {
-		// TODO Auto-generated method stub
+		getBaseTable().clear();
+		layoutWidgets();
+	}
 
+	private void layoutWidgets() {
+		Table base = getBaseTable();
+		base.add(puzzle);
 	}
 
 	@Override
