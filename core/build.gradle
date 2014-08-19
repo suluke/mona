@@ -1,0 +1,26 @@
+apply plugin: "java"
+
+sourceCompatibility = 1.6
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+sourceSets.main.java.srcDirs = [ "src/" ]
+
+
+eclipse.project {
+    name = appName + "-core"
+}
+
+task copyUnpackedTextures(type: Copy) {
+    from 'textures'
+    into '../android/assets/textures'
+    include "*.*"
+}
+
+import de.lksbhm.gradle.TexturePackerTask
+task runTexturePacker(type: TexturePackerTask) {
+    inputDir = file('textures/atlasses')
+    outputDir = file("../android/assets/textures")
+}
+
+processResources.dependsOn copyUnpackedTextures
+processResources.dependsOn runTexturePacker

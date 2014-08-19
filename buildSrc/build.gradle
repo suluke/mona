@@ -1,0 +1,12 @@
+repositories {
+	mavenCentral()
+	mavenLocal()
+}
+
+ext {
+	gdxVersion = '1.2.0'
+}
+
+dependencies {
+	compile "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
+}

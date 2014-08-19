@@ -1,0 +1,102 @@
+package de.lksbhm.gdx.resources;
+
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.utils.reflect.ClassReflection;
+import com.badlogic.gdx.utils.reflect.Constructor;
+import com.badlogic.gdx.utils.reflect.ReflectionException;
+
+import de.lksbhm.gdx.LksBhmGame;
+import de.lksbhm.gdx.util.LRUCache;
+
+/**
+ * Manager to obtain {@link ResourceConsumer ResourceConsumers} from. Handles
+ * caching of the consumers and resource requirements for them
+ * 
+ * @author suluke
+ *
+ */
+public class ResourceConsumerManager {
+	private final LRUCache<Class<? extends ResourceConsumer>, ResourceConsumer> lruCache;
+	private MemoryUsageStrategy memoryStrategy;
+	private final LksBhmGame game;
+
+	public ResourceConsumerManager(LksBhmGame game) {
+		this(game, new NeverReleaseStrategy());
+	}
+
+	public ResourceConsumerManager(LksBhmGame game, MemoryUsageStrategy strategy) {
+		lruCache = new LRUCache<Class<? extends ResourceConsumer>, ResourceConsumer>();
+		memoryStrategy = strategy;
+		this.game = game;
+	}
+
+	/**
+	 * Sets the strategy to determine when removals of buffered
+	 * {@link ResourceConsumer}s are necessary.
+	 * 
+	 * @param strategy
+	 */
+	public void setMemoryUsageStrategy(MemoryUsageStrategy strategy) {
+		memoryStrategy = strategy;
+	}
+
+	/**
+	 * Returns a {@link ResourceConsumer} with the given class. If the manager
+	 * has not managed an instance of the required type yet, a new instance will
+	 * be created using the consumer's mandatory default constructor.
+	 * 
+	 * @param consumer
+	 * @param actuallyLoadResources
+	 * @param state
+	 * @return
+	 */
+	public <T extends ResourceConsumer> T obtainConsumerInstance(
+			Class<T> consumer, boolean actuallyLoadResources) {
+		@SuppressWarnings("unchecked")
+		T instance = (T) lruCache.access(consumer);
+		if (instance == null) {
+			releaseMemoryIfNecessary();
+			instance = instantiateConsumer(consumer);
+			prepareConsumer(instance, actuallyLoadResources);
+		}
+		return instance;
+	}
+
+	private void prepareConsumer(ResourceConsumer instance,
+			boolean actuallyLoadResources) {
+		AssetManager manager = game.getAssetManager();
+		instance.requestResources(manager);
+		if (actuallyLoadResources) {
+			if (instance.isRequestingLoadingAnimation()) {
+				game.animateAssetManagerLoad(game.getAssetManager(),
+						instance.getClass());
+			} else {
+				manager.finishLoading();
+			}
+			instance.onResourcesLoaded(manager);
+		}
+	}
+
+	private <T extends ResourceConsumer> T instantiateConsumer(Class<T> type) {
+		T consumer = null;
+		try {
+			Constructor c = ClassReflection.getConstructor(type);
+			@SuppressWarnings("unchecked")
+			T newInstance = (T) c.newInstance();
+			consumer = newInstance;
+		} catch (ReflectionException e) {
+			throw new RuntimeException();
+		}
+		lruCache.put(type, consumer);
+		return consumer;
+	}
+
+	private void releaseMemoryIfNecessary() {
+		while (memoryStrategy.isReleaseRequired()) {
+			ResourceConsumer consumer = lruCache.evict();
+			consumer.dispose();
+			memoryStrategy.notifyReleaseEstimate(consumer
+					.getEstimatedMemoryUsage());
+		}
+	}
+}
