@@ -41,7 +41,9 @@ public class Router {
 			Object state) {
 		saveCurrentScreenInHistory();
 		ResettableConsumerScreen s = obtainScreen(screen);
-		s.setState(state);
+		if (state != null) {
+			s.setState(state);
+		}
 		game.setScreen(s);
 	}
 
@@ -56,7 +58,11 @@ public class Router {
 	public void resetPreviousScreenFromHistory() {
 		if (!history.isEmpty()) {
 			Pair<ResettableConsumerScreen, Object> previous = history.pop();
-			previous.getFirst().setState(previous.getSecond());
+			ResettableConsumerScreen screen = previous.getFirst();
+			Object state = previous.getSecond();
+			if (state != null) {
+				screen.setState(state);
+			}
 			game.setScreen(previous.getFirst());
 		} else {
 			Gdx.app.log("Router",

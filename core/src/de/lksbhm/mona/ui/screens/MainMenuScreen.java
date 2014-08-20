@@ -89,11 +89,9 @@ public class MainMenuScreen extends AbstractScreen {
 
 	@Override
 	public void setState(Object state) {
-		if (state != null) {
-			if (state.getClass() != MainMenuState.class) {
-				throw new IllegalArgumentException(
-						"Given state not suitable for MainMenuScreens");
-			}
+		if (state.getClass() != MainMenuState.class) {
+			throw new IllegalArgumentException(
+					"Given state not suitable for MainMenuScreens");
 		}
 	}
 
