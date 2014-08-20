@@ -56,6 +56,7 @@ public class Mona extends LksBhmGame {
 		super.setScreen(screen);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void setScreen(Screen screen) {
 		Gdx.app.log("setScreen", "deprecated function call");

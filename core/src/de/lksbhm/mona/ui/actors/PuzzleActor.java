@@ -12,20 +12,20 @@ import de.lksbhm.mona.puzzle.Puzzle;
 public class PuzzleActor extends Widget {
 
 	private Puzzle puzzle;
-	private PuzzleActorStyle style;
+	private final PuzzleActorStyle style = new PuzzleActorStyle();
 	private int cellWidth;
 	private int cellHeight;
 
 	public PuzzleActor(PuzzleActorStyle style) {
-		this.style = style;
+		this.style.set(style);
 	}
 
 	public PuzzleActor(Skin skin) {
-		this.style = skin.get(PuzzleActorStyle.class);
+		this.style.set(skin.get(PuzzleActorStyle.class));
 	}
 
 	public void setStyle(PuzzleActorStyle style) {
-		this.style = style;
+		this.style.set(style);
 		invalidate();
 	}
 
@@ -74,6 +74,7 @@ public class PuzzleActor extends Widget {
 
 	@Override
 	public void layout() {
+		style.validate();
 	}
 
 	public static class PuzzleActorStyle {
@@ -113,6 +114,57 @@ public class PuzzleActor extends Widget {
 			rightInnerTile = tile;
 			bottomTile = tile;
 			bottomRightTile = tile;
+		}
+
+		public PuzzleActorStyle(PuzzleActorStyle style) {
+			set(style);
+		}
+
+		public void set(PuzzleActorStyle style) {
+			edge = style.edge;
+			straight = style.straight;
+			innerTile = style.innerTile;
+			innerTileMidOffsetX = style.innerTileMidOffsetX;
+			innerTileMidOffsetY = style.innerTileMidOffsetY;
+			rightInnerTile = style.rightInnerTile;
+			rightInnerTileMidOffsetX = style.rightInnerTileMidOffsetX;
+			rightInnerTileMidOffsetY = style.rightInnerTileMidOffsetY;
+			bottomTile = style.bottomTile;
+			bottomTileMidOffsetX = style.bottomTileMidOffsetX;
+			bottomTileMidOffsetY = style.bottomTileMidOffsetY;
+			bottomRightTile = style.bottomRightTile;
+			bottomRightTileMidOffsetX = style.bottomRightTileMidOffsetX;
+			bottomRightTileMidOffsetY = style.bottomRightTileMidOffsetY;
+			tilePaddingX = style.tilePaddingX;
+			tilePaddingY = style.tilePaddingY;
+			outerMarginTop = style.outerMarginTop;
+			outerMarginBottom = style.outerMarginBottom;
+			outerMarginLeft = style.outerMarginLeft;
+			outerMarginRight = style.outerMarginRight;
+		}
+
+		public void validate() {
+			if (edge == null) {
+				throw new RuntimeException(
+						"Impossible to obtain valid state without edge set");
+			}
+			if (straight == null) {
+				throw new RuntimeException(
+						"Impossible to obtain valid state without straight set");
+			}
+			if (innerTile == null) {
+				throw new RuntimeException(
+						"Impossible to obtain valid state without innerTile set");
+			}
+			if (rightInnerTile == null) {
+				rightInnerTile = innerTile;
+			}
+			if (bottomTile == null) {
+				bottomTile = innerTile;
+			}
+			if (bottomRightTile == null) {
+				bottomRightTile = innerTile;
+			}
 		}
 	}
 }
