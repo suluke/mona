@@ -5,11 +5,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.gdx.ui.screens.AbstractScreen;
+import de.lksbhm.mona.puzzle.Puzzle;
 import de.lksbhm.mona.ui.actors.PuzzleActor;
 
 public class PuzzleScreen extends AbstractScreen {
 
 	private PuzzleActor puzzle;
+	private PuzzleScreenState state = new PuzzleScreenState();
 
 	@Override
 	public void hide() {
@@ -58,14 +60,20 @@ public class PuzzleScreen extends AbstractScreen {
 
 	@Override
 	public void setState(Object state) {
-		// TODO Auto-generated method stub
+		if (state.getClass() != PuzzleScreenState.class) {
+			throw new RuntimeException();
+		}
+		this.state = (PuzzleScreenState) state;
+		applyState();
+	}
 
+	private void applyState() {
+		puzzle.setPuzzle(state.p);
 	}
 
 	@Override
 	public Object getState() {
-		// TODO Auto-generated method stub
-		return null;
+		return state;
 	}
 
 	@Override
@@ -83,5 +91,14 @@ public class PuzzleScreen extends AbstractScreen {
 	protected void onDispose() {
 		// TODO Auto-generated method stub
 
+	}
+
+	public void setPuzzle(Puzzle p) {
+		this.state.p = p;
+		applyState();
+	}
+
+	private static class PuzzleScreenState {
+		Puzzle p;
 	}
 }

@@ -1,6 +1,7 @@
 package de.lksbhm.mona.ui.screens;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.math.RandomXS128;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -8,7 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import de.lksbhm.gdx.LksBhmGame;
+import de.lksbhm.gdx.Router;
 import de.lksbhm.gdx.ui.screens.AbstractScreen;
+import de.lksbhm.mona.puzzle.Generator;
+import de.lksbhm.mona.puzzle.Puzzle;
 
 public class MainMenuScreen extends AbstractScreen {
 
@@ -21,8 +25,13 @@ public class MainMenuScreen extends AbstractScreen {
 		playButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				LksBhmGame.getGame().getRouter()
-						.changeScreen(PuzzleScreen.class, null);
+				Router router = LksBhmGame.getGame().getRouter();
+				PuzzleScreen ps = router.obtainScreen(PuzzleScreen.class);
+				Puzzle puzzle = Generator.generate(5, 10,
+						new RandomXS128(1, 2), 1.0f, 1.0f);
+				System.out.println(puzzle);
+				ps.setPuzzle(puzzle);
+				router.changeScreen(ps);
 			}
 		});
 	}
