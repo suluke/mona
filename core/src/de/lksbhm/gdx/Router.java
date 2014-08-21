@@ -47,7 +47,12 @@ public class Router {
 		game.setScreen(s);
 	}
 
-	private <T extends ResettableConsumerScreen> T obtainScreen(Class<T> screen) {
+	public void changeScreen(ResettableConsumerScreen screen) {
+		saveCurrentScreenInHistory();
+		game.setScreen(screen);
+	}
+
+	public <T extends ResettableConsumerScreen> T obtainScreen(Class<T> screen) {
 		return game.getResourceConsumerManager().obtainConsumerInstance(screen,
 				true);
 	}
