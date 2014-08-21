@@ -1,10 +1,10 @@
 package de.lksbhm.mona.ui.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import de.lksbhm.gdx.LksBhmGame;
-import de.lksbhm.gdx.ui.screens.AbstractScreen;
 import de.lksbhm.mona.puzzle.Puzzle;
 import de.lksbhm.mona.ui.actors.PuzzleActor;
 
@@ -78,6 +78,7 @@ public class PuzzleScreen extends AbstractScreen {
 
 	@Override
 	protected void onShow() {
+		Gdx.graphics.getGL20().glClearColor(0.1f, 0.1f, 0.1f, 1f);
 		getBaseTable().clear();
 		layoutWidgets();
 	}

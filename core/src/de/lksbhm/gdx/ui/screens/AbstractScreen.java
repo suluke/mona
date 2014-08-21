@@ -20,8 +20,12 @@ public abstract class AbstractScreen implements ResettableConsumerScreen {
 	private final LksBhmGame game;
 
 	public AbstractScreen() {
+		this(1024, 600);
+	}
+
+	public AbstractScreen(int defaultWidth, int defaultHeight) {
 		game = LksBhmGame.getGame();
-		viewport = new ScalingViewport(Scaling.fillX, 1024, 600);
+		viewport = new ScalingViewport(Scaling.fit, defaultWidth, defaultHeight);
 		stage = new Stage(viewport);
 
 		table = new Table();

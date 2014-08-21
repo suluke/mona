@@ -5,12 +5,15 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
 import de.lksbhm.mona.DesktopPlatform;
 import de.lksbhm.mona.Mona;
+import de.lksbhm.mona.ui.screens.AbstractScreen;
 
 public class DesktopLauncher {
 	public static void main(String[] arg) {
 		(new DesktopPlatform()).register();
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		LwjglApplicationConfiguration.disableAudio = true;
+		config.width = AbstractScreen.getDefaultViewportWidth();
+		config.height = AbstractScreen.getDefaultViewportHeight();
 		new LwjglApplication(new Mona(), config);
 	}
 }

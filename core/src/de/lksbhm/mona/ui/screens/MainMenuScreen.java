@@ -10,7 +10,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.gdx.Router;
-import de.lksbhm.gdx.ui.screens.AbstractScreen;
 import de.lksbhm.mona.puzzle.Generator;
 import de.lksbhm.mona.puzzle.Puzzle;
 
@@ -28,7 +27,7 @@ public class MainMenuScreen extends AbstractScreen {
 				Router router = LksBhmGame.getGame().getRouter();
 				PuzzleScreen ps = router.obtainScreen(PuzzleScreen.class);
 				Puzzle puzzle = Generator.generate(5, 10,
-						new RandomXS128(1, 2), 1.0f, 1.0f);
+						new RandomXS128(1, 4), 1.0f, 1.0f);
 				System.out.println(puzzle);
 				ps.setPuzzle(puzzle);
 				router.changeScreen(ps);
@@ -41,7 +40,7 @@ public class MainMenuScreen extends AbstractScreen {
 		Viewport vp = getViewport();
 
 		float w, h;
-		w = vp.getWorldWidth() * 0.2f;
+		w = vp.getWorldWidth() * 0.6f;
 		h = vp.getWorldHeight() * 0.2f;
 		base.add(playButton).size(w, h).center();
 	}
