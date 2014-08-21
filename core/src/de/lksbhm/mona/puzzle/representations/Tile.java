@@ -2,16 +2,16 @@ package de.lksbhm.mona.puzzle.representations;
 
 import java.lang.reflect.Array;
 
-public abstract class Tile<NodeBaseType extends Tile<NodeBaseType>> {
+public abstract class Tile<TileBaseType extends Tile<TileBaseType>> {
 	private int x, y;
-	private Board<NodeBaseType> b;
-	private final Class<? extends NodeBaseType> nodeBaseType;
+	private Board<TileBaseType> b;
+	private final Class<? extends TileBaseType> nodeBaseType;
 
-	public Tile(Class<? extends NodeBaseType> nodeBaseType) {
+	public Tile(Class<? extends TileBaseType> nodeBaseType) {
 		this.nodeBaseType = nodeBaseType;
 	}
 
-	public void setup(Board<NodeBaseType> b, int x, int y) {
+	public void setup(Board<TileBaseType> b, int x, int y) {
 		if (x < 0 || x >= b.getWidth()) {
 			throw new IllegalArgumentException();
 		}
@@ -23,32 +23,32 @@ public abstract class Tile<NodeBaseType extends Tile<NodeBaseType>> {
 		this.b = b;
 	}
 
-	public NodeBaseType[] getNeightbors() {
+	public TileBaseType[] getNeightbors() {
 		int neighborCount = 0;
 		int width = b.getWidth();
 		int height = b.getHeight();
-		NodeBaseType top = null;
+		TileBaseType top = null;
 		if (y > 0) {
 			neighborCount++;
 			top = b.getTile(x, y - 1);
 		}
-		NodeBaseType bottom = null;
+		TileBaseType bottom = null;
 		if (y < height - 1) {
 			neighborCount++;
 			bottom = b.getTile(x, y + 1);
 		}
-		NodeBaseType left = null;
+		TileBaseType left = null;
 		if (x > 0) {
 			neighborCount++;
 			left = b.getTile(x - 1, y);
 		}
-		NodeBaseType right = null;
+		TileBaseType right = null;
 		if (x < width - 1) {
 			neighborCount++;
 			right = b.getTile(x + 1, y);
 		}
 		@SuppressWarnings("unchecked")
-		NodeBaseType[] neighbors = (NodeBaseType[]) Array.newInstance(
+		TileBaseType[] neighbors = (TileBaseType[]) Array.newInstance(
 				nodeBaseType, neighborCount);
 		int pos = 0;
 		if (top != null) {
@@ -66,8 +66,12 @@ public abstract class Tile<NodeBaseType extends Tile<NodeBaseType>> {
 		return neighbors;
 	}
 
-	public NodeBaseType getNeighbor(Direction d) {
-		NodeBaseType[][] fields = b.getTiles();
+	public boolean isNeighborOf(Tile<TileBaseType> tile) {
+		return Math.abs(x - tile.x) + Math.abs(y - tile.y) < 2;
+	}
+
+	public TileBaseType getNeighbor(Direction d) {
+		TileBaseType[][] fields = b.getTiles();
 		int x = getX();
 		int y = getY();
 		int w = fields.length;
@@ -109,7 +113,7 @@ public abstract class Tile<NodeBaseType extends Tile<NodeBaseType>> {
 		return y;
 	}
 
-	protected Board<NodeBaseType> getBoard() {
+	protected Board<TileBaseType> getBoard() {
 		return b;
 	}
 }
