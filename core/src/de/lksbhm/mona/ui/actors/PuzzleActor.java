@@ -1,9 +1,12 @@
 package de.lksbhm.mona.ui.actors;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Widget;
+import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 
 import de.lksbhm.mona.puzzle.Piece;
@@ -20,13 +23,16 @@ public class PuzzleActor extends Widget {
 	private float paddingWidth;
 	private float paddingHeight;
 	private final boolean invertY = false; // false means, origin is down left
+	private final Vector2 tileCanvasOrigin = new Vector2();
+	private final InputListener inputListener = new InputListener();
 
 	public PuzzleActor(PuzzleActorStyle style) {
 		this.style.set(style);
+		addListener(inputListener);
 	}
 
 	public PuzzleActor(Skin skin) {
-		this.style.set(skin.get(PuzzleActorStyle.class));
+		this(skin.get(PuzzleActorStyle.class));
 	}
 
 	public void setStyle(PuzzleActorStyle style) {
@@ -101,6 +107,24 @@ public class PuzzleActor extends Widget {
 		} else {
 			drawInner(batch, tile);
 		}
+		switch (tile.getType()) {
+		case EDGE: {
+			style.edge.draw(batch, tileCanvasOrigin.x, tileCanvasOrigin.y,
+					cellWidth, cellHeight);
+			break;
+		}
+		case EMPTY: {
+			break;
+		}
+		case STRAIGHT: {
+			style.straight.draw(batch, tileCanvasOrigin.x, tileCanvasOrigin.y,
+					cellWidth, cellHeight);
+			break;
+		}
+		default: {
+			throw new RuntimeException();
+		}
+		}
 	}
 
 	private void drawInner(Batch batch, Piece tile) {
@@ -109,6 +133,7 @@ public class PuzzleActor extends Widget {
 		float drawX = marginLeft + x * (cellWidth + paddingWidth);
 		float drawY = marginTop + y * (cellHeight + paddingHeight);
 		style.innerTile.draw(batch, drawX, drawY, cellWidth, cellHeight);
+		tileCanvasOrigin.set(drawX, drawY);
 	}
 
 	private void drawBottom(Batch batch, Piece tile) {
@@ -120,6 +145,7 @@ public class PuzzleActor extends Widget {
 			drawY = getHeight() - drawY - cellHeight;
 		}
 		style.rightInnerTile.draw(batch, drawX, drawY, cellWidth, cellHeight);
+		tileCanvasOrigin.set(drawX, drawY);
 	}
 
 	private void drawTop(Batch batch, Piece tile) {
@@ -130,6 +156,7 @@ public class PuzzleActor extends Widget {
 			drawY = getHeight() - drawY - cellHeight;
 		}
 		style.rightInnerTile.draw(batch, drawX, drawY, cellWidth, cellHeight);
+		tileCanvasOrigin.set(drawX, drawY);
 	}
 
 	private void drawRight(Batch batch, Piece tile) {
@@ -141,6 +168,7 @@ public class PuzzleActor extends Widget {
 			drawY = getHeight() - drawY - cellHeight;
 		}
 		style.rightInnerTile.draw(batch, drawX, drawY, cellWidth, cellHeight);
+		tileCanvasOrigin.set(drawX, drawY);
 	}
 
 	private void drawBottomRight(Batch batch, Piece tile) {
@@ -152,6 +180,7 @@ public class PuzzleActor extends Widget {
 			drawY = getHeight() - drawY - cellHeight;
 		}
 		style.rightInnerTile.draw(batch, drawX, drawY, cellWidth, cellHeight);
+		tileCanvasOrigin.set(drawX, drawY);
 	}
 
 	private void drawTopRight(Batch batch, Piece tile) {
@@ -172,6 +201,7 @@ public class PuzzleActor extends Widget {
 			drawY = getHeight() - drawY - cellHeight;
 		}
 		style.innerTile.draw(batch, drawX, drawY, cellWidth, cellHeight);
+		tileCanvasOrigin.set(drawX, drawY);
 	}
 
 	private void drawBottomLeft(Batch batch, Piece tile) {
@@ -182,6 +212,7 @@ public class PuzzleActor extends Widget {
 			drawY = getHeight() - drawY - cellHeight;
 		}
 		style.rightInnerTile.draw(batch, drawX, drawY, cellWidth, cellHeight);
+		tileCanvasOrigin.set(drawX, drawY);
 	}
 
 	private void drawTopLeft(Batch batch, Piece tile) {
@@ -191,6 +222,7 @@ public class PuzzleActor extends Widget {
 			drawY = getHeight() - drawY - cellHeight;
 		}
 		style.innerTile.draw(batch, drawX, drawY, cellWidth, cellHeight);
+		tileCanvasOrigin.set(drawX, drawY);
 	}
 
 	@Override
@@ -199,9 +231,6 @@ public class PuzzleActor extends Widget {
 		style.validate();
 		float width = getWidth();
 		float height = getHeight();
-
-		System.out.println(width);
-		System.out.println(height);
 
 		float usableWidth = (1 - style.outerMarginLeft - style.outerMarginRight)
 				* width;
@@ -220,6 +249,22 @@ public class PuzzleActor extends Widget {
 		usableHeight -= paddingHeight;
 		cellWidth = usableWidth / puzzle.getWidth();
 		cellHeight = usableHeight / puzzle.getHeight();
+
+		if (style.forceSquareTiles) {
+			if (cellWidth > cellHeight) {
+				float diff = cellWidth - cellHeight;
+				cellWidth -= diff;
+				diff *= puzzle.getWidth();
+				diff /= puzzle.getWidth() - 1;
+				paddingWidth += diff;
+			} else {
+				float diff = cellHeight - cellWidth;
+				cellHeight -= diff;
+				diff *= puzzle.getHeight();
+				diff /= puzzle.getHeight() - 1;
+				paddingHeight += diff;
+			}
+		}
 	}
 
 	public static class PuzzleActorStyle {
@@ -246,7 +291,8 @@ public class PuzzleActor extends Widget {
 		public float outerMarginTop = 0.05f; // Percent
 		public float outerMarginBottom = 0.05f; // Percent
 		public boolean forceSquareTiles = true;
-		public boolean forceEqualPadding = true;
+		public boolean forceCenter = true; // if set, marginRight and
+											// marginBottom will be ignored
 
 		/**
 		 * Only for instantiation via reflection
@@ -290,7 +336,6 @@ public class PuzzleActor extends Widget {
 			outerMarginBottom = style.outerMarginBottom;
 			outerMarginLeft = style.outerMarginLeft;
 			outerMarginRight = style.outerMarginRight;
-			forceEqualPadding = style.forceEqualPadding;
 			forceSquareTiles = style.forceSquareTiles;
 		}
 
@@ -316,6 +361,23 @@ public class PuzzleActor extends Widget {
 			if (bottomRightTile == null) {
 				bottomRightTile = innerTile;
 			}
+		}
+	}
+
+	private class InputListener extends DragListener {
+		@Override
+		public void dragStart(InputEvent event, float x, float y, int pointer) {
+			System.out.println("Start");
+		}
+
+		@Override
+		public void drag(InputEvent event, float x, float y, int pointer) {
+			System.out.println("drag");
+		}
+
+		@Override
+		public void dragStop(InputEvent event, float x, float y, int pointer) {
+			System.out.println("Stop");
 		}
 	}
 }
