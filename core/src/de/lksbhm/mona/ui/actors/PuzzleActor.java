@@ -271,6 +271,8 @@ public class PuzzleActor extends Widget {
 		public Drawable edge;
 		public Drawable straight;
 		public Drawable innerTile;
+		public Drawable connectorHorizontal;
+		public Drawable connectorVertical;
 		public float innerTileMidOffsetX = 0;
 		public float innerTileMidOffsetY = 0;
 		public Drawable rightInnerTile;
@@ -301,10 +303,22 @@ public class PuzzleActor extends Widget {
 
 		}
 
+		/**
+		 * Constructor that requires all mandatory fields as arguments
+		 * 
+		 * @param edgeDrawable
+		 * @param straightDrawable
+		 * @param tile
+		 * @param connectorHorizontal
+		 * @param connectorVertical
+		 */
 		public PuzzleActorStyle(Drawable edgeDrawable,
-				Drawable straightDrawable, Drawable tile) {
+				Drawable straightDrawable, Drawable tile,
+				Drawable connectorHorizontal, Drawable connectorVertical) {
 			this.edge = edgeDrawable;
 			this.straight = straightDrawable;
+			this.connectorHorizontal = connectorHorizontal;
+			this.connectorVertical = connectorVertical;
 			this.innerTile = tile;
 			rightInnerTile = tile;
 			bottomTile = tile;
@@ -318,6 +332,8 @@ public class PuzzleActor extends Widget {
 		public void set(PuzzleActorStyle style) {
 			edge = style.edge;
 			straight = style.straight;
+			connectorHorizontal = style.connectorHorizontal;
+			connectorVertical = style.connectorVertical;
 			innerTile = style.innerTile;
 			innerTileMidOffsetX = style.innerTileMidOffsetX;
 			innerTileMidOffsetY = style.innerTileMidOffsetY;
@@ -347,6 +363,14 @@ public class PuzzleActor extends Widget {
 			if (straight == null) {
 				throw new RuntimeException(
 						"Impossible to obtain valid state without straight set");
+			}
+			if (connectorHorizontal == null) {
+				throw new RuntimeException(
+						"Impossible to obtain valid state without horizontal connector set");
+			}
+			if (connectorVertical == null) {
+				throw new RuntimeException(
+						"Impossible to obtain valid state without vertical connector set");
 			}
 			if (innerTile == null) {
 				throw new RuntimeException(

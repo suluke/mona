@@ -13,6 +13,6 @@
 		play: { down: "widgets/button-dark/down", up: "widgets/button-dark/up", disabled: "widgets/button-dark/disabled", font: default-font, fontColor: black }
 	},
 	de.lksbhm.mona.ui.actors.PuzzleActor$PuzzleActorStyle: {
-		default: { edge: "widgets/puzzle-actor/edge", straight: "widgets/puzzle-actor/straight", innerTile: "widgets/puzzle-actor/tile" }
+		default: { edge: "widgets/puzzle-actor/edge", straight: "widgets/puzzle-actor/straight", connectorHorizontal: "colors/palette1/01", connectorVertical: "colors/palette1/01", innerTile: "widgets/puzzle-actor/tile" }
 	}
 }
