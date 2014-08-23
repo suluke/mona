@@ -27,6 +27,9 @@ public abstract class AbstractScreen implements ResettableConsumerScreen {
 		game = LksBhmGame.getGame();
 		viewport = new ScalingViewport(Scaling.fit, defaultWidth, defaultHeight);
 		stage = new Stage(viewport);
+		if (game.isDebug()) {
+			stage.setDebugAll(true);
+		}
 
 		table = new Table();
 		table.setFillParent(true);
@@ -66,9 +69,6 @@ public abstract class AbstractScreen implements ResettableConsumerScreen {
 
 		stage.act(delta);
 		stage.draw();
-		if (game.isDebug()) {
-			stage.setDebugAll(true);
-		}
 	}
 
 	@Override
