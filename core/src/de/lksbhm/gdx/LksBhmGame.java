@@ -27,7 +27,7 @@ public abstract class LksBhmGame extends Game {
 	public LksBhmGame() {
 		instance = this;
 		defaultSkinPath = "json/skin.json";
-		defaultSkinAtlasPath = "textures/pack.atlas";
+		defaultSkinAtlasPath = "textures/main.atlas";
 	}
 
 	public LksBhmGame(String defaultSkinPath, String defaultSkinAtlasPath) {

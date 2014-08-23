@@ -7,20 +7,29 @@ sourceSets.main.java.srcDirs = [ "src/" ]
 
 
 eclipse.project {
-    name = appName + "-core"
+	name = appName + "-core"
 }
 
 task copyUnpackedTextures(type: Copy) {
-    from 'textures'
-    into '../android/assets/textures'
-    include "*.*"
+	from 'textures'
+	into '../android/assets/textures'
+	include "*.*"
 }
 
 import de.lksbhm.gradle.TexturePackerTask
-task runTexturePacker(type: TexturePackerTask) {
-    inputDir = file('textures/atlasses')
-    outputDir = file("../android/assets/textures")
+def atlasDirs = [];
+new File('core/textures/atlasses').eachFile() { file-> 
+	if(file.isDirectory()) {
+		atlasDirs.push(file)
+	}
+}
+atlasDirs.each { file ->
+	def task = tasks.create(name: 'texturepack-' + file.name, type: TexturePackerTask) {
+		inputDir = file
+		outputDir = project.file("../android/assets/textures")
+		packName = file.name
+	}
+	processResources.dependsOn task
 }
 
 processResources.dependsOn copyUnpackedTextures
-processResources.dependsOn runTexturePacker
