@@ -1,7 +1,6 @@
 package de.lksbhm.mona.ui.actors;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -11,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 
 import de.lksbhm.mona.puzzle.Piece;
 import de.lksbhm.mona.puzzle.Puzzle;
+import de.lksbhm.mona.puzzle.representations.Direction;
 
 public class PuzzleActor extends Widget {
 
@@ -20,10 +20,10 @@ public class PuzzleActor extends Widget {
 	private float marginTop;
 	private float cellWidth;
 	private float cellHeight;
+	private float lineWidth;
 	private float paddingWidth;
 	private float paddingHeight;
 	private final boolean invertY = false; // false means, origin is down left
-	private final Vector2 tileCanvasOrigin = new Vector2();
 	private final InputListener inputListener = new InputListener();
 
 	public PuzzleActor(PuzzleActorStyle style) {
@@ -71,15 +71,147 @@ public class PuzzleActor extends Widget {
 		if (puzzle == null) {
 			return;
 		}
+		drawTileBackgrounds(batch);
+		drawTileTypes(batch);
+		drawTileConnectors(batch);
+	}
+
+	private void drawTileConnectors(Batch batch) {
 		Piece[][] tiles = puzzle.getTiles();
+		Piece inAdj;
 		for (Piece[] array : tiles) {
 			for (Piece tile : array) {
-				drawTile(batch, tile);
+				inAdj = tile.getInAdjacent();
+				if (inAdj != null) {
+					if (inAdj.getInAdjacent() == tile
+							|| inAdj.getOutAdjacent() == tile) {
+						// draw continuous line
+						// TODO prevent double draw
+						drawConnector(batch, tile, tile.getInDirection(), true);
+					} else {
+						// only draw up to some point in between
+						drawConnector(batch, tile, tile.getInDirection(), false);
+					}
+				}
 			}
 		}
 	}
 
-	private void drawTile(Batch batch, Piece tile) {
+	private void drawTileTypes(Batch batch) {
+		Piece[][] tiles = puzzle.getTiles();
+		for (Piece[] array : tiles) {
+			for (Piece tile : array) {
+				drawType(batch, tile);
+			}
+		}
+	}
+
+	private void drawTileBackgrounds(Batch batch) {
+		Piece[][] tiles = puzzle.getTiles();
+		for (Piece[] array : tiles) {
+			for (Piece tile : array) {
+				drawBackground(batch, tile);
+			}
+		}
+	}
+
+	private void drawConnector(Batch batch, Piece tile, Direction direction,
+			boolean continuous) {
+		if (direction == Direction.NONE) {
+			return;
+		}
+		int x = tile.getX();
+		int y = tile.getY();
+		float tileX = marginLeft + x * (cellWidth + paddingWidth);
+		float tileY = marginTop + y * (cellHeight + paddingHeight);
+		float startX = tileX + cellWidth / 2;
+		float startY = tileY + cellHeight / 2;
+		float endX = 0;
+		float endY = 0;
+		boolean horizontal = direction == Direction.LEFT
+				|| direction == Direction.RIGHT;
+		if (horizontal) {
+			endY = startY;
+			startY -= lineWidth / 2;
+			endY += lineWidth / 2;
+		} else {
+			endX = startX;
+			startX -= lineWidth / 2;
+			endX += lineWidth / 2;
+		}
+		if (continuous) {
+			if (horizontal) {
+				endX = marginLeft + tile.getNeighbor(direction).getX()
+						* (cellWidth + paddingWidth) + cellWidth / 2;
+			} else {
+				endY = marginTop + tile.getNeighbor(direction).getY()
+						* (cellHeight + paddingHeight) + cellHeight / 2;
+			}
+		} else {
+			if (horizontal) {
+				if (direction == Direction.LEFT) {
+					endX = startX - cellWidth;
+				} else {
+					endX = startX + cellWidth;
+				}
+			} else {
+				if (direction == Direction.UP) {
+					endY = startY - cellHeight;
+				} else {
+					endY = startY + cellHeight;
+				}
+			}
+		}
+		if (invertY) {
+			// TODO not sure here
+			startY = getHeight() - startY;
+			endY = getHeight() - endY;
+		}
+
+		if (startX > endX) {
+			float swap = startX;
+			startX = endX;
+			endX = swap;
+		}
+		if (startY > endY) {
+			float swap = startY;
+			startY = endY;
+			endY = swap;
+		}
+
+		if (horizontal) {
+			style.connectorHorizontal.draw(batch, startX, startY,
+					endX - startX, endY - startY);
+		} else {
+			style.connectorVertical.draw(batch, startX, startY, endX - startX,
+					endY - startY);
+		}
+	}
+
+	private void drawType(Batch batch, Piece tile) {
+		int x = tile.getX();
+		int y = tile.getY();
+		float tileX = marginLeft + x * (cellWidth + paddingWidth);
+		float tileY = marginTop + y * (cellHeight + paddingHeight);
+		switch (tile.getType()) {
+		case EDGE: {
+			style.edge.draw(batch, tileX, tileY, cellWidth, cellHeight);
+			break;
+		}
+		case EMPTY: {
+			break;
+		}
+		case STRAIGHT: {
+			style.straight.draw(batch, tileX, tileY, cellWidth, cellHeight);
+			break;
+		}
+		default: {
+			throw new RuntimeException();
+		}
+		}
+	}
+
+	private void drawBackground(Batch batch, Piece tile) {
 		int x = tile.getX();
 		int y = tile.getY();
 		int width = puzzle.getWidth();
@@ -107,24 +239,6 @@ public class PuzzleActor extends Widget {
 		} else {
 			drawInner(batch, tile);
 		}
-		switch (tile.getType()) {
-		case EDGE: {
-			style.edge.draw(batch, tileCanvasOrigin.x, tileCanvasOrigin.y,
-					cellWidth, cellHeight);
-			break;
-		}
-		case EMPTY: {
-			break;
-		}
-		case STRAIGHT: {
-			style.straight.draw(batch, tileCanvasOrigin.x, tileCanvasOrigin.y,
-					cellWidth, cellHeight);
-			break;
-		}
-		default: {
-			throw new RuntimeException();
-		}
-		}
 	}
 
 	private void drawInner(Batch batch, Piece tile) {
@@ -132,8 +246,10 @@ public class PuzzleActor extends Widget {
 		int y = tile.getY();
 		float drawX = marginLeft + x * (cellWidth + paddingWidth);
 		float drawY = marginTop + y * (cellHeight + paddingHeight);
+		if (!invertY) {
+			drawY = getHeight() - drawY - cellHeight;
+		}
 		style.innerTile.draw(batch, drawX, drawY, cellWidth, cellHeight);
-		tileCanvasOrigin.set(drawX, drawY);
 	}
 
 	private void drawBottom(Batch batch, Piece tile) {
@@ -145,7 +261,6 @@ public class PuzzleActor extends Widget {
 			drawY = getHeight() - drawY - cellHeight;
 		}
 		style.rightInnerTile.draw(batch, drawX, drawY, cellWidth, cellHeight);
-		tileCanvasOrigin.set(drawX, drawY);
 	}
 
 	private void drawTop(Batch batch, Piece tile) {
@@ -156,7 +271,6 @@ public class PuzzleActor extends Widget {
 			drawY = getHeight() - drawY - cellHeight;
 		}
 		style.rightInnerTile.draw(batch, drawX, drawY, cellWidth, cellHeight);
-		tileCanvasOrigin.set(drawX, drawY);
 	}
 
 	private void drawRight(Batch batch, Piece tile) {
@@ -168,7 +282,6 @@ public class PuzzleActor extends Widget {
 			drawY = getHeight() - drawY - cellHeight;
 		}
 		style.rightInnerTile.draw(batch, drawX, drawY, cellWidth, cellHeight);
-		tileCanvasOrigin.set(drawX, drawY);
 	}
 
 	private void drawBottomRight(Batch batch, Piece tile) {
@@ -180,7 +293,6 @@ public class PuzzleActor extends Widget {
 			drawY = getHeight() - drawY - cellHeight;
 		}
 		style.rightInnerTile.draw(batch, drawX, drawY, cellWidth, cellHeight);
-		tileCanvasOrigin.set(drawX, drawY);
 	}
 
 	private void drawTopRight(Batch batch, Piece tile) {
@@ -201,7 +313,6 @@ public class PuzzleActor extends Widget {
 			drawY = getHeight() - drawY - cellHeight;
 		}
 		style.innerTile.draw(batch, drawX, drawY, cellWidth, cellHeight);
-		tileCanvasOrigin.set(drawX, drawY);
 	}
 
 	private void drawBottomLeft(Batch batch, Piece tile) {
@@ -212,7 +323,6 @@ public class PuzzleActor extends Widget {
 			drawY = getHeight() - drawY - cellHeight;
 		}
 		style.rightInnerTile.draw(batch, drawX, drawY, cellWidth, cellHeight);
-		tileCanvasOrigin.set(drawX, drawY);
 	}
 
 	private void drawTopLeft(Batch batch, Piece tile) {
@@ -222,7 +332,6 @@ public class PuzzleActor extends Widget {
 			drawY = getHeight() - drawY - cellHeight;
 		}
 		style.innerTile.draw(batch, drawX, drawY, cellWidth, cellHeight);
-		tileCanvasOrigin.set(drawX, drawY);
 	}
 
 	@Override
@@ -265,6 +374,7 @@ public class PuzzleActor extends Widget {
 				paddingHeight += diff;
 			}
 		}
+		lineWidth = Math.min(cellWidth, cellHeight) * style.connectorWidth;
 	}
 
 	public static class PuzzleActorStyle {
@@ -273,6 +383,8 @@ public class PuzzleActor extends Widget {
 		public Drawable innerTile;
 		public Drawable connectorHorizontal;
 		public Drawable connectorVertical;
+		public float connectorWidth = 0.1f; // relative to min(cellwidth,
+											// cellheight)
 		public float innerTileMidOffsetX = 0;
 		public float innerTileMidOffsetY = 0;
 		public Drawable rightInnerTile;
@@ -334,6 +446,7 @@ public class PuzzleActor extends Widget {
 			straight = style.straight;
 			connectorHorizontal = style.connectorHorizontal;
 			connectorVertical = style.connectorVertical;
+			connectorWidth = style.connectorWidth;
 			innerTile = style.innerTile;
 			innerTileMidOffsetX = style.innerTileMidOffsetX;
 			innerTileMidOffsetY = style.innerTileMidOffsetY;

@@ -19,7 +19,7 @@ public class Piece extends Tile<Piece> {
 		setInOutDirection(in, out);
 	}
 
-	void setInOutDirection(Direction in, Direction out) {
+	public void setInOutDirection(Direction in, Direction out) {
 		if (in == out && in != Direction.NONE) {
 			throw new RuntimeException(
 					"In and out directions must not be equal");
@@ -34,6 +34,14 @@ public class Piece extends Tile<Piece> {
 
 	public Direction getOutDirection() {
 		return out;
+	}
+
+	public Piece getInAdjacent() {
+		return getNeighbor(in);
+	}
+
+	public Piece getOutAdjacent() {
+		return getNeighbor(out);
 	}
 
 	public static enum Type {
