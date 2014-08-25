@@ -402,4 +402,74 @@ public class PuzzleActor extends Widget {
 		lineWidth = Math.min(cellWidth, cellHeight) * style.connectorWidth;
 	}
 
+	/**
+	 * @return the puzzle
+	 */
+	Puzzle getPuzzle() {
+		return puzzle;
+	}
+
+	/**
+	 * @return the style
+	 */
+	PuzzleActorStyle getStyle() {
+		return style;
+	}
+
+	/**
+	 * @return the marginLeft
+	 */
+	float getMarginLeft() {
+		return marginLeft;
+	}
+
+	/**
+	 * @return the marginTop
+	 */
+	float getMarginTop() {
+		return marginTop;
+	}
+
+	/**
+	 * @return the cellWidth
+	 */
+	float getCellWidth() {
+		return cellWidth;
+	}
+
+	/**
+	 * @return the cellHeight
+	 */
+	float getCellHeight() {
+		return cellHeight;
+	}
+
+	/**
+	 * @return the lineWidth
+	 */
+	float getLineWidth() {
+		return lineWidth;
+	}
+
+	/**
+	 * @return the paddingWidth
+	 */
+	float getPaddingWidth() {
+		return paddingWidth;
+	}
+
+	/**
+	 * @return the paddingHeight
+	 */
+	float getPaddingHeight() {
+		return paddingHeight;
+	}
+
+	/**
+	 * @return the invertY
+	 */
+	boolean isInvertY() {
+		return invertY;
+	}
+
 }

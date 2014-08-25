@@ -36,6 +36,17 @@ public class Piece extends Tile<Piece> {
 		return out;
 	}
 
+	/**
+	 * Implements a small queue somehow, so that the more recently changed in or
+	 * out direction should be out
+	 * 
+	 * @param d
+	 */
+	public void pushInOutDirection(Direction d) {
+		out = in;
+		in = d;
+	}
+
 	public Piece getInAdjacent() {
 		return getNeighbor(in);
 	}

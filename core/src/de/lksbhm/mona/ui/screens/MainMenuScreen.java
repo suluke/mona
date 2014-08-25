@@ -34,6 +34,9 @@ public class MainMenuScreen extends AbstractScreen {
 				for (Piece tile : tiles[0]) {
 					tile.setInOutDirection(Direction.UP, Direction.DOWN);
 				}
+				for (Piece[] array : tiles) {
+					array[0].setInOutDirection(Direction.DOWN, Direction.RIGHT);
+				}
 				ps.setPuzzle(puzzle);
 				router.changeScreen(ps);
 			}

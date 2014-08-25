@@ -70,6 +70,24 @@ public abstract class Tile<TileBaseType extends Tile<TileBaseType>> {
 		return Math.abs(x - tile.x) + Math.abs(y - tile.y) < 2;
 	}
 
+	public Direction getDirectionOfNeighbor(Tile<TileBaseType> neighbor) {
+		if (!isNeighborOf(neighbor)) {
+			return Direction.NONE;
+		}
+		int nx = neighbor.getX();
+		int ny = neighbor.getY();
+		if (nx < x) {
+			return Direction.LEFT;
+		} else if (nx > x) {
+			return Direction.RIGHT;
+		} else if (ny < y) {
+			return Direction.UP;
+		} else if (ny > y) {
+			return Direction.DOWN;
+		}
+		return Direction.NONE;
+	}
+
 	public TileBaseType getNeighbor(Direction d) {
 		TileBaseType[][] fields = b.getTiles();
 		int x = getX();
