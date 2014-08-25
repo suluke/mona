@@ -1,12 +1,9 @@
 package de.lksbhm.mona.ui.actors;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Widget;
-import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 
 import de.lksbhm.mona.puzzle.Piece;
 import de.lksbhm.mona.puzzle.Puzzle;
@@ -24,7 +21,7 @@ public class PuzzleActor extends Widget {
 	private float paddingWidth;
 	private float paddingHeight;
 	private final boolean invertY = false; // false means, origin is down left
-	private final InputListener inputListener = new InputListener();
+	private final PuzzleActorInput inputListener = new PuzzleActorInput(this);
 
 	public PuzzleActor(PuzzleActorStyle style) {
 		this.style.set(style);
@@ -79,9 +76,11 @@ public class PuzzleActor extends Widget {
 	private void drawTileConnectors(Batch batch) {
 		Piece[][] tiles = puzzle.getTiles();
 		Piece inAdj;
+		Piece outAdj;
 		for (Piece[] array : tiles) {
 			for (Piece tile : array) {
 				inAdj = tile.getInAdjacent();
+				outAdj = tile.getOutAdjacent();
 				if (inAdj != null) {
 					if (inAdj.getInAdjacent() == tile
 							|| inAdj.getOutAdjacent() == tile) {
@@ -91,6 +90,18 @@ public class PuzzleActor extends Widget {
 					} else {
 						// only draw up to some point in between
 						drawConnector(batch, tile, tile.getInDirection(), false);
+					}
+				}
+				if (outAdj != null) {
+					if (outAdj.getInAdjacent() == tile
+							|| outAdj.getOutAdjacent() == tile) {
+						// draw continuous line
+						// TODO prevent double draw
+						drawConnector(batch, tile, tile.getOutDirection(), true);
+					} else {
+						// only draw up to some point in between
+						drawConnector(batch, tile, tile.getOutDirection(),
+								false);
 					}
 				}
 			}
@@ -150,19 +161,19 @@ public class PuzzleActor extends Widget {
 		} else {
 			if (horizontal) {
 				if (direction == Direction.LEFT) {
-					endX = startX - cellWidth;
+					endX = startX - cellWidth / 2;
 				} else {
-					endX = startX + cellWidth;
+					endX = startX + cellWidth / 2;
 				}
 			} else {
 				if (direction == Direction.UP) {
-					endY = startY - cellHeight;
+					endY = startY - cellHeight / 2;
 				} else {
-					endY = startY + cellHeight;
+					endY = startY + cellHeight / 2;
 				}
 			}
 		}
-		if (invertY) {
+		if (!invertY) {
 			// TODO not sure here
 			startY = getHeight() - startY;
 			endY = getHeight() - endY;
@@ -377,144 +388,4 @@ public class PuzzleActor extends Widget {
 		lineWidth = Math.min(cellWidth, cellHeight) * style.connectorWidth;
 	}
 
-	public static class PuzzleActorStyle {
-		public Drawable edge;
-		public Drawable straight;
-		public Drawable innerTile;
-		public Drawable connectorHorizontal;
-		public Drawable connectorVertical;
-		public float connectorWidth = 0.1f; // relative to min(cellwidth,
-											// cellheight)
-		public float innerTileMidOffsetX = 0;
-		public float innerTileMidOffsetY = 0;
-		public Drawable rightInnerTile;
-		public float rightInnerTileMidOffsetX = 0;
-		public float rightInnerTileMidOffsetY = 0;
-		public Drawable bottomTile;
-		public float bottomTileMidOffsetX = 0;
-		public float bottomTileMidOffsetY = 0;
-		public Drawable bottomRightTile;
-		public float bottomRightTileMidOffsetX = 0; // relative to texture size
-		public float bottomRightTileMidOffsetY = 0;
-		public float tilePaddingX = 0; // 0.1 = 10 percent relative to tile size
-		public float tilePaddingY = 0; // 0.1 = 10 percent relative to tile size
-		public float outerMarginLeft = 0.05f; // 0.1 = 10 percent relative to
-												// actor
-												// size
-		public float outerMarginRight = 0.05f; // Percent
-		public float outerMarginTop = 0.05f; // Percent
-		public float outerMarginBottom = 0.05f; // Percent
-		public boolean forceSquareTiles = true;
-		public boolean forceCenter = true; // if set, marginRight and
-											// marginBottom will be ignored
-
-		/**
-		 * Only for instantiation via reflection
-		 */
-		public PuzzleActorStyle() {
-
-		}
-
-		/**
-		 * Constructor that requires all mandatory fields as arguments
-		 * 
-		 * @param edgeDrawable
-		 * @param straightDrawable
-		 * @param tile
-		 * @param connectorHorizontal
-		 * @param connectorVertical
-		 */
-		public PuzzleActorStyle(Drawable edgeDrawable,
-				Drawable straightDrawable, Drawable tile,
-				Drawable connectorHorizontal, Drawable connectorVertical) {
-			this.edge = edgeDrawable;
-			this.straight = straightDrawable;
-			this.connectorHorizontal = connectorHorizontal;
-			this.connectorVertical = connectorVertical;
-			this.innerTile = tile;
-			rightInnerTile = tile;
-			bottomTile = tile;
-			bottomRightTile = tile;
-		}
-
-		public PuzzleActorStyle(PuzzleActorStyle style) {
-			set(style);
-		}
-
-		public void set(PuzzleActorStyle style) {
-			edge = style.edge;
-			straight = style.straight;
-			connectorHorizontal = style.connectorHorizontal;
-			connectorVertical = style.connectorVertical;
-			connectorWidth = style.connectorWidth;
-			innerTile = style.innerTile;
-			innerTileMidOffsetX = style.innerTileMidOffsetX;
-			innerTileMidOffsetY = style.innerTileMidOffsetY;
-			rightInnerTile = style.rightInnerTile;
-			rightInnerTileMidOffsetX = style.rightInnerTileMidOffsetX;
-			rightInnerTileMidOffsetY = style.rightInnerTileMidOffsetY;
-			bottomTile = style.bottomTile;
-			bottomTileMidOffsetX = style.bottomTileMidOffsetX;
-			bottomTileMidOffsetY = style.bottomTileMidOffsetY;
-			bottomRightTile = style.bottomRightTile;
-			bottomRightTileMidOffsetX = style.bottomRightTileMidOffsetX;
-			bottomRightTileMidOffsetY = style.bottomRightTileMidOffsetY;
-			tilePaddingX = style.tilePaddingX;
-			tilePaddingY = style.tilePaddingY;
-			outerMarginTop = style.outerMarginTop;
-			outerMarginBottom = style.outerMarginBottom;
-			outerMarginLeft = style.outerMarginLeft;
-			outerMarginRight = style.outerMarginRight;
-			forceSquareTiles = style.forceSquareTiles;
-		}
-
-		public void validate() {
-			if (edge == null) {
-				throw new RuntimeException(
-						"Impossible to obtain valid state without edge set");
-			}
-			if (straight == null) {
-				throw new RuntimeException(
-						"Impossible to obtain valid state without straight set");
-			}
-			if (connectorHorizontal == null) {
-				throw new RuntimeException(
-						"Impossible to obtain valid state without horizontal connector set");
-			}
-			if (connectorVertical == null) {
-				throw new RuntimeException(
-						"Impossible to obtain valid state without vertical connector set");
-			}
-			if (innerTile == null) {
-				throw new RuntimeException(
-						"Impossible to obtain valid state without innerTile set");
-			}
-			if (rightInnerTile == null) {
-				rightInnerTile = innerTile;
-			}
-			if (bottomTile == null) {
-				bottomTile = innerTile;
-			}
-			if (bottomRightTile == null) {
-				bottomRightTile = innerTile;
-			}
-		}
-	}
-
-	private class InputListener extends DragListener {
-		@Override
-		public void dragStart(InputEvent event, float x, float y, int pointer) {
-			System.out.println("Start");
-		}
-
-		@Override
-		public void drag(InputEvent event, float x, float y, int pointer) {
-			System.out.println("drag");
-		}
-
-		@Override
-		public void dragStop(InputEvent event, float x, float y, int pointer) {
-			System.out.println("Stop");
-		}
-	}
 }
