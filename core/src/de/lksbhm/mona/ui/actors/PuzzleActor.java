@@ -137,10 +137,12 @@ public class PuzzleActor extends Widget {
 		float tileY = marginTop + y * (cellHeight + paddingHeight);
 		float startX = tileX + cellWidth / 2;
 		float startY = tileY + cellHeight / 2;
+		// initialize here because compiler is too stupid to see it later
 		float endX = 0;
 		float endY = 0;
 		boolean horizontal = direction == Direction.LEFT
 				|| direction == Direction.RIGHT;
+		// set end coordinate that will be equal to start coordinate
 		if (horizontal) {
 			endY = startY;
 			startY -= lineWidth / 2;
@@ -150,6 +152,8 @@ public class PuzzleActor extends Widget {
 			startX -= lineWidth / 2;
 			endX += lineWidth / 2;
 		}
+
+		// determine the more complicated end coordinate
 		if (continuous) {
 			if (horizontal) {
 				endX = marginLeft + tile.getNeighbor(direction).getX()
@@ -174,11 +178,11 @@ public class PuzzleActor extends Widget {
 			}
 		}
 		if (!invertY) {
-			// TODO not sure here
 			startY = getHeight() - startY;
 			endY = getHeight() - endY;
 		}
 
+		// sort coordinates to draw from lower to higher
 		if (startX > endX) {
 			float swap = startX;
 			startX = endX;
@@ -190,6 +194,16 @@ public class PuzzleActor extends Widget {
 			endY = swap;
 		}
 
+		// add a little offset so line ends will overlap
+		if (horizontal) {
+			startX -= lineWidth / 2;
+			endX += lineWidth / 2;
+		} else {
+			startY -= lineWidth / 2;
+			endY += lineWidth / 2;
+		}
+
+		// draw, finally
 		if (horizontal) {
 			style.connectorHorizontal.draw(batch, startX, startY,
 					endX - startX, endY - startY);
