@@ -39,14 +39,21 @@ class PuzzleActorInput implements EventListener {
 
 		@Override
 		public void drag(InputEvent event, float x, float y, int pointer) {
+			if (startPiece == null) {
+				return;
+			}
 			Piece currentPiece = PuzzleActorCoordinateHelper.coordsToTile(
 					actor, x, y);
 			if (currentPiece != startPiece && currentPiece != null
 					&& currentPiece.isNeighborOf(startPiece)) {
-				Direction neighborDir = startPiece
-						.getDirectionOfNeighbor(currentPiece);
-				startPiece.pushInOutDirection(neighborDir);
-				currentPiece.pushInOutDirection(neighborDir.getOpposite());
+				if (startPiece.isConnectedWith(currentPiece)) {
+					startPiece.disconnect(currentPiece);
+				} else {
+					Direction neighborDir = startPiece
+							.getDirectionOfNeighbor(currentPiece);
+					startPiece.pushInOutDirection(neighborDir);
+					currentPiece.pushInOutDirection(neighborDir.getOpposite());
+				}
 				startPiece = currentPiece;
 			}
 		}

@@ -11,9 +11,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.gdx.Router;
 import de.lksbhm.mona.puzzle.Generator;
-import de.lksbhm.mona.puzzle.Piece;
 import de.lksbhm.mona.puzzle.Puzzle;
-import de.lksbhm.mona.puzzle.representations.Direction;
 
 public class MainMenuScreen extends AbstractScreen {
 
@@ -30,13 +28,6 @@ public class MainMenuScreen extends AbstractScreen {
 				PuzzleScreen ps = router.obtainScreen(PuzzleScreen.class);
 				Puzzle puzzle = Generator.generate(5, 10,
 						new RandomXS128(1, 4), 1.0f, 1.0f);
-				Piece[][] tiles = puzzle.getTiles();
-				for (Piece tile : tiles[0]) {
-					tile.setInOutDirection(Direction.UP, Direction.DOWN);
-				}
-				for (Piece[] array : tiles) {
-					array[0].setInOutDirection(Direction.DOWN, Direction.RIGHT);
-				}
 				ps.setPuzzle(puzzle);
 				router.changeScreen(ps);
 			}
