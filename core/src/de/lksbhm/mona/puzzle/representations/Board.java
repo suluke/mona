@@ -46,4 +46,14 @@ public abstract class Board<TileBaseType extends Tile<TileBaseType>> {
 	public int getHeight() {
 		return height;
 	}
+
+	/**
+	 * Provides a global method that can be called by {@link Tile}
+	 * implementations to notify the board about changes. The default
+	 * implementation is empty, but inherited classes may override the method to
+	 * for example provide listener capabilities.
+	 */
+	public void notifyOnChange() {
+
+	}
 }

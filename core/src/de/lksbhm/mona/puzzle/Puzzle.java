@@ -1,5 +1,7 @@
 package de.lksbhm.mona.puzzle;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.ReflectionPool;
@@ -13,6 +15,7 @@ public class Puzzle extends Board<Piece> implements Disposable {
 	private static final Pool<Piece> fieldPool = new ReflectionPool<Piece>(
 			Piece.class);
 	private final UndirectedTileBoard solution;
+	private final ArrayList<PuzzleChangedListener> listeners = new ArrayList<PuzzleChangedListener>();
 
 	public Puzzle(UndirectedTileBoard solution, int width, int height) {
 		super(width, height, Piece.class);
@@ -75,5 +78,24 @@ public class Puzzle extends Board<Piece> implements Disposable {
 			}
 		}
 		return sb.toString();
+	}
+
+	@Override
+	public void notifyOnChange() {
+		for (PuzzleChangedListener listener : listeners) {
+			listener.onChange();
+		}
+	}
+
+	public void addChangeListener(PuzzleChangedListener listener) {
+		listeners.add(listener);
+	}
+
+	public void removeChangeListener(PuzzleChangedListener listener) {
+		listeners.remove(listener);
+	}
+
+	public void removeAllChangeListeners() {
+		listeners.clear();
 	}
 }

@@ -26,6 +26,7 @@ public class Piece extends Tile<Piece> {
 		}
 		this.in = in;
 		this.out = out;
+		notifyOnChange();
 	}
 
 	public Direction getInDirection() {
@@ -43,8 +44,15 @@ public class Piece extends Tile<Piece> {
 	 * @param d
 	 */
 	public void pushInOutDirection(Direction d) {
-		out = in;
+		if (in == d || out == d) {
+			return;
+		}
+		if (in != Direction.NONE) {
+			out = in;
+		}
+
 		in = d;
+		notifyOnChange();
 	}
 
 	public Piece getInAdjacent() {
@@ -53,6 +61,41 @@ public class Piece extends Tile<Piece> {
 
 	public Piece getOutAdjacent() {
 		return getNeighbor(out);
+	}
+
+	public boolean isConnectedWith(Piece other) {
+		Direction d = getDirectionOfNeighbor(other);
+		if (d == Direction.NONE) {
+			return false;
+		}
+		if (in == d || out == d) {
+			d = d.getOpposite();
+			if (other.in == d || other.out == d) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public void disconnect(Piece other) {
+		Direction d = getDirectionOfNeighbor(other);
+		if (d == Direction.NONE) {
+			return;
+		}
+		if (in == d) {
+			in = Direction.NONE;
+		}
+		if (out == d) {
+			out = Direction.NONE;
+		}
+		d = d.getOpposite();
+		if (other.in == d) {
+			other.in = Direction.NONE;
+		}
+		if (other.out == d) {
+			other.out = Direction.NONE;
+		}
+		notifyOnChange();
 	}
 
 	public static enum Type {
@@ -113,5 +156,9 @@ public class Piece extends Tile<Piece> {
 	 */
 	public void setType(Type type) {
 		this.type = type;
+	}
+
+	protected void notifyOnChange() {
+		getBoard().notifyOnChange();
 	}
 }

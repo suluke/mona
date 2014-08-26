@@ -67,6 +67,9 @@ public abstract class Tile<TileBaseType extends Tile<TileBaseType>> {
 	}
 
 	public boolean isNeighborOf(Tile<TileBaseType> tile) {
+		if (tile == null) {
+			return false;
+		}
 		return Math.abs(x - tile.x) + Math.abs(y - tile.y) < 2;
 	}
 
