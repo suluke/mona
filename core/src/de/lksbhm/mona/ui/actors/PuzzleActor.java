@@ -1,5 +1,7 @@
 package de.lksbhm.mona.ui.actors;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -7,7 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 
 import de.lksbhm.mona.puzzle.Piece;
 import de.lksbhm.mona.puzzle.Puzzle;
+import de.lksbhm.mona.puzzle.PuzzleChangedListener;
 import de.lksbhm.mona.puzzle.representations.Direction;
+import de.lksbhm.mona.ui.actors.InvalidMarker.InvalidMarkerStyle;
 
 public class PuzzleActor extends Widget {
 
@@ -22,14 +26,43 @@ public class PuzzleActor extends Widget {
 	private float paddingHeight;
 	private final boolean invertY = false; // false means, origin is down left
 	private final PuzzleActorInput inputListener = new PuzzleActorInput(this);
+	private final InvalidMarkerStyle markerStyle = new InvalidMarkerStyle();
+	private final ArrayList<InvalidMarker> markers = new ArrayList<InvalidMarker>();
+	private final PuzzleChangedListener changeListener = new PuzzleChangedListener() {
+		@Override
+		public void onChange() {
+			markers.clear();
+			Piece[][] tiles = puzzle.getTiles();
+			for (Piece[] array : tiles) {
+				for (Piece tile : array) {
+					if (!tile.isValid()) {
+						System.out.println("Invalid at " + tile.getX() + ", "
+								+ tile.getY());
+						InvalidMarker marker = new InvalidMarker();
+						marker.setStyle(markerStyle);
+						marker.setMid(
+								PuzzleActorCoordinateHelper.getTileOriginX(
+										PuzzleActor.this, tile) + cellWidth / 2,
+								PuzzleActorCoordinateHelper.getTileOriginY(
+										PuzzleActor.this, tile)
+										+ cellHeight
+										/ 2);
+						markers.add(marker);
+					}
+				}
+			}
+		}
+	};
 
-	public PuzzleActor(PuzzleActorStyle style) {
+	public PuzzleActor(PuzzleActorStyle style, InvalidMarkerStyle markerStyle) {
 		this.style.set(style);
+		this.markerStyle.set(markerStyle);
 		addListener(inputListener);
 	}
 
 	public PuzzleActor(Skin skin) {
-		this(skin.get(PuzzleActorStyle.class));
+		this(skin.get(PuzzleActorStyle.class), skin
+				.get(InvalidMarkerStyle.class));
 	}
 
 	public void setStyle(PuzzleActorStyle style) {
@@ -40,6 +73,7 @@ public class PuzzleActor extends Widget {
 	public void setPuzzle(Puzzle puzzle) {
 		this.puzzle = puzzle;
 		invalidate();
+		puzzle.addChangeListener(changeListener);
 	}
 
 	@Override
@@ -71,6 +105,15 @@ public class PuzzleActor extends Widget {
 		drawTileBackgrounds(batch);
 		drawTileTypes(batch);
 		drawTileConnectors(batch);
+		drawInvalidMarkers(batch);
+	}
+
+	private void drawInvalidMarkers(Batch batch) {
+		float offsetX = getX();
+		float offsetY = getY();
+		for (InvalidMarker marker : markers) {
+			marker.render(batch, offsetX, offsetY);
+		}
 	}
 
 	private void drawTileConnectors(Batch batch) {
@@ -216,8 +259,8 @@ public class PuzzleActor extends Widget {
 	private void drawType(Batch batch, Piece tile) {
 		int x = tile.getX();
 		int y = tile.getY();
-		float tileX = marginLeft + x * (cellWidth + paddingWidth);
-		float tileY = marginTop + y * (cellHeight + paddingHeight);
+		float tileX = PuzzleActorCoordinateHelper.getTileOriginX(this, tile);
+		float tileY = PuzzleActorCoordinateHelper.getTileOriginY(this, tile);
 		switch (tile.getType()) {
 		case EDGE: {
 			style.edge.draw(batch, tileX, tileY, cellWidth, cellHeight);

@@ -4,6 +4,9 @@ public enum Direction {
 	UP, DOWN, LEFT, RIGHT, NONE;
 
 	public boolean isOppositeOf(Direction d) {
+		if (d == null) {
+			return false;
+		}
 		if (this == NONE || d == NONE) {
 			return true;
 		}

@@ -14,5 +14,8 @@
 	},
 	de.lksbhm.mona.ui.actors.PuzzleActorStyle: {
 		default: { edge: "widgets/puzzle-actor/edge", straight: "widgets/puzzle-actor/straight", connectorHorizontal: "colors/palette1/01", connectorVertical: "colors/palette1/01", innerTile: "widgets/puzzle-actor/tile" }
+	},
+	de.lksbhm.mona.ui.actors.InvalidMarker$InvalidMarkerStyle: {
+		default: { texture: "colors/palette1/04" }
 	}
 }

@@ -42,8 +42,8 @@ class PuzzleActorCoordinateHelper {
 	public static float getTileOriginY(PuzzleActor actor, Piece tile) {
 		float result = actor.getMarginTop() + tile.getY()
 				* (actor.getCellHeight() + actor.getPaddingHeight());
-		if (actor.isInvertY()) {
-			result = actor.getHeight() - result + actor.getCellHeight();
+		if (!actor.isInvertY()) {
+			result = actor.getHeight() - result - actor.getCellHeight();
 		}
 		return result;
 	}

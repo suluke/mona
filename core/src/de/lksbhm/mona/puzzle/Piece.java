@@ -107,33 +107,39 @@ public class Piece extends Tile<Piece> {
 	}
 
 	public boolean isValid() {
-		boolean valid = true;
-		// empty fields have not constraints
-		if (type == Type.EMPTY) {
-			return true;
-		}
 		// pieces with just one in/out set are invalid
 		if ((in == Direction.NONE && out != Direction.NONE)
 				|| (in != Direction.NONE && out == Direction.NONE)) {
 			return false;
 		}
-		// if not touched, it is valid
-		if (in == Direction.NONE && out == Direction.NONE) {
+		// empties are valid if none of the connectors are set
+		if (type == Type.EMPTY
+				&& (in == Direction.NONE && out == Direction.NONE)) {
 			return true;
 		}
+		// other field types must have both set, though
+		if (in == Direction.NONE && out == Direction.NONE) {
+			return false;
+		}
+		// we also need to check if the connections are being continued
 		Piece thisIn = getNeighbor(in);
 		Piece thisOut = getNeighbor(out);
+		if (thisIn.in != in.getOpposite() && thisIn.out != in.getOpposite()) {
+			return false;
+		}
+		if (thisOut.in != out.getOpposite() && thisOut.out != out.getOpposite()) {
+			return false;
+		}
 		switch (type) {
 		case EDGE:
-			valid = validateEdge(thisIn, thisOut);
-			break;
+			return validateEdge(thisIn, thisOut);
 		case STRAIGHT:
-			valid = validateStraight(thisIn, thisOut);
+			return validateStraight(thisIn, thisOut);
+		case EMPTY:
+			return true;
 		default:
 			throw new RuntimeException();
 		}
-
-		return valid;
 	}
 
 	private boolean validateEdge(Piece in, Piece out) {
