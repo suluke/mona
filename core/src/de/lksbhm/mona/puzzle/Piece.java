@@ -44,13 +44,17 @@ public class Piece extends Tile<Piece> {
 	 * @param d
 	 */
 	public void pushInOutDirection(Direction d) {
+		// don't set d twice
 		if (in == d || out == d) {
 			return;
 		}
-		if (in != Direction.NONE) {
-			out = in;
+		// if 'out' is continued and 'in' is not, we prefer to keep 'out'
+		if (!(isOutContinued() && !isInContinued())) {
+			// prevent evicting 'out' with Direction.NONE
+			if (in != Direction.NONE) {
+				out = in;
+			}
 		}
-
 		in = d;
 		notifyOnChange();
 	}
@@ -61,6 +65,30 @@ public class Piece extends Tile<Piece> {
 
 	public Piece getOutAdjacent() {
 		return getNeighbor(out);
+	}
+
+	public boolean isInContinued() {
+		if (in == Direction.NONE) {
+			return false;
+		}
+		Piece neighbor = getNeighbor(in);
+		if (neighbor == null) {
+			return false;
+		}
+		return neighbor.in == in.getOpposite()
+				|| neighbor.out == in.getOpposite();
+	}
+
+	public boolean isOutContinued() {
+		if (out == Direction.NONE) {
+			return false;
+		}
+		Piece neighbor = getNeighbor(out);
+		if (neighbor == null) {
+			return false;
+		}
+		return neighbor.in == out.getOpposite()
+				|| neighbor.out == out.getOpposite();
 	}
 
 	public boolean isConnectedWith(Piece other) {
