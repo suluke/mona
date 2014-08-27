@@ -33,4 +33,17 @@ public class LinkedTile extends Tile<LinkedTile> {
 		this.child = child;
 	}
 
+	@Override
+	public LinkedTile copy() {
+		LinkedTile t = LinkedTileBoard.directedNodePool.obtain();
+		// TODO cannot imagine better way to do this
+		t.child = child;
+		t.parent = parent;
+		return t;
+	}
+
+	@Override
+	public void dispose() {
+		LinkedTileBoard.directedNodePool.free(this);
+	}
 }

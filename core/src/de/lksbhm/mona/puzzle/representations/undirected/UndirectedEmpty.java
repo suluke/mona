@@ -27,4 +27,23 @@ public class UndirectedEmpty extends UndirectedTile {
 		return false;
 	}
 
+	@Override
+	public UndirectedEmpty copy() {
+		return UndirectedTileBoard.emptyPool.obtain();
+	}
+
+	@Override
+	public void dispose() {
+		UndirectedTileBoard.emptyPool.free(this);
+	}
+
+	@Override
+	public UndirectedEmpty getHorizontalInverted() {
+		return copy();
+	}
+
+	@Override
+	public UndirectedEmpty getVerticalInverted() {
+		return copy();
+	}
 }

@@ -12,12 +12,12 @@ import de.lksbhm.mona.puzzle.representations.undirected.LeftRight;
 import de.lksbhm.mona.puzzle.representations.undirected.TopBottom;
 import de.lksbhm.mona.puzzle.representations.undirected.TopLeft;
 import de.lksbhm.mona.puzzle.representations.undirected.TopRight;
-import de.lksbhm.mona.puzzle.representations.undirected.UndirectedTileBoard;
 import de.lksbhm.mona.puzzle.representations.undirected.UndirectedEmpty;
 import de.lksbhm.mona.puzzle.representations.undirected.UndirectedTile;
+import de.lksbhm.mona.puzzle.representations.undirected.UndirectedTileBoard;
 
 public class LinkedTileBoard extends Board<LinkedTile> implements Disposable {
-	private static final Pool<LinkedTile> directedNodePool = new ReflectionPool<LinkedTile>(
+	static final Pool<LinkedTile> directedNodePool = new ReflectionPool<LinkedTile>(
 			LinkedTile.class);
 
 	private LinkedTile obtainNode(int x, int y) {
@@ -27,11 +27,17 @@ public class LinkedTileBoard extends Board<LinkedTile> implements Disposable {
 	}
 
 	public LinkedTileBoard(int width, int height) {
+		this(width, height, true);
+	}
+
+	private LinkedTileBoard(int width, int height, boolean initializeTiles) {
 		super(width, height, LinkedTile.class);
-		LinkedTile[][] nodes = getTiles();
-		for (int x = 0; x < width; x++) {
-			for (int y = 0; y < height; y++) {
-				nodes[x][y] = obtainNode(x, y);
+		if (initializeTiles) {
+			LinkedTile[][] nodes = getTiles();
+			for (int x = 0; x < width; x++) {
+				for (int y = 0; y < height; y++) {
+					nodes[x][y] = obtainNode(x, y);
+				}
 			}
 		}
 	}
@@ -68,7 +74,8 @@ public class LinkedTileBoard extends Board<LinkedTile> implements Disposable {
 	}
 
 	public UndirectedTileBoard toUndirected() {
-		UndirectedTileBoard result = new UndirectedTileBoard(getWidth(), getHeight());
+		UndirectedTileBoard result = new UndirectedTileBoard(getWidth(),
+				getHeight());
 		LinkedTile[][] directedNodes = getTiles();
 		UndirectedTile[][] undirectedNodes = result.getTiles();
 		int x;
@@ -188,5 +195,30 @@ public class LinkedTileBoard extends Board<LinkedTile> implements Disposable {
 				directedNodePool.free(node);
 			}
 		}
+	}
+
+	@Override
+	public LinkedTileBoard shallowCopy() {
+		LinkedTileBoard copy = (LinkedTileBoard) super.shallowCopy();
+		LinkedTile[][] tiles = getTiles();
+		LinkedTile[][] copyTiles = copy.getTiles();
+		int width = getWidth();
+		int height = getHeight();
+		LinkedTile currentTile;
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				currentTile = tiles[x][y];
+				copyTiles[x][y].setChild(copy.getTile(currentTile.getChild()
+						.getX(), currentTile.getChild().getY()));
+				copyTiles[x][y].setParent(copy.getTile(currentTile.getParent()
+						.getX(), currentTile.getParent().getY()));
+			}
+		}
+		return copy;
+	}
+
+	@Override
+	protected Board<LinkedTile> instantiate(int width, int height) {
+		return new LinkedTileBoard(width, height, false);
 	}
 }

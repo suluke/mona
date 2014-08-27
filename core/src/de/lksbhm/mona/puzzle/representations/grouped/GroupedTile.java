@@ -41,4 +41,15 @@ public class GroupedTile extends Tile<GroupedTile> {
 		this.type = type;
 	}
 
+	@Override
+	public GroupedTile copy() {
+		GroupedTile t = GroupedTileBoard.nodePool.obtain();
+		t.type = type;
+		return t;
+	}
+
+	@Override
+	public void dispose() {
+		GroupedTileBoard.nodePool.free(this);
+	}
 }

@@ -4,50 +4,50 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Pool;
 
 import de.lksbhm.mona.puzzle.representations.Board;
-import de.lksbhm.mona.puzzle.representations.grouped.TileGroupType;
 import de.lksbhm.mona.puzzle.representations.grouped.GroupedTile;
 import de.lksbhm.mona.puzzle.representations.grouped.GroupedTileBoard;
+import de.lksbhm.mona.puzzle.representations.grouped.TileGroupType;
 
 public class UndirectedTileBoard extends Board<UndirectedTile> implements
 		Disposable {
 
-	private static final Pool<UndirectedEmpty> emptyPool = new Pool<UndirectedEmpty>() {
+	static final Pool<UndirectedEmpty> emptyPool = new Pool<UndirectedEmpty>() {
 		@Override
 		protected UndirectedEmpty newObject() {
 			return new UndirectedEmpty();
 		}
 	};
-	private static final Pool<TopLeft> tlPool = new Pool<TopLeft>() {
+	static final Pool<TopLeft> tlPool = new Pool<TopLeft>() {
 		@Override
 		protected TopLeft newObject() {
 			return new TopLeft();
 		}
 	};
-	private static final Pool<TopRight> trPool = new Pool<TopRight>() {
+	static final Pool<TopRight> trPool = new Pool<TopRight>() {
 		@Override
 		protected TopRight newObject() {
 			return new TopRight();
 		}
 	};
-	private static final Pool<BottomLeft> blPool = new Pool<BottomLeft>() {
+	static final Pool<BottomLeft> blPool = new Pool<BottomLeft>() {
 		@Override
 		protected BottomLeft newObject() {
 			return new BottomLeft();
 		}
 	};
-	private static final Pool<BottomRight> brPool = new Pool<BottomRight>() {
+	static final Pool<BottomRight> brPool = new Pool<BottomRight>() {
 		@Override
 		protected BottomRight newObject() {
 			return new BottomRight();
 		}
 	};
-	private static final Pool<TopBottom> tbPool = new Pool<TopBottom>() {
+	static final Pool<TopBottom> tbPool = new Pool<TopBottom>() {
 		@Override
 		protected TopBottom newObject() {
 			return new TopBottom();
 		}
 	};
-	private static final Pool<LeftRight> lrPool = new Pool<LeftRight>() {
+	static final Pool<LeftRight> lrPool = new Pool<LeftRight>() {
 		@Override
 		protected LeftRight newObject() {
 			return new LeftRight();
@@ -249,5 +249,46 @@ public class UndirectedTileBoard extends Board<UndirectedTile> implements
 			}
 		}
 		return result;
+	}
+
+	@Override
+	protected Board<UndirectedTile> instantiate(int width, int height) {
+		return new UndirectedTileBoard(width, height);
+	}
+
+	@Override
+	public UndirectedTileBoard shallowCopyHorizontalFlipped() {
+		UndirectedTileBoard copy = (UndirectedTileBoard) super
+				.shallowCopyHorizontalFlipped();
+		int width = getWidth();
+		int height = getHeight();
+		UndirectedTile[][] tiles = copy.getTiles();
+		UndirectedTile current;
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				current = tiles[x][y];
+				tiles[x][y] = current.getHorizontalInverted();
+				current.dispose();
+			}
+		}
+		return copy;
+	}
+
+	@Override
+	public UndirectedTileBoard shallowCopyVerticalFlipped() {
+		UndirectedTileBoard copy = (UndirectedTileBoard) super
+				.shallowCopyHorizontalFlipped();
+		int width = getWidth();
+		int height = getHeight();
+		UndirectedTile[][] tiles = copy.getTiles();
+		UndirectedTile current;
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				current = tiles[x][y];
+				tiles[x][y] = current.getVerticalInverted();
+				current.dispose();
+			}
+		}
+		return copy;
 	}
 }

@@ -56,4 +56,56 @@ public abstract class Board<TileBaseType extends Tile<TileBaseType>> {
 	public void notifyOnChange() {
 
 	}
+
+	protected abstract Board<TileBaseType> instantiate(int width, int height);
+
+	/**
+	 * Shallow because it will only copy the nodes but not any additionally
+	 * added attributes. Subtypes may override this method to a)
+	 * 
+	 * @return
+	 */
+	public Board<TileBaseType> shallowCopy() {
+		Board<TileBaseType> copy = instantiate(width, height);
+		TileBaseType[][] tiles = copy.nodes;
+		TileBaseType previousTile;
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				previousTile = tiles[x][y];
+				if (previousTile != null) {
+					previousTile.dispose();
+				}
+				tiles[x][y] = this.nodes[x][y].copy();
+			}
+		}
+		return copy;
+	}
+
+	public Board<TileBaseType> shallowCopyHorizontalFlipped() {
+		Board<TileBaseType> copy = shallowCopy();
+		TileBaseType[][] tiles = copy.getTiles();
+		TileBaseType swap;
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height / 2; y++) {
+				swap = tiles[x][y];
+				tiles[x][y] = tiles[x][height - y - 1];
+				tiles[x][height - y - 1] = swap;
+			}
+		}
+		return copy;
+	}
+
+	public Board<TileBaseType> shallowCopyVerticalFlipped() {
+		Board<TileBaseType> copy = shallowCopy();
+		TileBaseType[][] tiles = copy.getTiles();
+		TileBaseType swap;
+		for (int x = 0; x < width / 2; x++) {
+			for (int y = 0; y < height; y++) {
+				swap = tiles[x][y];
+				tiles[x][y] = tiles[width - x - 1][y];
+				tiles[width - x - 1][y] = swap;
+			}
+		}
+		return copy;
+	}
 }

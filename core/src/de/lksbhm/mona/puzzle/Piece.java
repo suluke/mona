@@ -156,6 +156,20 @@ public class Piece extends Tile<Piece> {
 		return in.in.isNextTo(in.out) || out.in.isNextTo(out.out);
 	}
 
+	@Override
+	public Piece copy() {
+		Piece p = Puzzle.fieldPool.obtain();
+		p.in = in;
+		p.out = out;
+		p.type = type;
+		return p;
+	}
+
+	@Override
+	public void dispose() {
+		Puzzle.fieldPool.free(this);
+	}
+
 	/**
 	 * @param type
 	 *            the type to set

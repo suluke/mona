@@ -23,6 +23,10 @@ public abstract class UndirectedTile extends Tile<UndirectedTile> {
 
 	public abstract boolean isStraight();
 
+	public abstract UndirectedTile getHorizontalInverted();
+
+	public abstract UndirectedTile getVerticalInverted();
+
 	@Override
 	protected UndirectedTileBoard getBoard() {
 		return (UndirectedTileBoard) super.getBoard();

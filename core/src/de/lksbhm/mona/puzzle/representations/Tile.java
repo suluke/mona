@@ -2,7 +2,10 @@ package de.lksbhm.mona.puzzle.representations;
 
 import java.lang.reflect.Array;
 
-public abstract class Tile<TileBaseType extends Tile<TileBaseType>> {
+import com.badlogic.gdx.utils.Disposable;
+
+public abstract class Tile<TileBaseType extends Tile<TileBaseType>> implements
+		Disposable {
 	private int x, y;
 	private Board<TileBaseType> b;
 	private final Class<? extends TileBaseType> nodeBaseType;
@@ -137,4 +140,6 @@ public abstract class Tile<TileBaseType extends Tile<TileBaseType>> {
 	protected Board<TileBaseType> getBoard() {
 		return b;
 	}
+
+	public abstract TileBaseType copy();
 }

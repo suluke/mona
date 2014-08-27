@@ -38,4 +38,24 @@ public class LeftRight extends UndirectedTile {
 	public boolean isStraight() {
 		return true;
 	}
+
+	@Override
+	public LeftRight copy() {
+		return UndirectedTileBoard.lrPool.obtain();
+	}
+
+	@Override
+	public void dispose() {
+		UndirectedTileBoard.lrPool.free(this);
+	}
+
+	@Override
+	public LeftRight getHorizontalInverted() {
+		return UndirectedTileBoard.lrPool.obtain();
+	}
+
+	@Override
+	public LeftRight getVerticalInverted() {
+		return UndirectedTileBoard.lrPool.obtain();
+	}
 }

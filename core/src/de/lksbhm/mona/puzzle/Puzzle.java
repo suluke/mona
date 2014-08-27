@@ -12,21 +12,28 @@ import de.lksbhm.mona.puzzle.representations.Direction;
 import de.lksbhm.mona.puzzle.representations.undirected.UndirectedTileBoard;
 
 public class Puzzle extends Board<Piece> implements Disposable {
-	private static final Pool<Piece> fieldPool = new ReflectionPool<Piece>(
-			Piece.class);
+	static final Pool<Piece> fieldPool = new ReflectionPool<Piece>(Piece.class);
 	private final UndirectedTileBoard solution;
 	private final ArrayList<PuzzleChangedListener> listeners = new ArrayList<PuzzleChangedListener>();
 
 	public Puzzle(UndirectedTileBoard solution, int width, int height) {
+		this(solution, width, height, true);
+	}
+
+	private Puzzle(UndirectedTileBoard solution, int width, int height,
+			boolean initializeTiles) {
 		super(width, height, Piece.class);
 		this.solution = solution;
-		Piece f;
-		Piece[][] nodes = getTiles();
-		for (int x = 0; x < width; x++) {
-			for (int y = 0; y < height; y++) {
-				f = fieldPool.obtain();
-				nodes[x][y] = f;
-				f.setup(this, x, y, Type.EMPTY, Direction.NONE, Direction.NONE);
+		if (initializeTiles) {
+			Piece f;
+			Piece[][] nodes = getTiles();
+			for (int x = 0; x < width; x++) {
+				for (int y = 0; y < height; y++) {
+					f = fieldPool.obtain();
+					nodes[x][y] = f;
+					f.setup(this, x, y, Type.EMPTY, Direction.NONE,
+							Direction.NONE);
+				}
 			}
 		}
 	}
@@ -80,6 +87,42 @@ public class Puzzle extends Board<Piece> implements Disposable {
 		return sb.toString();
 	}
 
+	public boolean looksEqualTo(Puzzle other) {
+		int width = getWidth();
+		int height = getHeight();
+		if (other.getWidth() != width || other.getHeight() != height) {
+			return false;
+		}
+		Piece[][] tiles = getTiles();
+		Piece[][] otherTiles = other.getTiles();
+		Piece current;
+		Piece otherCurrent;
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				current = tiles[x][y];
+				otherCurrent = otherTiles[x][y];
+				if (current.getType() != otherCurrent.getType()) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	public boolean isSolved() {
+		Piece[][] tiles = getTiles();
+		int width = getWidth();
+		int height = getHeight();
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				if (!tiles[x][y].isValid()) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
 	@Override
 	public void notifyOnChange() {
 		for (PuzzleChangedListener listener : listeners) {
@@ -97,5 +140,62 @@ public class Puzzle extends Board<Piece> implements Disposable {
 
 	public void removeAllChangeListeners() {
 		listeners.clear();
+	}
+
+	@Override
+	protected Board<Piece> instantiate(int width, int height) {
+		return new Puzzle(null, getWidth(), getHeight(), false);
+	}
+
+	@Override
+	public Puzzle shallowCopyHorizontalFlipped() {
+		Puzzle copy = (Puzzle) super.shallowCopyHorizontalFlipped();
+		Piece[][] tiles = copy.getTiles();
+		int width = getWidth();
+		int height = getHeight();
+		Piece current;
+		Direction newIn;
+		Direction newOut;
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				current = tiles[x][y];
+				newIn = current.getInDirection();
+				newOut = current.getOutDirection();
+				if (newIn == Direction.LEFT || newIn == Direction.RIGHT) {
+					newIn = newIn.getOpposite();
+				}
+				if (newOut == Direction.LEFT || newOut == Direction.RIGHT) {
+					newOut = newOut.getOpposite();
+				}
+				current.setInOutDirection(newIn, newOut);
+			}
+		}
+		return copy;
+	}
+
+	@Override
+	public Puzzle shallowCopyVerticalFlipped() {
+		Puzzle copy = (Puzzle) super.shallowCopyHorizontalFlipped();
+		Piece[][] tiles = copy.getTiles();
+		int width = getWidth();
+		int height = getHeight();
+		Piece current;
+		Direction newIn;
+		Direction newOut;
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				current = tiles[x][y];
+				newIn = current.getInDirection();
+				newOut = current.getOutDirection();
+				if (newIn == Direction.UP || newIn == Direction.DOWN) {
+					newIn = newIn.getOpposite();
+				}
+				if (newOut == Direction.UP || newOut == Direction.DOWN) {
+					newOut = newOut.getOpposite();
+				}
+				current.setInOutDirection(newIn, newOut);
+			}
+		}
+		return copy;
 	}
 }

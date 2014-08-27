@@ -39,4 +39,23 @@ public class TopRight extends UndirectedTile {
 		return false;
 	}
 
+	@Override
+	public TopRight copy() {
+		return UndirectedTileBoard.trPool.obtain();
+	}
+
+	@Override
+	public void dispose() {
+		UndirectedTileBoard.trPool.free(this);
+	}
+
+	@Override
+	public TopLeft getHorizontalInverted() {
+		return UndirectedTileBoard.tlPool.obtain();
+	}
+
+	@Override
+	public BottomRight getVerticalInverted() {
+		return UndirectedTileBoard.brPool.obtain();
+	}
 }
