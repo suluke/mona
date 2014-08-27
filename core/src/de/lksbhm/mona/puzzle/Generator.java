@@ -2,8 +2,6 @@ package de.lksbhm.mona.puzzle;
 
 import java.util.Random;
 
-import com.badlogic.gdx.math.RandomXS128;
-
 import de.lksbhm.mona.puzzle.representations.grouped.GroupedTile;
 import de.lksbhm.mona.puzzle.representations.grouped.GroupedTileBoard;
 import de.lksbhm.mona.puzzle.representations.grouped.TileGroupType;
@@ -50,13 +48,5 @@ public class Generator {
 			}
 		}
 		groupedBoard.dispose();
-	}
-
-	public static void main(String[] args) {
-		// good example seeds: (1,2)
-		Puzzle p = generate(10, 10, new RandomXS128(1, 2), 1.0f, 1.0f);
-		System.out.println(p);
-		System.out.println("---------------------------");
-		System.out.println(p.getSolution());
 	}
 }

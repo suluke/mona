@@ -36,8 +36,6 @@ public class PuzzleActor extends Widget {
 			for (Piece[] array : tiles) {
 				for (Piece tile : array) {
 					if (!tile.isValid()) {
-						System.out.println("Invalid at " + tile.getX() + ", "
-								+ tile.getY());
 						InvalidMarker marker = new InvalidMarker();
 						marker.setStyle(markerStyle);
 						marker.setMid(
