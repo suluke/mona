@@ -257,8 +257,6 @@ public class PuzzleActor extends Widget {
 	}
 
 	private void drawType(Batch batch, Piece tile) {
-		int x = tile.getX();
-		int y = tile.getY();
 		float tileX = PuzzleActorCoordinateHelper.getTileOriginX(this, tile);
 		float tileY = PuzzleActorCoordinateHelper.getTileOriginY(this, tile);
 		switch (tile.getType()) {
