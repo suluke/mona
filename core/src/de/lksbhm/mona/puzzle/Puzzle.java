@@ -18,6 +18,8 @@ public class Puzzle extends Board<Piece> implements Disposable {
 	static final Pool<Piece> fieldPool = new ReflectionPool<Piece>(Piece.class);
 	private final UndirectedTileBoard solution;
 	private final ArrayList<PuzzleChangedListener> listeners = new ArrayList<PuzzleChangedListener>();
+	private final HashSet<Piece> circleRoots = new HashSet<Piece>();
+	private final boolean[][] isInvalid = new boolean[getWidth()][getHeight()];
 
 	public Puzzle(UndirectedTileBoard solution, int width, int height) {
 		this(solution, width, height, true);
@@ -123,6 +125,50 @@ public class Puzzle extends Board<Piece> implements Disposable {
 				}
 			}
 		}
+		return isAllConnectedInOneCircle();
+	}
+
+	private boolean isAllConnectedInOneCircle() {
+		resetIsValidArray();
+		// find a tile that is not empty
+		Piece root = null;
+		for (Piece tile : this) {
+			if (tile.getType() != Type.EMPTY) {
+				root = tile;
+				break;
+			}
+		}
+		if (root == null) {
+			// very strange
+			return true;
+		}
+		Piece current = root;
+		Piece previous = null;
+		Piece adjacent;
+		// mark all in circle, starting from our root
+		do {
+			adjacent = current.getInAdjacent();
+			if (previous == adjacent && previous != null) {
+				adjacent = current.getOutAdjacent();
+			}
+			previous = current;
+			current = adjacent;
+			if (current == null) {
+				return false;
+			}
+			if (!previous.isConnectedWith(current)) {
+				return false;
+			}
+			isInvalid[current.getX()][current.getY()] = true;
+		} while (current != root);
+		// iterate through all and see if there is a non-empty still not marked
+		for (Piece tile : this) {
+			if (tile.getType() != Type.EMPTY) {
+				if (!isInvalid[tile.getX()][tile.getY()]) {
+					return false;
+				}
+			}
+		}
 		return true;
 	}
 
@@ -202,17 +248,8 @@ public class Puzzle extends Board<Piece> implements Disposable {
 		return copy;
 	}
 
-	private final HashSet<Piece> circleRoots = new HashSet<Piece>();
-	private final boolean[][] isInvalid = new boolean[getWidth()][getHeight()];
-
 	public void updateInvalidListTiles(LinkedList<Piece> list) {
-		int width = getWidth();
-		int height = getHeight();
-		for (int x = 0; x < width; x++) {
-			for (int y = 0; y < height; y++) {
-				isInvalid[x][y] = false;
-			}
-		}
+		resetIsValidArray();
 
 		Iterator<Piece> previouslyInvalid = list.iterator();
 		Piece current;
@@ -256,6 +293,23 @@ public class Puzzle extends Board<Piece> implements Disposable {
 		}
 	}
 
+	private void resetIsValidArray() {
+		int width = getWidth();
+		int height = getHeight();
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				isInvalid[x][y] = false;
+			}
+		}
+	}
+
+	/**
+	 * Very unsafe method. Only use if you know that tile is in a circle. Better
+	 * don't use it and have it only for updateInvalidListTiles
+	 * 
+	 * @param tile
+	 * @param list
+	 */
 	private void addInvalidCircleToList(Piece tile, LinkedList<Piece> list) {
 		Piece current = tile;
 		Piece previous = null;
@@ -278,7 +332,7 @@ public class Puzzle extends Board<Piece> implements Disposable {
 		Piece current = tile;
 		Piece previous = null;
 		Piece adjacent;
-		while (true) {
+		do {
 			adjacent = current.getInAdjacent();
 			if (previous == adjacent && previous != null) {
 				adjacent = current.getOutAdjacent();
@@ -288,16 +342,13 @@ public class Puzzle extends Board<Piece> implements Disposable {
 			if (current == null) {
 				return false;
 			}
-			if (current == tile) {
-				break;
-			}
 			if (circleRoots.contains(current)) {
 				return false;
 			}
 			if (!previous.isConnectedWith(current)) {
 				return false;
 			}
-		}
+		} while (current != tile);
 		circleRoots.add(tile);
 		return true;
 	}

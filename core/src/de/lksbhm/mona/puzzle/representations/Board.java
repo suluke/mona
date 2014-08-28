@@ -1,8 +1,12 @@
 package de.lksbhm.mona.puzzle.representations;
 
 import java.lang.reflect.Array;
+import java.util.Iterator;
 
-public abstract class Board<TileBaseType extends Tile<TileBaseType>> {
+import com.badlogic.gdx.utils.Disposable;
+
+public abstract class Board<TileBaseType extends Tile<TileBaseType>> implements
+		Iterable<TileBaseType>, Disposable {
 	private final TileBaseType[][] nodes;
 	private final int width;
 	private final int height;
@@ -12,6 +16,9 @@ public abstract class Board<TileBaseType extends Tile<TileBaseType>> {
 			Class<? extends TileBaseType> nodeBaseType) {
 		nodes = (TileBaseType[][]) Array.newInstance(nodeBaseType, width,
 				height);
+		if (width == 0 || height == 0) {
+			throw new RuntimeException();
+		}
 		this.width = width;
 		this.height = height;
 	}
@@ -107,5 +114,44 @@ public abstract class Board<TileBaseType extends Tile<TileBaseType>> {
 			}
 		}
 		return copy;
+	}
+
+	@Override
+	public void dispose() {
+		for (TileBaseType tile : this) {
+			tile.dispose();
+		}
+	}
+
+	@Override
+	public Iterator<TileBaseType> iterator() {
+		return new Iterator<TileBaseType>() {
+			private int x = 0;
+			private int y = 0;
+
+			@Override
+			public boolean hasNext() {
+				return y < height;
+			}
+
+			@Override
+			public TileBaseType next() {
+				if (!hasNext()) {
+					throw new IndexOutOfBoundsException();
+				}
+				TileBaseType tile = nodes[x][y];
+				x++;
+				if (x == width) {
+					y++;
+					x = 0;
+				}
+				return tile;
+			}
+
+			@Override
+			public void remove() {
+				throw new UnsupportedOperationException();
+			}
+		};
 	}
 }
