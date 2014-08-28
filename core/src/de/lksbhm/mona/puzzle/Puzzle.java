@@ -1,6 +1,9 @@
 package de.lksbhm.mona.puzzle;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Pool;
@@ -197,5 +200,105 @@ public class Puzzle extends Board<Piece> implements Disposable {
 			}
 		}
 		return copy;
+	}
+
+	private final HashSet<Piece> circleRoots = new HashSet<Piece>();
+	private final boolean[][] isInvalid = new boolean[getWidth()][getHeight()];
+
+	public void updateInvalidListTiles(LinkedList<Piece> list) {
+		int width = getWidth();
+		int height = getHeight();
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				isInvalid[x][y] = false;
+			}
+		}
+
+		Iterator<Piece> previouslyInvalid = list.iterator();
+		Piece current;
+		while (previouslyInvalid.hasNext()) {
+			current = previouslyInvalid.next();
+			if (current.isValid()) {
+				previouslyInvalid.remove();
+			} else {
+				isInvalid[current.getX()][current.getY()] = true;
+			}
+		}
+		Piece[][] tiles = getTiles();
+		for (Piece[] array : tiles) {
+			for (Piece tile : array) {
+				if (!tile.isValid()) {
+					if (!isInvalid[tile.getX()][tile.getY()]) {
+						list.add(tile);
+					}
+				}
+			}
+		}
+		circleRoots.clear();
+		boolean isNewCircle;
+		Piece firstCircle = null; // stupid compiler needs initialization...
+		for (Piece[] array : tiles) {
+			for (Piece tile : array) {
+				if (tile.isValid() && tile.getType() != Type.EMPTY) {
+					isNewCircle = isNewCircle(tile);
+					if (isNewCircle) {
+						if (circleRoots.size() == 1) {
+							firstCircle = tile;
+						} else {
+							if (circleRoots.size() == 2) {
+								addInvalidCircleToList(firstCircle, list);
+							}
+							addInvalidCircleToList(tile, list);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	private void addInvalidCircleToList(Piece tile, LinkedList<Piece> list) {
+		Piece current = tile;
+		Piece previous = null;
+		Piece adjacent;
+		do {
+			adjacent = current.getInAdjacent();
+			if (previous == adjacent && previous != null) {
+				adjacent = current.getOutAdjacent();
+			}
+			previous = current;
+			current = adjacent;
+			if (!isInvalid[current.getX()][current.getY()]) {
+				isInvalid[current.getX()][current.getY()] = true;
+				list.add(current);
+			}
+		} while (current != tile);
+	}
+
+	private boolean isNewCircle(Piece tile) {
+		Piece current = tile;
+		Piece previous = null;
+		Piece adjacent;
+		while (true) {
+			adjacent = current.getInAdjacent();
+			if (previous == adjacent && previous != null) {
+				adjacent = current.getOutAdjacent();
+			}
+			previous = current;
+			current = adjacent;
+			if (current == null) {
+				return false;
+			}
+			if (current == tile) {
+				break;
+			}
+			if (circleRoots.contains(current)) {
+				return false;
+			}
+			if (!previous.isConnectedWith(current)) {
+				return false;
+			}
+		}
+		circleRoots.add(tile);
+		return true;
 	}
 }

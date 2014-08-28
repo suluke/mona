@@ -1,6 +1,6 @@
 package de.lksbhm.mona.ui.actors;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -27,27 +27,22 @@ public class PuzzleActor extends Widget {
 	private final boolean invertY = false; // false means, origin is down left
 	private final PuzzleActorInput inputListener = new PuzzleActorInput(this);
 	private final InvalidMarkerStyle markerStyle = new InvalidMarkerStyle();
-	private final ArrayList<InvalidMarker> markers = new ArrayList<InvalidMarker>();
+	private final LinkedList<InvalidMarker> markers = new LinkedList<InvalidMarker>();
+	protected LinkedList<Piece> invalidTiles = new LinkedList<Piece>();
 	private final PuzzleChangedListener changeListener = new PuzzleChangedListener() {
 		@Override
 		public void onChange() {
+			puzzle.updateInvalidListTiles(invalidTiles);
 			markers.clear();
-			Piece[][] tiles = puzzle.getTiles();
-			for (Piece[] array : tiles) {
-				for (Piece tile : array) {
-					if (!tile.isValid()) {
-						InvalidMarker marker = new InvalidMarker();
-						marker.setStyle(markerStyle);
-						marker.setMid(
-								PuzzleActorCoordinateHelper.getTileOriginX(
-										PuzzleActor.this, tile) + cellWidth / 2,
-								PuzzleActorCoordinateHelper.getTileOriginY(
-										PuzzleActor.this, tile)
-										+ cellHeight
-										/ 2);
-						markers.add(marker);
-					}
-				}
+			for (Piece tile : invalidTiles) {
+				InvalidMarker marker = new InvalidMarker();
+				marker.setStyle(markerStyle);
+				marker.setMid(
+						PuzzleActorCoordinateHelper.getTileOriginX(
+								PuzzleActor.this, tile) + cellWidth / 2,
+						PuzzleActorCoordinateHelper.getTileOriginY(
+								PuzzleActor.this, tile) + cellHeight / 2);
+				markers.add(marker);
 			}
 		}
 	};
