@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Widget;
+import com.badlogic.gdx.utils.Pool;
 
 import de.lksbhm.mona.puzzle.Piece;
 import de.lksbhm.mona.puzzle.Puzzle;
@@ -27,15 +28,32 @@ public class PuzzleActor extends Widget {
 	private final boolean invertY = false; // false means, origin is down left
 	private final PuzzleActorInput inputListener = new PuzzleActorInput(this);
 	private final InvalidMarkerStyle markerStyle = new InvalidMarkerStyle();
+	private final Pool<InvalidMarker> markerPool = new Pool<InvalidMarker>() {
+		@Override
+		protected InvalidMarker newObject() {
+			InvalidMarker marker = new InvalidMarker();
+			marker.setStyle(markerStyle);
+			return marker;
+		}
+
+		@Override
+		public void free(InvalidMarker object) {
+			super.free(object);
+			object.reset();
+		};
+	};
 	private final LinkedList<InvalidMarker> markers = new LinkedList<InvalidMarker>();
 	protected LinkedList<Piece> invalidTiles = new LinkedList<Piece>();
 	private final PuzzleChangedListener changeListener = new PuzzleChangedListener() {
 		@Override
 		public void onChange() {
 			puzzle.updateInvalidListTiles(invalidTiles);
+			for (InvalidMarker marker : markers) {
+				markerPool.free(marker);
+			}
 			markers.clear();
 			for (Piece tile : invalidTiles) {
-				InvalidMarker marker = new InvalidMarker();
+				InvalidMarker marker = markerPool.obtain();
 				marker.setStyle(markerStyle);
 				marker.setMid(
 						PuzzleActorCoordinateHelper.getTileOriginX(
@@ -43,6 +61,9 @@ public class PuzzleActor extends Widget {
 						PuzzleActorCoordinateHelper.getTileOriginY(
 								PuzzleActor.this, tile) + cellHeight / 2);
 				markers.add(marker);
+			}
+			if (puzzle.isSolved()) {
+				System.out.println("Solved!");
 			}
 		}
 	};
@@ -409,14 +430,13 @@ public class PuzzleActor extends Widget {
 		cellWidth = usableWidth / puzzle.getWidth();
 		cellHeight = usableHeight / puzzle.getHeight();
 
-		paddingWidth = style.tilePaddingX * cellWidth * (puzzle.getWidth() - 1);
+		paddingWidth = style.tilePaddingX * cellWidth * (puzzle.getWidth() - 1)
+				/ puzzle.getWidth();
 		paddingHeight = style.tilePaddingY * cellHeight
-				* (puzzle.getHeight() - 1);
+				* (puzzle.getHeight() - 1) / puzzle.getHeight();
 
-		usableWidth -= paddingWidth;
-		usableHeight -= paddingHeight;
-		cellWidth = usableWidth / puzzle.getWidth();
-		cellHeight = usableHeight / puzzle.getHeight();
+		cellWidth -= paddingWidth;
+		cellHeight -= paddingHeight;
 
 		if (style.forceSquareTiles) {
 			if (cellWidth > cellHeight) {

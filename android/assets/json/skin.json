@@ -13,7 +13,7 @@
 		play: { down: "widgets/button-dark/down", up: "widgets/button-dark/up", disabled: "widgets/button-dark/disabled", font: default-font, fontColor: black }
 	},
 	de.lksbhm.mona.ui.actors.PuzzleActorStyle: {
-		default: { edge: "widgets/puzzle-actor/edge", straight: "widgets/puzzle-actor/straight", connectorHorizontal: "colors/palette1/01", connectorVertical: "colors/palette1/01", innerTile: "widgets/puzzle-actor/tile" }
+		default: { tilePaddingY: 0.20, edge: "widgets/puzzle-actor/edge", straight: "widgets/puzzle-actor/straight", connectorHorizontal: "colors/palette1/01", connectorVertical: "colors/palette1/01", innerTile: "widgets/puzzle-actor/tile" }
 	},
 	de.lksbhm.mona.ui.actors.InvalidMarker$InvalidMarkerStyle: {
 		default: { texture: "colors/palette1/04" }

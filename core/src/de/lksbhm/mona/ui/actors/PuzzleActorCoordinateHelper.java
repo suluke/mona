@@ -8,7 +8,6 @@ class PuzzleActorCoordinateHelper {
 	}
 
 	public static Piece coordsToTile(PuzzleActor actor, float x, float y) {
-
 		float cellWidth = actor.getCellWidth();
 		float cellHeight = actor.getCellHeight();
 		Puzzle p = actor.getPuzzle();
@@ -29,6 +28,37 @@ class PuzzleActorCoordinateHelper {
 		}
 
 		if (x > cellWidth || y > cellHeight) {
+			return null;
+		}
+		return actor.getPuzzle().getTile(tileX, tileY);
+	}
+
+	public static Piece coordsToTileIncludingPadding(PuzzleActor actor,
+			float x, float y) {
+		float cellWidth = actor.getCellWidth();
+		float cellHeight = actor.getCellHeight();
+		float paddingWidth = actor.getPaddingWidth();
+		float paddingHeight = actor.getPaddingHeight();
+		Puzzle p = actor.getPuzzle();
+
+		x -= actor.getMarginLeft();
+		x += paddingWidth / 2;
+		int tileX = (int) (x / (cellWidth + paddingWidth));
+		x %= cellWidth + paddingWidth;
+
+		if (!actor.isInvertY()) {
+			y = actor.getHeight() - y;
+		}
+		y -= actor.getMarginTop();
+		y += paddingHeight / 2;
+		int tileY = (int) (y / (cellHeight + paddingHeight));
+		y %= cellHeight + paddingHeight;
+		if (tileX < 0 || tileX >= p.getWidth() || tileY < 0
+				|| tileY >= p.getHeight()) {
+			return null;
+		}
+
+		if (x > cellWidth + paddingWidth || y > cellHeight + paddingHeight) {
 			return null;
 		}
 		return actor.getPuzzle().getTile(tileX, tileY);

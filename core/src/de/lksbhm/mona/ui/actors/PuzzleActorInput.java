@@ -30,13 +30,19 @@ class PuzzleActorInput implements EventListener {
 
 	private class DragListener extends
 			com.badlogic.gdx.scenes.scene2d.utils.DragListener {
+
 		private Piece startPiece;
 		private boolean preventDisconnect = false;
 		private Piece lastConnected;
 
+		public DragListener() {
+			this.setTapSquareSize(2);
+		}
+
 		@Override
 		public void dragStart(InputEvent event, float x, float y, int pointer) {
-			startPiece = PuzzleActorCoordinateHelper.coordsToTile(actor, x, y);
+			startPiece = PuzzleActorCoordinateHelper
+					.coordsToTileIncludingPadding(actor, x, y);
 		}
 
 		@Override
@@ -44,8 +50,8 @@ class PuzzleActorInput implements EventListener {
 			if (startPiece == null) {
 				return;
 			}
-			Piece currentPiece = PuzzleActorCoordinateHelper.coordsToTile(
-					actor, x, y);
+			Piece currentPiece = PuzzleActorCoordinateHelper
+					.coordsToTileIncludingPadding(actor, x, y);
 			if (currentPiece != null && currentPiece != startPiece
 					&& currentPiece.isNeighborOf(startPiece)) {
 				// allow disconnect if going backwards
@@ -86,8 +92,8 @@ class PuzzleActorInput implements EventListener {
 		@Override
 		public void clicked(InputEvent event, float x, float y) {
 			if (!dragListener.isDragging()) {
-				Piece clicked = PuzzleActorCoordinateHelper.coordsToTile(actor,
-						x, y);
+				Piece clicked = PuzzleActorCoordinateHelper
+						.coordsToTileIncludingPadding(actor, x, y);
 				if (clicked != null) {
 					clicked.setInOutDirection(Direction.NONE, Direction.NONE);
 				}

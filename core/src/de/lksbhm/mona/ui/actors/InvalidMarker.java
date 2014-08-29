@@ -10,8 +10,11 @@ public class InvalidMarker {
 	private InvalidMarkerStyle style;
 	private float midX;
 	private float midY;
-	private float currentWidth = 0;
 	private float timePassed = 0;
+
+	public void reset() {
+		timePassed = 0;
+	}
 
 	public void setStyle(InvalidMarkerStyle style) {
 		this.style = style;
@@ -38,7 +41,7 @@ public class InvalidMarker {
 		}
 		float interpolation = style.interpolation.apply(timePassed
 				/ style.expandTime);
-		currentWidth = style.maxWidth * interpolation;
+		float currentWidth = style.maxWidth * interpolation;
 		float currentHeight = currentWidth * style.aspectRatio;
 		float currentAlpha = style.alpha;
 		if (style.alphaFade != null) {
