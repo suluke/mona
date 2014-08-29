@@ -15,21 +15,16 @@ task copyUnpackedTextures(type: Copy) {
 	into '../android/assets/textures'
 	include "*.*"
 }
+processResources.dependsOn copyUnpackedTextures
 
 import de.lksbhm.gradle.TexturePackerTask
-def atlasDirs = [];
-new File('core/textures/atlasses').eachFile() { file-> 
+new File('core/textures/atlasses').eachFile() { file ->
 	if(file.isDirectory()) {
-		atlasDirs.push(file)
+		def task = tasks.create(name: 'texturepack-' + file.name, type: TexturePackerTask) {
+			inputDir = file
+			outputDir = project.file('../android/assets/textures')
+			packName = file.name
+		}
+		processResources.dependsOn task
 	}
 }
-atlasDirs.each { file ->
-	def task = tasks.create(name: 'texturepack-' + file.name, type: TexturePackerTask) {
-		inputDir = file
-		outputDir = project.file("../android/assets/textures")
-		packName = file.name
-	}
-	processResources.dependsOn task
-}
-
-processResources.dependsOn copyUnpackedTextures

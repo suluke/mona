@@ -10,6 +10,7 @@ import org.gradle.api.tasks.incremental.IncrementalTaskInputs
 import com.badlogic.gdx.tools.texturepacker.TexturePacker
 
 class TexturePackerTask extends DefaultTask {
+
 	@Optional
 	@Input
 	String packName = "pack"
