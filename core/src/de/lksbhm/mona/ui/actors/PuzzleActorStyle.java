@@ -23,6 +23,7 @@ class PuzzleActorStyle {
 	public float bottomRightTileMidOffsetY = 0;
 	public float tilePaddingX = 0; // 0.1 = 10 percent relative to tile size
 	public float tilePaddingY = 0; // 0.1 = 10 percent relative to tile size
+	public boolean forceEqualPadding = true;
 	public float outerMarginLeft = 0.05f; // 0.1 = 10 percent relative to
 											// actor
 											// size
@@ -86,6 +87,7 @@ class PuzzleActorStyle {
 		bottomRightTileMidOffsetY = style.bottomRightTileMidOffsetY;
 		tilePaddingX = style.tilePaddingX;
 		tilePaddingY = style.tilePaddingY;
+		forceEqualPadding = style.forceEqualPadding;
 		outerMarginTop = style.outerMarginTop;
 		outerMarginBottom = style.outerMarginBottom;
 		outerMarginLeft = style.outerMarginLeft;

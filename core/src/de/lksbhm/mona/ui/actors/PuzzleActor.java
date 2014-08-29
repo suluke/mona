@@ -420,6 +420,8 @@ public class PuzzleActor extends Widget {
 		style.validate();
 		float width = getWidth();
 		float height = getHeight();
+		float puzzleWidth = puzzle.getWidth();
+		float puzzleHeight = puzzle.getHeight();
 
 		float usableWidth = (1 - style.outerMarginLeft - style.outerMarginRight)
 				* width;
@@ -427,13 +429,13 @@ public class PuzzleActor extends Widget {
 				* height;
 		marginLeft = width * style.outerMarginLeft;
 		marginTop = height * style.outerMarginTop;
-		cellWidth = usableWidth / puzzle.getWidth();
-		cellHeight = usableHeight / puzzle.getHeight();
+		cellWidth = usableWidth / puzzleWidth;
+		cellHeight = usableHeight / puzzleHeight;
 
-		paddingWidth = style.tilePaddingX * cellWidth * (puzzle.getWidth() - 1)
-				/ puzzle.getWidth();
-		paddingHeight = style.tilePaddingY * cellHeight
-				* (puzzle.getHeight() - 1) / puzzle.getHeight();
+		paddingWidth = style.tilePaddingX * cellWidth * (puzzleWidth - 1)
+				/ puzzleWidth;
+		paddingHeight = style.tilePaddingY * cellHeight * (puzzleHeight - 1)
+				/ puzzleHeight;
 
 		cellWidth -= paddingWidth;
 		cellHeight -= paddingHeight;
@@ -442,16 +444,26 @@ public class PuzzleActor extends Widget {
 			if (cellWidth > cellHeight) {
 				float diff = cellWidth - cellHeight;
 				cellWidth -= diff;
-				diff *= puzzle.getWidth();
-				diff /= puzzle.getWidth() - 1;
+				diff *= puzzleWidth;
+				diff /= puzzleWidth - 1;
 				paddingWidth += diff;
 			} else {
 				float diff = cellHeight - cellWidth;
 				cellHeight -= diff;
-				diff *= puzzle.getHeight();
-				diff /= puzzle.getHeight() - 1;
+				diff *= puzzleHeight;
+				diff /= puzzleHeight - 1;
 				paddingHeight += diff;
 			}
+		}
+		if (style.forceEqualPadding) {
+			paddingWidth = paddingHeight = Math
+					.min(paddingWidth, paddingHeight);
+		}
+		if (style.forceCenter) {
+			marginTop = (height - paddingHeight * (puzzleHeight - 1) - cellHeight
+					* puzzleHeight) / 2;
+			marginLeft = (width - paddingWidth * (puzzleWidth - 1) - cellWidth
+					* puzzleWidth) / 2;
 		}
 		lineWidth = Math.min(cellWidth, cellHeight) * style.connectorWidth;
 	}
