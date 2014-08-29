@@ -114,6 +114,8 @@ public abstract class LksBhmGame extends Game {
 		return false;
 	}
 
+	public abstract Settings getSettings();
+
 	public abstract void animateAssetManagerLoad(AssetManager manager,
 			Class<? extends ResourceConsumer> requester);
 }

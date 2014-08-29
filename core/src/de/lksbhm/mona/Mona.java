@@ -15,6 +15,7 @@ public class Mona extends LksBhmGame {
 
 	private LoadingScreen loadingScreen;
 	private MainMenuScreen mainMenuScreen;
+	private final Settings settings = new Settings();
 
 	@Override
 	protected void initialize() {
@@ -67,5 +68,10 @@ public class Mona extends LksBhmGame {
 	@Override
 	public boolean isDebug() {
 		return false;
+	}
+
+	@Override
+	public Settings getSettings() {
+		return settings;
 	}
 }
