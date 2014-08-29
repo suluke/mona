@@ -2,6 +2,9 @@ package de.lksbhm.mona.puzzle;
 
 import java.util.Random;
 
+import de.lksbhm.gdx.LksBhmGame;
+import de.lksbhm.mona.Settings;
+import de.lksbhm.mona.levels.Difficulty;
 import de.lksbhm.mona.puzzle.representations.grouped.GroupedTile;
 import de.lksbhm.mona.puzzle.representations.grouped.GroupedTileBoard;
 import de.lksbhm.mona.puzzle.representations.grouped.TileGroupType;
@@ -12,6 +15,32 @@ import de.lksbhm.mona.puzzle.representations.undirected.UndirectedTileBoard;
 public class Generator {
 	private Generator() {
 
+	}
+
+	public static Puzzle generate(float straightStoneProbability,
+			float edgeStoneProbability) {
+		return generate(new Random(), straightStoneProbability,
+				edgeStoneProbability);
+	}
+
+	public static Puzzle generate(Random random,
+			float straightStoneProbability, float edgeStoneProbability) {
+		Difficulty d = Difficulty.fromNumber(random.nextInt(5));
+		return generate(d, random, straightStoneProbability,
+				edgeStoneProbability);
+	}
+
+	public static Puzzle generate(Difficulty d, Random random,
+			float straightStoneProbability, float edgeStoneProbability) {
+		Settings settings = (Settings) LksBhmGame.getGame().getSettings();
+		int minWidth = settings.getMinPuzzleWidthForDifficulty(d);
+		int maxWidth = settings.getMaxPuzzleWidthForDifficulty(d);
+		int width = minWidth + random.nextInt(maxWidth - minWidth + 1);
+		int minHeight = settings.getMinPuzzleHeightForDifficulty(d);
+		int maxHeight = settings.getMaxPuzzleHeightForDifficulty(d);
+		int height = minHeight + random.nextInt(maxHeight - minHeight + 1);
+		return generate(width, height, random, straightStoneProbability,
+				edgeStoneProbability);
 	}
 
 	public static Puzzle generate(int width, int height, Random random,
