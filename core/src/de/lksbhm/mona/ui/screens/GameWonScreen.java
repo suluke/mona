@@ -2,9 +2,10 @@ package de.lksbhm.mona.ui.screens;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -15,7 +16,7 @@ import de.lksbhm.gdx.ui.screens.transitions.SlideInRight;
 
 public class GameWonScreen extends AbstractScreen {
 
-	private TextField youWonLabel;
+	private Label youWonLabel;
 	private TextButton nextButton;
 
 	public GameWonScreen() {
@@ -23,8 +24,9 @@ public class GameWonScreen extends AbstractScreen {
 	}
 
 	private void setupWidgets() {
-		youWonLabel = new TextField("You   won!", LksBhmGame.getGame()
+		youWonLabel = new Label("puzzle  solved", LksBhmGame.getGame()
 				.getDefaultSkin(), "won");
+		youWonLabel.setAlignment(Align.center);
 		nextButton = new TextButton("next", LksBhmGame.getGame()
 				.getDefaultSkin(), "play");
 		nextButton.addListener(new ClickListener() {

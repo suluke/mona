@@ -178,10 +178,12 @@ public class Piece extends Tile<Piece> {
 	}
 
 	private boolean validateStraight(Piece in, Piece out) {
-		if (this.in.isNextTo(this.out)) {
+		if (this.in.isOrthogonalTo(this.out)) {
 			return false;
 		}
-		return in.in.isNextTo(in.out) || out.in.isNextTo(out.out);
+		return (in.in.isOrthogonalTo(in.out) && !out.in.isOrthogonalTo(out.out))
+				|| !(in.in.isOrthogonalTo(in.out) && out.in
+						.isOrthogonalTo(out.out));
 	}
 
 	@Override

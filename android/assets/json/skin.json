@@ -12,7 +12,7 @@
 	com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 		play: { down: "widgets/button-dark/down", up: "widgets/button-dark/up", disabled: "widgets/button-dark/disabled", font: default-font, fontColor: black }
 	},
-	com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
+	com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 		won: { font: default-font, fontColor: black }
 	},
 	de.lksbhm.mona.ui.actors.PuzzleActorStyle: {

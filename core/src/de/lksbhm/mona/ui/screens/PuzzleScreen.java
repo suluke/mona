@@ -19,6 +19,8 @@ public class PuzzleScreen extends AbstractScreen {
 		@Override
 		public void onChange() {
 			if (state.p.isSolved()) {
+				state.p.dispose();
+				state.p = null;
 				Router router = LksBhmGame.getGame().getRouter();
 				SlideInRight slide = new SlideInRight();
 				InterpolateClearColor blendColors = new InterpolateClearColor();

@@ -62,9 +62,6 @@ public class PuzzleActor extends Widget {
 								PuzzleActor.this, tile) + cellHeight / 2);
 				markers.add(marker);
 			}
-			if (puzzle.isSolved()) {
-				System.out.println("Solved!");
-			}
 		}
 	};
 

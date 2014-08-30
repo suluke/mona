@@ -16,7 +16,7 @@ public enum Direction {
 		return d == this.getOpposite();
 	}
 
-	public boolean isNextTo(Direction d) {
+	public boolean isOrthogonalTo(Direction d) {
 		if (this == NONE || d == NONE) {
 			return true;
 		}
