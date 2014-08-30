@@ -3,14 +3,15 @@ package de.lksbhm.gdx;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Pool;
 
-import de.lksbhm.gdx.ui.screens.ResettableConsumerScreen;
+import de.lksbhm.gdx.ui.screens.TransitionableResettableConsumerScreen;
+import de.lksbhm.gdx.ui.screens.transitions.Transition;
 import de.lksbhm.gdx.util.CircularBuffer;
 import de.lksbhm.gdx.util.Pair;
 
 public class Router {
 
 	private final LksBhmGame game;
-	private final CircularBuffer<Pair<ResettableConsumerScreen, Object>> history;
+	private final CircularBuffer<Pair<TransitionableResettableConsumerScreen, Object>> history;
 	@SuppressWarnings("rawtypes")
 	private final Pool<Pair> pairPool;
 
@@ -21,12 +22,12 @@ public class Router {
 	@SuppressWarnings("rawtypes")
 	public Router(LksBhmGame game, int historySize) {
 		this.game = game;
-		history = new CircularBuffer<Pair<ResettableConsumerScreen, Object>>(
+		history = new CircularBuffer<Pair<TransitionableResettableConsumerScreen, Object>>(
 				historySize);
 		pairPool = new Pool<Pair>() {
 			@Override
 			protected Pair newObject() {
-				return new Pair<ResettableConsumerScreen, Object>();
+				return new Pair<TransitionableResettableConsumerScreen, Object>();
 			}
 		};
 	}
@@ -37,22 +38,37 @@ public class Router {
 	 * @param screen
 	 * @param state
 	 */
-	public void changeScreen(Class<? extends ResettableConsumerScreen> screen,
-			Object state) {
-		saveCurrentScreenInHistory();
-		ResettableConsumerScreen s = obtainScreen(screen);
+	public void changeScreen(
+			Class<? extends TransitionableResettableConsumerScreen> screen, Object state) {
+		TransitionableResettableConsumerScreen s = obtainScreen(screen);
 		if (state != null) {
 			s.setState(state);
 		}
-		game.setScreen(s);
+		changeScreen(s);
 	}
 
-	public void changeScreen(ResettableConsumerScreen screen) {
+	public void changeScreen(
+			Class<? extends TransitionableResettableConsumerScreen> screen,
+			Object state, Transition t) {
+		TransitionableResettableConsumerScreen s = obtainScreen(screen);
+		if (state != null) {
+			s.setState(state);
+		}
+		changeScreen(s, t);
+	}
+
+	public void changeScreen(TransitionableResettableConsumerScreen screen) {
 		saveCurrentScreenInHistory();
 		game.setScreen(screen);
 	}
 
-	public <T extends ResettableConsumerScreen> T obtainScreen(Class<T> screen) {
+	public void changeScreen(TransitionableResettableConsumerScreen screen, Transition t) {
+		saveCurrentScreenInHistory();
+		t.apply(game, game.getScreen(), screen);
+	}
+
+	public <T extends TransitionableResettableConsumerScreen> T obtainScreen(
+			Class<T> screen) {
 		return game.getResourceConsumerManager().obtainConsumerInstance(screen,
 				true);
 	}
@@ -62,8 +78,9 @@ public class Router {
 	 */
 	public void resetPreviousScreenFromHistory() {
 		if (!history.isEmpty()) {
-			Pair<ResettableConsumerScreen, Object> previous = history.pop();
-			ResettableConsumerScreen screen = previous.getFirst();
+			Pair<TransitionableResettableConsumerScreen, Object> previous = history
+					.pop();
+			TransitionableResettableConsumerScreen screen = previous.getFirst();
 			Object state = previous.getSecond();
 			if (state != null) {
 				screen.setState(state);
@@ -88,10 +105,11 @@ public class Router {
 	}
 
 	public void saveCurrentScreenInHistory() {
-		ResettableConsumerScreen screen = game.getScreen();
+		TransitionableResettableConsumerScreen screen = game.getScreen();
 		if (screen != null) {
 			@SuppressWarnings("unchecked")
-			Pair<ResettableConsumerScreen, Object> pair = pairPool.obtain();
+			Pair<TransitionableResettableConsumerScreen, Object> pair = pairPool
+					.obtain();
 			pair.setFirst(screen);
 			pair.setSecond(screen.getState());
 			history.push(pair);

@@ -12,6 +12,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.gdx.Router;
+import de.lksbhm.gdx.ui.screens.transitions.InterpolateClearColor;
+import de.lksbhm.gdx.ui.screens.transitions.SlideInRight;
 import de.lksbhm.mona.puzzle.Generator;
 import de.lksbhm.mona.puzzle.Puzzle;
 
@@ -20,6 +22,10 @@ public class MainMenuScreen extends AbstractScreen {
 	private TextButton playButton;
 	private TextButton dailiesButton;
 	private TextButton randomLevelButton;
+
+	public MainMenuScreen() {
+		setClearColor(0.518f, 0.863f, 0.796f, 1f);
+	}
 
 	private void setupWidgets() {
 		playButton = new TextButton("play", LksBhmGame.getGame()
@@ -32,7 +38,11 @@ public class MainMenuScreen extends AbstractScreen {
 				Puzzle puzzle = Generator.generate(5, 10,
 						new RandomXS128(1, 4), 1.0f, 1.0f);
 				ps.setPuzzle(puzzle);
-				router.changeScreen(ps);
+				SlideInRight slide = new SlideInRight();
+				InterpolateClearColor blendColors = new InterpolateClearColor();
+				slide.runParallel(blendColors);
+				slide.setDuration(.6f);
+				router.changeScreen(ps, slide);
 			}
 		});
 
@@ -72,7 +82,7 @@ public class MainMenuScreen extends AbstractScreen {
 	}
 
 	@Override
-	public void hide() {
+	public void onHide() {
 		// TODO Auto-generated method stub
 
 	}

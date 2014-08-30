@@ -7,27 +7,24 @@ import com.badlogic.gdx.assets.AssetManager;
 import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.gdx.resources.ResourceConsumer;
 import de.lksbhm.gdx.resources.ResourceConsumerManager;
-import de.lksbhm.gdx.ui.screens.ResettableConsumerScreen;
+import de.lksbhm.gdx.ui.screens.TransitionableResettableConsumerScreen;
 import de.lksbhm.mona.ui.screens.LoadingScreen;
 import de.lksbhm.mona.ui.screens.MainMenuScreen;
 
 public class Mona extends LksBhmGame {
 
 	private LoadingScreen loadingScreen;
-	private MainMenuScreen mainMenuScreen;
 	private final Settings settings = new Settings();
 
 	@Override
 	protected void initialize() {
-		Gdx.graphics.getGL20().glClearColor(0.518f, 0.863f, 0.796f, 1f);
 		loadingScreen = new LoadingScreen();
 	};
 
 	@Override
 	protected void requestResources(AssetManager manager) {
 		ResourceConsumerManager consumerManager = getResourceConsumerManager();
-		mainMenuScreen = consumerManager.obtainConsumerInstance(
-				MainMenuScreen.class, false);
+		consumerManager.obtainConsumerInstance(MainMenuScreen.class, false);
 	}
 
 	@Override
@@ -47,12 +44,12 @@ public class Mona extends LksBhmGame {
 	}
 
 	@Override
-	protected Class<? extends ResettableConsumerScreen> getFirstScreen() {
+	protected Class<? extends TransitionableResettableConsumerScreen> getFirstScreen() {
 		return MainMenuScreen.class;
 	}
 
 	@Override
-	public void setScreen(ResettableConsumerScreen screen) {
+	public void setScreen(TransitionableResettableConsumerScreen screen) {
 		Gdx.app.log(screen.getClass().getSimpleName(), "set screen");
 		super.setScreen(screen);
 	}

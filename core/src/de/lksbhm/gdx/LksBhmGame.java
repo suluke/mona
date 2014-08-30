@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import de.lksbhm.gdx.resources.ResourceConsumer;
 import de.lksbhm.gdx.resources.ResourceConsumerManager;
-import de.lksbhm.gdx.ui.screens.ResettableConsumerScreen;
+import de.lksbhm.gdx.ui.screens.TransitionableResettableConsumerScreen;
 
 public abstract class LksBhmGame extends Game {
 	private static LksBhmGame instance;
@@ -57,7 +57,7 @@ public abstract class LksBhmGame extends Game {
 
 		SkinParameter skinParam = new SkinParameter(defaultSkinAtlasPath);
 		assetManager.load(defaultSkinPath, Skin.class, skinParam);
-		ResettableConsumerScreen screen = resourceConsumerManager
+		TransitionableResettableConsumerScreen screen = resourceConsumerManager
 				.obtainConsumerInstance(getFirstScreen(), false);
 		requestResources(assetManager);
 		animateAssetManagerLoad(assetManager, null);
@@ -72,7 +72,7 @@ public abstract class LksBhmGame extends Game {
 
 	protected abstract void requestResources(AssetManager manager);
 
-	protected abstract Class<? extends ResettableConsumerScreen> getFirstScreen();
+	protected abstract Class<? extends TransitionableResettableConsumerScreen> getFirstScreen();
 
 	public static LksBhmGame getGame() {
 		return instance;
@@ -97,17 +97,16 @@ public abstract class LksBhmGame extends Game {
 	@Override
 	@Deprecated
 	public void setScreen(Screen screen) {
-		// TODO Auto-generated method stub
 		super.setScreen(screen);
 	}
 
-	public void setScreen(ResettableConsumerScreen screen) {
+	public void setScreen(TransitionableResettableConsumerScreen screen) {
 		super.setScreen(screen);
 	}
 
 	@Override
-	public ResettableConsumerScreen getScreen() {
-		return (ResettableConsumerScreen) super.getScreen();
+	public TransitionableResettableConsumerScreen getScreen() {
+		return (TransitionableResettableConsumerScreen) super.getScreen();
 	}
 
 	public boolean isDebug() {

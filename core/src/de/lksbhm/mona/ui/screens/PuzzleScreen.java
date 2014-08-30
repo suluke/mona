@@ -1,6 +1,5 @@
 package de.lksbhm.mona.ui.screens;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
@@ -13,8 +12,12 @@ public class PuzzleScreen extends AbstractScreen {
 	private PuzzleActor puzzle;
 	private PuzzleScreenState state = new PuzzleScreenState();
 
+	public PuzzleScreen() {
+		setClearColor(0.1f, 0.1f, 0.1f, 1f);
+	}
+
 	@Override
-	public void hide() {
+	public void onHide() {
 		// TODO Auto-generated method stub
 
 	}
@@ -78,7 +81,6 @@ public class PuzzleScreen extends AbstractScreen {
 
 	@Override
 	protected void onShow() {
-		Gdx.graphics.getGL20().glClearColor(0.1f, 0.1f, 0.1f, 1f);
 		getBaseTable().clear();
 		layoutWidgets();
 	}
