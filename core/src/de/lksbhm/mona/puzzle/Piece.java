@@ -181,8 +181,8 @@ public class Piece extends Tile<Piece> {
 		if (this.in.isOrthogonalTo(this.out)) {
 			return false;
 		}
-		return (in.in.isOrthogonalTo(in.out) && !out.in.isOrthogonalTo(out.out))
-				|| !(in.in.isOrthogonalTo(in.out) && out.in
+		return (in.in.isOrthogonalTo(in.out) && out.in.isOppositeOf(out.out))
+				|| (in.in.isOppositeOf(in.out) && out.in
 						.isOrthogonalTo(out.out));
 	}
 
