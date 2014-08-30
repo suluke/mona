@@ -55,6 +55,7 @@ public class PuzzleActor extends Widget {
 			for (Piece tile : invalidTiles) {
 				InvalidMarker marker = markerPool.obtain();
 				marker.setStyle(markerStyle);
+				marker.setCellSize(Math.min(cellWidth, cellHeight));
 				marker.setMid(
 						PuzzleActorCoordinateHelper.getTileOriginX(
 								PuzzleActor.this, tile) + cellWidth / 2,
@@ -463,6 +464,10 @@ public class PuzzleActor extends Widget {
 					* puzzleWidth) / 2;
 		}
 		lineWidth = Math.min(cellWidth, cellHeight) * style.connectorWidth;
+	}
+
+	public void cancelInput() {
+		inputListener.cancel();
 	}
 
 	/**

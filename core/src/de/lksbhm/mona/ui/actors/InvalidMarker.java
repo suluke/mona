@@ -11,6 +11,7 @@ public class InvalidMarker {
 	private float midX;
 	private float midY;
 	private float timePassed = 0;
+	private float cellSize;
 
 	public void reset() {
 		timePassed = 0;
@@ -23,6 +24,10 @@ public class InvalidMarker {
 	public void setMid(float x, float y) {
 		this.midX = x;
 		this.midY = y;
+	}
+
+	public void setCellSize(float cellSize) {
+		this.cellSize = cellSize;
 	}
 
 	public void render(Batch batch, float offsetX, float offsetY) {
@@ -41,7 +46,7 @@ public class InvalidMarker {
 		}
 		float interpolation = style.interpolation.apply(timePassed
 				/ style.expandTime);
-		float currentWidth = style.maxWidth * interpolation;
+		float currentWidth = style.maxWidth * cellSize * interpolation;
 		float currentHeight = currentWidth * style.aspectRatio;
 		float currentAlpha = style.alpha;
 		if (style.alphaFade != null) {
@@ -64,7 +69,7 @@ public class InvalidMarker {
 		public Drawable texture;
 		public float expandTime = 0.7f;
 		public float aspectRatio = 1;
-		public float maxWidth = 80;
+		public float maxWidth = 1.3f;
 		public boolean repeat = true;
 		public Interpolation interpolation = Interpolation.sineOut;
 		public float repeatTimeout = 1;
