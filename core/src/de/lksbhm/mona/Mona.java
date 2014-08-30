@@ -64,7 +64,7 @@ public class Mona extends LksBhmGame {
 
 	@Override
 	public boolean isDebug() {
-		return false;
+		return true;
 	}
 
 	@Override

@@ -14,5 +14,4 @@ public class InterpolateClearColor extends AbstractTransition {
 		float a = toColor.a * progress + fromColor.a * (1 - progress);
 		ts.setClearColor(r, g, b, a);
 	}
-
 }

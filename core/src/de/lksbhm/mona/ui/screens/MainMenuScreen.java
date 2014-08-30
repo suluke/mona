@@ -38,6 +38,7 @@ public class MainMenuScreen extends AbstractScreen {
 				Puzzle puzzle = Generator.generate(5, 10,
 						new RandomXS128(1, 4), 1.0f, 1.0f);
 				ps.setPuzzle(puzzle);
+				// TODO implement pooling
 				SlideInRight slide = new SlideInRight();
 				InterpolateClearColor blendColors = new InterpolateClearColor();
 				slide.runParallel(blendColors);
@@ -82,34 +83,6 @@ public class MainMenuScreen extends AbstractScreen {
 	}
 
 	@Override
-	public void onHide() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void resume() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onDispose() {
-	}
-
-	@Override
-	public void requestResources(AssetManager manager) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void onResourcesLoaded(AssetManager manager) {
 		setupWidgets();
 	}
@@ -117,12 +90,6 @@ public class MainMenuScreen extends AbstractScreen {
 	@Override
 	public boolean isRequestingLoadingAnimation() {
 		return true;
-	}
-
-	@Override
-	public long getEstimatedMemoryUsage() {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	@Override

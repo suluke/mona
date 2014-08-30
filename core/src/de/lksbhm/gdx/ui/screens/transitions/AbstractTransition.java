@@ -104,15 +104,15 @@ abstract class AbstractTransition implements Transition {
 
 	void afterRender() {
 		if (finished) {
-			onEnd();
+			tearDown();
 			if (decorated != null) {
-				decorated.onEnd();
+				decorated.tearDown();
 			}
 		}
 	}
 
 	@SuppressWarnings("deprecation")
-	private void onEnd() {
+	private void tearDown() {
 		game.setScreen(toScreen);
 		Color toClearColor = toScreen.getClearColor();
 		ts.setClearColor(toClearColor.r, toClearColor.g, toClearColor.b,
@@ -120,6 +120,8 @@ abstract class AbstractTransition implements Transition {
 		ts.finish();
 		finished = true;
 		fromScreen.hide();
+		fromScreen.getStage().getRoot().setX(0);
+		fromScreen.getStage().getRoot().setY(0);
 		fromScreen = null;
 		toScreen = null;
 		game = null;

@@ -1,6 +1,7 @@
 package de.lksbhm.gdx.ui.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -126,10 +127,32 @@ public abstract class AbstractScreen implements
 		show = false;
 	}
 
-	protected abstract void onHide();
+	protected void onHide() {
 
-	protected abstract void onShow();
+	}
 
-	protected abstract void onDispose();
+	protected void onShow() {
 
+	}
+
+	protected void onDispose() {
+
+	}
+
+	@Override
+	public void pause() {
+	}
+
+	@Override
+	public void resume() {
+	}
+
+	@Override
+	public void requestResources(AssetManager manager) {
+	}
+
+	@Override
+	public long getEstimatedMemoryUsage() {
+		return 0;
+	}
 }
