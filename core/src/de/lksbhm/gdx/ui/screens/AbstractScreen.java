@@ -125,6 +125,7 @@ public abstract class AbstractScreen implements
 	@Override
 	public final void hide() {
 		show = false;
+		onHide();
 	}
 
 	protected void onHide() {

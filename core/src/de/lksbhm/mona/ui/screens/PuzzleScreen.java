@@ -76,6 +76,11 @@ public class PuzzleScreen extends AbstractScreen {
 		layoutWidgets();
 	}
 
+	@Override
+	protected void onHide() {
+		puzzle.cancelInput();
+	}
+
 	private void layoutWidgets() {
 		Table base = getBaseTable();
 		base.add(puzzle);
