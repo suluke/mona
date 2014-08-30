@@ -23,6 +23,8 @@ public class LinkedTileBoard extends Board<LinkedTile> implements Disposable {
 	private LinkedTile obtainNode(int x, int y) {
 		LinkedTile n = directedNodePool.obtain();
 		n.setup(this, x, y);
+		n.setParent(null);
+		n.setChild(null);
 		return n;
 	}
 

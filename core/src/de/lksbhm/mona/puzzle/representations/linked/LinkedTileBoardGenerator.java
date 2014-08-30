@@ -14,6 +14,7 @@ public class LinkedTileBoardGenerator {
 		int rootY = random.nextInt(height);
 		result = new LinkedTileBoard(width, height);
 		LinkedTile root = result.getTile(rootX, rootY);
+		// Remember this: Root is its own parent
 		root.setParent(root);
 		visitNode(root);
 		LinkedTile bestNeighbor = selectBestNeighbor(root);
@@ -50,6 +51,11 @@ public class LinkedTileBoardGenerator {
 		}
 	}
 
+	/**
+	 * Takes a node and recursively visits all not yet visited neighboring nodes
+	 * 
+	 * @param node
+	 */
 	private void visitNode(LinkedTile node) {
 		LinkedTile[] neighbors = node.getNeightbors();
 		ArrayRandomIterator<LinkedTile> it = new ArrayRandomIterator<LinkedTile>(
