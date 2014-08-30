@@ -2,6 +2,10 @@ package de.lksbhm.mona.ui.screens;
 
 import java.util.Random;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.RandomXS128;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -22,6 +26,16 @@ public class MainMenuScreen extends AbstractScreen {
 	private TextButton playButton;
 	private TextButton dailiesButton;
 	private TextButton randomLevelButton;
+	private final InputAdapter backButtonHandler = new InputAdapter() {
+		@Override
+		public boolean keyUp(int keycode) {
+			if (keycode == Keys.BACK) {
+				Gdx.app.exit();
+				return true;
+			}
+			return false;
+		}
+	};
 
 	public MainMenuScreen() {
 		setClearColor(0.518f, 0.863f, 0.796f, 1f);
@@ -59,7 +73,12 @@ public class MainMenuScreen extends AbstractScreen {
 				PuzzleScreen ps = router.obtainScreen(PuzzleScreen.class);
 				Puzzle puzzle = Generator.generate(new Random(), 1.f, 1.f);
 				ps.setPuzzle(puzzle);
-				router.changeScreen(ps);
+				// TODO implement pooling
+				SlideInRight slide = new SlideInRight();
+				InterpolateClearColor blendColors = new InterpolateClearColor();
+				slide.runParallel(blendColors);
+				slide.setDuration(.6f);
+				router.changeScreen(ps, slide);
 			}
 		});
 	}
@@ -78,6 +97,10 @@ public class MainMenuScreen extends AbstractScreen {
 
 	@Override
 	public void onShow() {
+		InputMultiplexer mux = new InputMultiplexer();
+		mux.addProcessor(Gdx.input.getInputProcessor());
+		mux.addProcessor(backButtonHandler);
+		Gdx.input.setInputProcessor(mux);
 		getBaseTable().clear();
 		layoutWidgets();
 	}

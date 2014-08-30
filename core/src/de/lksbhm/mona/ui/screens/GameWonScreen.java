@@ -1,5 +1,9 @@
 package de.lksbhm.mona.ui.screens;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -18,6 +22,17 @@ public class GameWonScreen extends AbstractScreen {
 
 	private Label youWonLabel;
 	private TextButton nextButton;
+	private final InputAdapter backButtonHandler = new InputAdapter() {
+		@Override
+		public boolean keyUp(int keycode) {
+			if (keycode == Keys.BACK) {
+				LksBhmGame.getGame().getRouter()
+						.changeScreen(MainMenuScreen.class, null);
+				return true;
+			}
+			return false;
+		}
+	};
 
 	public GameWonScreen() {
 		setClearColor(.422f, .816f, .147f, 1);
@@ -45,6 +60,10 @@ public class GameWonScreen extends AbstractScreen {
 
 	@Override
 	public void onShow() {
+		InputMultiplexer mux = new InputMultiplexer();
+		mux.addProcessor(Gdx.input.getInputProcessor());
+		mux.addProcessor(backButtonHandler);
+		Gdx.input.setInputProcessor(mux);
 		getBaseTable().clear();
 		layoutWidgets();
 	}

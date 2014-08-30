@@ -18,6 +18,7 @@ public class Mona extends LksBhmGame {
 
 	@Override
 	protected void initialize() {
+		Gdx.input.setCatchBackKey(true);
 		loadingScreen = new LoadingScreen();
 	};
 

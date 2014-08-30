@@ -1,5 +1,9 @@
 package de.lksbhm.mona.ui.screens;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
@@ -28,6 +32,17 @@ public class PuzzleScreen extends AbstractScreen {
 				slide.setDuration(.6f);
 				router.changeScreen(GameWonScreen.class, null, slide);
 			}
+		}
+	};
+	private final InputAdapter backButtonHandler = new InputAdapter() {
+		@Override
+		public boolean keyUp(int keycode) {
+			if (keycode == Keys.BACK) {
+				LksBhmGame.getGame().getRouter()
+						.changeScreen(MainMenuScreen.class, null);
+				return true;
+			}
+			return false;
 		}
 	};
 
@@ -72,6 +87,10 @@ public class PuzzleScreen extends AbstractScreen {
 
 	@Override
 	protected void onShow() {
+		InputMultiplexer mux = new InputMultiplexer();
+		mux.addProcessor(Gdx.input.getInputProcessor());
+		mux.addProcessor(backButtonHandler);
+		Gdx.input.setInputProcessor(mux);
 		getBaseTable().clear();
 		layoutWidgets();
 	}
