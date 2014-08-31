@@ -27,22 +27,24 @@ public class Mona extends LksBhmGame {
 	@Override
 	protected void requestResources(AssetManager manager) {
 		ResourceConsumerManager consumerManager = getResourceConsumerManager();
-		consumerManager.obtainConsumerInstance(MainMenuScreen.class, false);
+		// automatically handled by LksBhmGame:
+		consumerManager
+				.obtainConsumerInstanceWithoutLoadingResources(MainMenuScreen.class);
 	}
 
 	@Override
 	public void animateAssetManagerLoad(AssetManager manager,
-			Class<? extends ResourceConsumer> requester) {
+			Class<? extends ResourceConsumer> requester, Runnable callback) {
 		if (requester == null) {
+			Gdx.app.log("Mona", "Showing loading screen");
 			getRouter().saveCurrentScreenInHistory();
+			loadingScreen.setAssetManager(manager);
+			loadingScreen.setOnDoneCallback(callback);
 			setScreen(loadingScreen);
-			while (!manager.update()) {
-				loadingScreen.update(manager.getProgress());
-			}
-			getRouter().resetPreviousScreenFromHistory();
 		} else {
 			Gdx.app.log("Mona", requester.getSimpleName() + " finishLoading");
 			manager.finishLoading();
+			callback.run();
 		}
 	}
 
@@ -53,15 +55,19 @@ public class Mona extends LksBhmGame {
 
 	@Override
 	public void setScreen(TransitionableResettableConsumerScreen screen) {
-		Gdx.app.log(screen.getClass().getSimpleName(), "set screen");
+		if (screen != null) {
+			Gdx.app.log(screen.getClass().getSimpleName(), "set screen");
+		}
 		super.setScreen(screen);
 	}
 
 	@SuppressWarnings("deprecation")
 	@Override
 	public void setScreen(Screen screen) {
-		Gdx.app.log("setScreen", "deprecated function call");
-		Gdx.app.log(screen.getClass().getSimpleName(), "set screen");
+		if (screen != null) {
+			Gdx.app.log("setScreen", "deprecated function call");
+			Gdx.app.log(screen.getClass().getSimpleName(), "set screen");
+		}
 		super.setScreen(screen);
 	}
 

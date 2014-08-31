@@ -55,16 +55,25 @@ public abstract class LksBhmGame extends Game {
 		router = new Router(this, routerHistorySize);
 
 		initialize();
+		loadAndStart();
+	}
 
+	private void loadAndStart() {
 		SkinParameter skinParam = new SkinParameter(defaultSkinAtlasPath);
 		assetManager.load(defaultSkinPath, Skin.class, skinParam);
-		TransitionableResettableConsumerScreen screen = resourceConsumerManager
-				.obtainConsumerInstance(getFirstScreen(), false);
+		final TransitionableResettableConsumerScreen screen = resourceConsumerManager
+				.obtainConsumerInstanceWithoutLoadingResources(getFirstScreen());
+		// don't need to have screen request resources as this is done in
+		// obtainConsumerInstanceWithoutLoadingResources
 		requestResources(assetManager);
-		animateAssetManagerLoad(assetManager, null);
-		defaultSkin = assetManager.get(defaultSkinPath);
-		screen.onResourcesLoaded(assetManager);
-		setScreen(screen);
+		animateAssetManagerLoad(assetManager, null, new Runnable() {
+			@Override
+			public void run() {
+				defaultSkin = assetManager.get(defaultSkinPath);
+				screen.onResourcesLoaded(assetManager);
+				setScreen(screen);
+			}
+		});
 	}
 
 	protected void initialize() {
@@ -117,7 +126,7 @@ public abstract class LksBhmGame extends Game {
 	public abstract Settings getSettings();
 
 	public abstract void animateAssetManagerLoad(AssetManager manager,
-			Class<? extends ResourceConsumer> requester);
+			Class<? extends ResourceConsumer> requester, Runnable callback);
 
 	public ContextManager getContextManager() {
 		return contextManager;

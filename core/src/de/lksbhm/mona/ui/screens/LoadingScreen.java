@@ -2,6 +2,7 @@ package de.lksbhm.mona.ui.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
@@ -17,10 +18,12 @@ public class LoadingScreen implements Screen {
 	private static final float barHeight = .2f;
 	private static final float barVPos = .6f;
 
+	private AssetManager assetManager;
+	private Runnable onDoneCallback;
 	private final NinePatch bar = new NinePatch(new Texture(
 			"textures/loading.9.png"));;
 	private final SpriteBatch batch = new SpriteBatch(1);
-	private final Viewport vp = new ScalingViewport(Scaling.stretchX, 1024, 600);
+	private final Viewport vp = new ScalingViewport(Scaling.fit, 1024, 600);
 	private float displayedProgress;
 	private float currentProgress;
 
@@ -31,6 +34,7 @@ public class LoadingScreen implements Screen {
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		currentProgress = assetManager.getProgress();
 
 		displayedProgress = Interpolation.linear.apply(displayedProgress,
 				currentProgress, 0.1f);
@@ -46,7 +50,9 @@ public class LoadingScreen implements Screen {
 		batch.begin();
 		bar.draw(batch, x, y, width, height);
 		batch.end();
-		Gdx.app.log("LoadingScreen", "render");
+		if (assetManager.update()) {
+			onDoneCallback.run();
+		}
 	}
 
 	@Override
@@ -56,6 +62,7 @@ public class LoadingScreen implements Screen {
 
 	@Override
 	public void show() {
+		Gdx.gl.glClearColor(1f, 1, 1, 1);
 	}
 
 	@Override
@@ -76,7 +83,11 @@ public class LoadingScreen implements Screen {
 		bar.getTexture().dispose();
 	}
 
-	public void update(float progress) {
-		currentProgress = progress;
+	public void setAssetManager(AssetManager assetManager) {
+		this.assetManager = assetManager;
+	}
+
+	public void setOnDoneCallback(Runnable callback) {
+		onDoneCallback = callback;
 	}
 }

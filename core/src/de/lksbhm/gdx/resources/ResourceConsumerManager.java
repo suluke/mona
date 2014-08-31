@@ -50,31 +50,46 @@ public class ResourceConsumerManager {
 	 * @param state
 	 * @return
 	 */
-	public <T extends ResourceConsumer> T obtainConsumerInstance(
-			Class<T> consumer, boolean actuallyLoadResources) {
+	public <T extends ResourceConsumer> void obtainConsumerInstanceAndLoadResources(
+			Class<T> consumer,
+			final ResourceConsumerObtainedCallback<T> callback) {
+		@SuppressWarnings("unchecked")
+		final T instance = (T) lruCache.access(consumer);
+		if (instance == null) {
+			releaseMemoryIfNecessary();
+			final T newInstance = instantiateConsumer(consumer);
+			final AssetManager manager = game.getAssetManager();
+			newInstance.requestResources(manager);
+			if (newInstance.isRequestingLoadingAnimation()) {
+				game.animateAssetManagerLoad(game.getAssetManager(),
+						newInstance.getClass(), new Runnable() {
+							@Override
+							public void run() {
+								newInstance.onResourcesLoaded(manager);
+								callback.onObtained(newInstance);
+							}
+						});
+			} else {
+				manager.finishLoading();
+				newInstance.onResourcesLoaded(manager);
+				callback.onObtained(newInstance);
+			}
+		} else {
+			callback.onObtained(instance);
+		}
+	}
+
+	public <T extends ResourceConsumer> T obtainConsumerInstanceWithoutLoadingResources(
+			Class<T> consumer) {
 		@SuppressWarnings("unchecked")
 		T instance = (T) lruCache.access(consumer);
 		if (instance == null) {
 			releaseMemoryIfNecessary();
 			instance = instantiateConsumer(consumer);
-			prepareConsumer(instance, actuallyLoadResources);
+			AssetManager manager = game.getAssetManager();
+			instance.requestResources(manager);
 		}
 		return instance;
-	}
-
-	private void prepareConsumer(ResourceConsumer instance,
-			boolean actuallyLoadResources) {
-		AssetManager manager = game.getAssetManager();
-		instance.requestResources(manager);
-		if (actuallyLoadResources) {
-			if (instance.isRequestingLoadingAnimation()) {
-				game.animateAssetManagerLoad(game.getAssetManager(),
-						instance.getClass());
-			} else {
-				manager.finishLoading();
-			}
-			instance.onResourcesLoaded(manager);
-		}
 	}
 
 	private <T extends ResourceConsumer> T instantiateConsumer(Class<T> type) {

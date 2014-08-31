@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.gdx.Router;
+import de.lksbhm.gdx.resources.ResourceConsumerObtainedCallback;
 import de.lksbhm.gdx.ui.screens.transitions.InterpolateClearColor;
 import de.lksbhm.gdx.ui.screens.transitions.SlideInRight;
 import de.lksbhm.mona.Mona;
@@ -48,19 +49,25 @@ public class MainMenuScreen extends AbstractScreen {
 		playButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				Mona mona = (Mona) LksBhmGame.getGame();
-				Router router = mona.getRouter();
-				// TODO implement pooling
-				SlideInRight slide = new SlideInRight();
-				InterpolateClearColor blendColors = new InterpolateClearColor();
-				slide.runParallel(blendColors);
-				slide.setDuration(.6f);
-				PackagesListScreen listScreen = router
-						.obtainScreen(PackagesListScreen.class);
-				LevelPackageManager pacman = mona.getLevelPackageManager();
-				listScreen.setLevelPackageCollection(pacman
-						.getInternalPackages());
-				router.changeScreen(listScreen, slide);
+				final Mona mona = (Mona) LksBhmGame.getGame();
+				final Router router = mona.getRouter();
+				router.obtainScreen(
+						PackagesListScreen.class,
+						new ResourceConsumerObtainedCallback<PackagesListScreen>() {
+							@Override
+							public void onObtained(PackagesListScreen listScreen) {
+								// TODO implement pooling
+								SlideInRight slide = new SlideInRight();
+								InterpolateClearColor blendColors = new InterpolateClearColor();
+								slide.runParallel(blendColors);
+								slide.setDuration(.6f);
+								LevelPackageManager pacman = mona
+										.getLevelPackageManager();
+								listScreen.setLevelPackageCollection(pacman
+										.getInternalPackages());
+								router.changeScreen(listScreen, slide);
+							}
+						});
 			}
 		});
 
@@ -72,16 +79,22 @@ public class MainMenuScreen extends AbstractScreen {
 		randomLevelButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				Router router = LksBhmGame.getGame().getRouter();
-				PuzzleScreen ps = router.obtainScreen(PuzzleScreen.class);
-				Puzzle puzzle = Generator.generate(new Random(), 1.f, 1.f);
-				ps.setPuzzle(puzzle);
-				// TODO implement pooling
-				SlideInRight slide = new SlideInRight();
-				InterpolateClearColor blendColors = new InterpolateClearColor();
-				slide.runParallel(blendColors);
-				slide.setDuration(.6f);
-				router.changeScreen(ps, slide);
+				final Router router = LksBhmGame.getGame().getRouter();
+				router.obtainScreen(PuzzleScreen.class,
+						new ResourceConsumerObtainedCallback<PuzzleScreen>() {
+							@Override
+							public void onObtained(PuzzleScreen ps) {
+								Puzzle puzzle = Generator.generate(
+										new Random(), 1.f, 1.f);
+								ps.setPuzzle(puzzle);
+								// TODO implement pooling
+								SlideInRight slide = new SlideInRight();
+								InterpolateClearColor blendColors = new InterpolateClearColor();
+								slide.runParallel(blendColors);
+								slide.setDuration(.6f);
+								router.changeScreen(ps, slide);
+							}
+						});
 			}
 		});
 	}

@@ -3,6 +3,7 @@ package de.lksbhm.gdx;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Pool;
 
+import de.lksbhm.gdx.resources.ResourceConsumerObtainedCallback;
 import de.lksbhm.gdx.ui.screens.TransitionableResettableConsumerScreen;
 import de.lksbhm.gdx.ui.screens.transitions.Transition;
 import de.lksbhm.gdx.util.CircularBuffer;
@@ -38,23 +39,32 @@ public class Router {
 	 * @param screen
 	 * @param state
 	 */
-	public void changeScreen(
-			Class<? extends TransitionableResettableConsumerScreen> screen, Object state) {
-		TransitionableResettableConsumerScreen s = obtainScreen(screen);
-		if (state != null) {
-			s.setState(state);
-		}
-		changeScreen(s);
+	public <T extends TransitionableResettableConsumerScreen> void changeScreen(
+			Class<T> screen, final Object state) {
+		obtainScreen(screen, new ResourceConsumerObtainedCallback<T>() {
+			@Override
+			public void onObtained(T s) {
+				if (state != null) {
+					s.setState(state);
+				}
+				changeScreen(s);
+			}
+
+		});
 	}
 
-	public void changeScreen(
-			Class<? extends TransitionableResettableConsumerScreen> screen,
-			Object state, Transition t) {
-		TransitionableResettableConsumerScreen s = obtainScreen(screen);
-		if (state != null) {
-			s.setState(state);
-		}
-		changeScreen(s, t);
+	public <T extends TransitionableResettableConsumerScreen> void changeScreen(
+			Class<T> screen, final Object state, final Transition t) {
+		obtainScreen(screen, new ResourceConsumerObtainedCallback<T>() {
+			@Override
+			public void onObtained(T s) {
+				if (state != null) {
+					s.setState(state);
+				}
+				changeScreen(s, t);
+			}
+
+		});
 	}
 
 	public void changeScreen(TransitionableResettableConsumerScreen screen) {
@@ -62,15 +72,16 @@ public class Router {
 		game.setScreen(screen);
 	}
 
-	public void changeScreen(TransitionableResettableConsumerScreen screen, Transition t) {
+	public void changeScreen(TransitionableResettableConsumerScreen screen,
+			Transition t) {
 		saveCurrentScreenInHistory();
 		t.apply(game, game.getScreen(), screen);
 	}
 
-	public <T extends TransitionableResettableConsumerScreen> T obtainScreen(
-			Class<T> screen) {
-		return game.getResourceConsumerManager().obtainConsumerInstance(screen,
-				true);
+	public <T extends TransitionableResettableConsumerScreen> void obtainScreen(
+			Class<T> screen, ResourceConsumerObtainedCallback<T> callback) {
+		game.getResourceConsumerManager()
+				.obtainConsumerInstanceAndLoadResources(screen, callback);
 	}
 
 	/**
