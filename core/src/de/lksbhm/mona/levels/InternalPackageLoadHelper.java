@@ -1,12 +1,12 @@
 package de.lksbhm.mona.levels;
 
-class CampaignPackageLoadHelper {
-	private CampaignPackageLoadHelper() {
+class InternalPackageLoadHelper {
+	private InternalPackageLoadHelper() {
 
 	}
 
 	public static int getCampaignPackageCount() {
-		return 0;
+		return 1;
 	}
 
 }

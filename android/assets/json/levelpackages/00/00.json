@@ -1,0 +1,11 @@
+{
+	"de.lksbhm.mona":  {
+		"levels": [
+			{
+				"id": "1",
+				"size": 1,
+				"tutorial": "p00.Tutorial00"
+			}
+		]
+	}
+}

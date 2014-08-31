@@ -1,7 +1,6 @@
 package de.lksbhm.mona.ui.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
@@ -34,17 +33,7 @@ public class PuzzleScreen extends AbstractScreen {
 			}
 		}
 	};
-	private final InputAdapter backButtonHandler = new InputAdapter() {
-		@Override
-		public boolean keyUp(int keycode) {
-			if (keycode == Keys.BACK) {
-				LksBhmGame.getGame().getRouter()
-						.changeScreen(MainMenuScreen.class, null);
-				return true;
-			}
-			return false;
-		}
-	};
+	private final InputAdapter backButtonHandler = new BackButtonToMainMenuHandler();
 
 	public PuzzleScreen() {
 		setClearColor(0.1f, 0.1f, 0.1f, 1f);
@@ -91,7 +80,7 @@ public class PuzzleScreen extends AbstractScreen {
 		mux.addProcessor(Gdx.input.getInputProcessor());
 		mux.addProcessor(backButtonHandler);
 		Gdx.input.setInputProcessor(mux);
-		getBaseTable().clear();
+
 		layoutWidgets();
 	}
 
@@ -102,6 +91,7 @@ public class PuzzleScreen extends AbstractScreen {
 
 	private void layoutWidgets() {
 		Table base = getBaseTable();
+		base.clear();
 		base.add(puzzle);
 	}
 

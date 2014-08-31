@@ -8,6 +8,7 @@ import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.gdx.resources.ResourceConsumer;
 import de.lksbhm.gdx.resources.ResourceConsumerManager;
 import de.lksbhm.gdx.ui.screens.TransitionableResettableConsumerScreen;
+import de.lksbhm.mona.levels.LevelPackageManager;
 import de.lksbhm.mona.ui.screens.LoadingScreen;
 import de.lksbhm.mona.ui.screens.MainMenuScreen;
 
@@ -15,6 +16,7 @@ public class Mona extends LksBhmGame {
 
 	private LoadingScreen loadingScreen;
 	private final Settings settings = new Settings();
+	private final LevelPackageManager packageManager = new LevelPackageManager();
 
 	@Override
 	protected void initialize() {
@@ -71,5 +73,9 @@ public class Mona extends LksBhmGame {
 	@Override
 	public Settings getSettings() {
 		return settings;
+	}
+
+	public LevelPackageManager getLevelPackageManager() {
+		return packageManager;
 	}
 }

@@ -29,4 +29,8 @@ public class LevelPackageCollection implements Iterable<LevelPackage> {
 	public Iterator<LevelPackage> iterator() {
 		return new ArrayIterator<LevelPackage>(packages);
 	}
+
+	public int size() {
+		return packages.length;
+	}
 }

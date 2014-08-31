@@ -17,6 +17,8 @@ import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.gdx.Router;
 import de.lksbhm.gdx.ui.screens.transitions.InterpolateClearColor;
 import de.lksbhm.gdx.ui.screens.transitions.SlideInRight;
+import de.lksbhm.mona.Mona;
+import de.lksbhm.mona.levels.LevelPackageManager;
 import de.lksbhm.mona.puzzle.Generator;
 import de.lksbhm.mona.puzzle.Puzzle;
 
@@ -46,13 +48,19 @@ public class MainMenuScreen extends AbstractScreen {
 		playButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				Router router = LksBhmGame.getGame().getRouter();
+				Mona mona = (Mona) LksBhmGame.getGame();
+				Router router = mona.getRouter();
 				// TODO implement pooling
 				SlideInRight slide = new SlideInRight();
 				InterpolateClearColor blendColors = new InterpolateClearColor();
 				slide.runParallel(blendColors);
 				slide.setDuration(.6f);
-				router.changeScreen(PackagesListScreen.class, null, slide);
+				PackagesListScreen listScreen = router
+						.obtainScreen(PackagesListScreen.class);
+				LevelPackageManager pacman = mona.getLevelPackageManager();
+				listScreen.setLevelPackageCollection(pacman
+						.getInternalPackages());
+				router.changeScreen(listScreen, slide);
 			}
 		});
 
