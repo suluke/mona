@@ -1,4 +1,4 @@
-package de.lksbhm.mona.puzzle.representations.undirected;
+package de.lksbhm.mona.puzzle.representations.directional;
 
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Pool;
@@ -8,60 +8,60 @@ import de.lksbhm.mona.puzzle.representations.grouped.GroupedTile;
 import de.lksbhm.mona.puzzle.representations.grouped.GroupedTileBoard;
 import de.lksbhm.mona.puzzle.representations.grouped.TileGroupType;
 
-public class UndirectedTileBoard extends Board<UndirectedTile> implements
+public class DirectionalTileBoard extends Board<DirectionalTile> implements
 		Disposable {
 
-	static final Pool<UndirectedEmpty> emptyPool = new Pool<UndirectedEmpty>() {
+	static final Pool<NoDirectionTile> emptyPool = new Pool<NoDirectionTile>() {
 		@Override
-		protected UndirectedEmpty newObject() {
-			return new UndirectedEmpty();
+		protected NoDirectionTile newObject() {
+			return new NoDirectionTile();
 		}
 	};
-	static final Pool<TopLeft> tlPool = new Pool<TopLeft>() {
+	static final Pool<TopLeftTile> tlPool = new Pool<TopLeftTile>() {
 		@Override
-		protected TopLeft newObject() {
-			return new TopLeft();
+		protected TopLeftTile newObject() {
+			return new TopLeftTile();
 		}
 	};
-	static final Pool<TopRight> trPool = new Pool<TopRight>() {
+	static final Pool<TopRightTile> trPool = new Pool<TopRightTile>() {
 		@Override
-		protected TopRight newObject() {
-			return new TopRight();
+		protected TopRightTile newObject() {
+			return new TopRightTile();
 		}
 	};
-	static final Pool<BottomLeft> blPool = new Pool<BottomLeft>() {
+	static final Pool<BottomLeftTile> blPool = new Pool<BottomLeftTile>() {
 		@Override
-		protected BottomLeft newObject() {
-			return new BottomLeft();
+		protected BottomLeftTile newObject() {
+			return new BottomLeftTile();
 		}
 	};
-	static final Pool<BottomRight> brPool = new Pool<BottomRight>() {
+	static final Pool<BottomRightTile> brPool = new Pool<BottomRightTile>() {
 		@Override
-		protected BottomRight newObject() {
-			return new BottomRight();
+		protected BottomRightTile newObject() {
+			return new BottomRightTile();
 		}
 	};
-	static final Pool<TopBottom> tbPool = new Pool<TopBottom>() {
+	static final Pool<TopBottomTile> tbPool = new Pool<TopBottomTile>() {
 		@Override
-		protected TopBottom newObject() {
-			return new TopBottom();
+		protected TopBottomTile newObject() {
+			return new TopBottomTile();
 		}
 	};
-	static final Pool<LeftRight> lrPool = new Pool<LeftRight>() {
+	static final Pool<LeftRightTile> lrPool = new Pool<LeftRightTile>() {
 		@Override
-		protected LeftRight newObject() {
-			return new LeftRight();
+		protected LeftRightTile newObject() {
+			return new LeftRightTile();
 		}
 	};
 
-	public UndirectedTileBoard(int width, int height) {
-		super(width, height, UndirectedTile.class);
+	public DirectionalTileBoard(int width, int height) {
+		super(width, height, DirectionalTile.class);
 	}
 
 	public final void toRect() {
 		int width = getWidth();
 		int height = getHeight();
-		UndirectedTile[][] nodes = getTiles();
+		DirectionalTile[][] nodes = getTiles();
 		for (int x = 1; x < width - 1; x++) {
 			for (int y = 1; y < height - 1; y++) {
 				nodes[x][y] = obtainEmpty(x, y);
@@ -81,90 +81,90 @@ public class UndirectedTileBoard extends Board<UndirectedTile> implements
 		nodes[0][height - 1] = obtainTR(0, height - 1);
 	}
 
-	private UndirectedEmpty obtainEmpty(int x, int y) {
-		UndirectedEmpty e = emptyPool.obtain();
+	private NoDirectionTile obtainEmpty(int x, int y) {
+		NoDirectionTile e = emptyPool.obtain();
 		e.setup(this, x, y);
 		return e;
 	}
 
-	private TopLeft obtainTL(int x, int y) {
-		TopLeft tl = tlPool.obtain();
+	private TopLeftTile obtainTL(int x, int y) {
+		TopLeftTile tl = tlPool.obtain();
 		tl.setup(this, x, y);
 		return tl;
 	}
 
-	private TopRight obtainTR(int x, int y) {
-		TopRight tr = trPool.obtain();
+	private TopRightTile obtainTR(int x, int y) {
+		TopRightTile tr = trPool.obtain();
 		tr.setup(this, x, y);
 		return tr;
 	}
 
-	private TopBottom obtainTB(int x, int y) {
-		TopBottom tb = tbPool.obtain();
+	private TopBottomTile obtainTB(int x, int y) {
+		TopBottomTile tb = tbPool.obtain();
 		tb.setup(this, x, y);
 		return tb;
 	}
 
-	private BottomLeft obtainBL(int x, int y) {
-		BottomLeft bl = blPool.obtain();
+	private BottomLeftTile obtainBL(int x, int y) {
+		BottomLeftTile bl = blPool.obtain();
 		bl.setup(this, x, y);
 		return bl;
 	}
 
-	private BottomRight obtainBR(int x, int y) {
-		BottomRight br = brPool.obtain();
+	private BottomRightTile obtainBR(int x, int y) {
+		BottomRightTile br = brPool.obtain();
 		br.setup(this, x, y);
 		return br;
 	}
 
-	private LeftRight obtainLR(int x, int y) {
-		LeftRight lr = lrPool.obtain();
+	private LeftRightTile obtainLR(int x, int y) {
+		LeftRightTile lr = lrPool.obtain();
 		lr.setup(this, x, y);
 		return lr;
 	}
 
 	@Override
 	public void dispose() {
-		UndirectedTileVisitor freer = new UndirectedTileVisitor() {
+		DirectionalTileVisitor freer = new DirectionalTileVisitor() {
 
 			@Override
-			public void visitTopRight(TopRight topRight) {
+			public void visitTopRight(TopRightTile topRight) {
 				trPool.free(topRight);
 			}
 
 			@Override
-			public void visitTopLeft(TopLeft topLeft) {
+			public void visitTopLeft(TopLeftTile topLeft) {
 				tlPool.free(topLeft);
 			}
 
 			@Override
-			public void visitTopBottom(TopBottom topBottom) {
+			public void visitTopBottom(TopBottomTile topBottom) {
 				tbPool.free(topBottom);
 			}
 
 			@Override
-			public void visitLeftRight(LeftRight leftRight) {
+			public void visitLeftRight(LeftRightTile leftRight) {
 				lrPool.free(leftRight);
 			}
 
 			@Override
-			public void visitEmpty(UndirectedEmpty empty) {
+			public void visitEmpty(NoDirectionTile empty) {
 				emptyPool.free(empty);
 			}
 
 			@Override
-			public void visitBottomRight(BottomRight bottomRight) {
+			public void visitBottomRight(BottomRightTile bottomRight) {
 				brPool.free(bottomRight);
 			}
 
 			@Override
-			public void visitBottomLeft(BottomLeft bottomLeft) {
+			public void visitBottomLeft(BottomLeftTile bottomLeft) {
 				blPool.free(bottomLeft);
 			}
 		};
-		UndirectedTile[][] nodes = getTiles();
-		for (UndirectedTile[] arr : nodes) {
-			for (UndirectedTile node : arr) {
+		DirectionalTile[][] nodes = getTiles();
+		for (DirectionalTile[] arr : nodes) {
+			for (DirectionalTile node : arr) {
 				if (node != null) {
 					node.acceptVisitor(freer);
 				}
@@ -173,12 +173,12 @@ public class UndirectedTileBoard extends Board<UndirectedTile> implements
 	}
 
 	@Override
-	public UndirectedTile getTile(int x, int y) {
+	public DirectionalTile getTile(int x, int y) {
 		return super.getTile(x, y);
 	}
 
 	@Override
-	public UndirectedTile getTileOrNull(int x, int y) {
+	public DirectionalTile getTileOrNull(int x, int y) {
 		return super.getTileOrNull(x, y);
 	}
 
@@ -186,44 +186,44 @@ public class UndirectedTileBoard extends Board<UndirectedTile> implements
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		final char[] character = new char[1];
-		UndirectedTileVisitor visitor = new UndirectedTileVisitor() {
+		DirectionalTileVisitor visitor = new DirectionalTileVisitor() {
 
 			@Override
-			public void visitTopRight(TopRight topRight) {
+			public void visitTopRight(TopRightTile topRight) {
 				character[0] = '└'; // '┌', '┐', '└', '┘', '-', '|'
 			}
 
 			@Override
-			public void visitTopLeft(TopLeft topLeft) {
+			public void visitTopLeft(TopLeftTile topLeft) {
 				character[0] = '┘';
 			}
 
 			@Override
-			public void visitTopBottom(TopBottom topBottom) {
+			public void visitTopBottom(TopBottomTile topBottom) {
 				character[0] = '|';
 			}
 
 			@Override
-			public void visitLeftRight(LeftRight leftRight) {
+			public void visitLeftRight(LeftRightTile leftRight) {
 				character[0] = '-';
 			}
 
 			@Override
-			public void visitEmpty(UndirectedEmpty empty) {
+			public void visitEmpty(NoDirectionTile empty) {
 				character[0] = ' ';
 			}
 
 			@Override
-			public void visitBottomRight(BottomRight bottomRight) {
+			public void visitBottomRight(BottomRightTile bottomRight) {
 				character[0] = '┌';
 			}
 
 			@Override
-			public void visitBottomLeft(BottomLeft bottomLeft) {
+			public void visitBottomLeft(BottomLeftTile bottomLeft) {
 				character[0] = '┐';
 			}
 		};
-		UndirectedTile[][] nodes = getTiles();
+		DirectionalTile[][] nodes = getTiles();
 		int width = getWidth();
 		int height = getHeight();
 		for (int y = 0; y < height; y++) {
@@ -239,7 +239,7 @@ public class UndirectedTileBoard extends Board<UndirectedTile> implements
 	}
 
 	public GroupedTileBoard toGroupedTileBoard() {
-		UndirectedTile[][] nodes = getTiles();
+		DirectionalTile[][] nodes = getTiles();
 		GroupedTileBoard result = new GroupedTileBoard(getWidth(), getHeight());
 		GroupedTile[][] groupNodes = result.getTiles();
 		for (int x = 0; x < getWidth(); x++) {
@@ -252,18 +252,23 @@ public class UndirectedTileBoard extends Board<UndirectedTile> implements
 	}
 
 	@Override
-	protected Board<UndirectedTile> instantiate(int width, int height) {
-		return new UndirectedTileBoard(width, height);
+	protected Board<DirectionalTile> instantiate(int width, int height) {
+		return new DirectionalTileBoard(width, height);
 	}
 
 	@Override
-	public UndirectedTileBoard shallowCopyHorizontalFlipped() {
-		UndirectedTileBoard copy = (UndirectedTileBoard) super
+	public DirectionalTileBoard shallowCopy() {
+		return (DirectionalTileBoard) super.shallowCopy();
+	}
+
+	@Override
+	public DirectionalTileBoard shallowCopyHorizontalFlipped() {
+		DirectionalTileBoard copy = (DirectionalTileBoard) super
 				.shallowCopyHorizontalFlipped();
 		int width = getWidth();
 		int height = getHeight();
-		UndirectedTile[][] tiles = copy.getTiles();
-		UndirectedTile current;
+		DirectionalTile[][] tiles = copy.getTiles();
+		DirectionalTile current;
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
 				current = tiles[x][y];
@@ -275,13 +280,13 @@ public class UndirectedTileBoard extends Board<UndirectedTile> implements
 	}
 
 	@Override
-	public UndirectedTileBoard shallowCopyVerticalFlipped() {
-		UndirectedTileBoard copy = (UndirectedTileBoard) super
+	public DirectionalTileBoard shallowCopyVerticalFlipped() {
+		DirectionalTileBoard copy = (DirectionalTileBoard) super
 				.shallowCopyHorizontalFlipped();
 		int width = getWidth();
 		int height = getHeight();
-		UndirectedTile[][] tiles = copy.getTiles();
-		UndirectedTile current;
+		DirectionalTile[][] tiles = copy.getTiles();
+		DirectionalTile current;
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
 				current = tiles[x][y];

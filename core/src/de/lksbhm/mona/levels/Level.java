@@ -1,29 +1,52 @@
 package de.lksbhm.mona.levels;
 
+import com.badlogic.gdx.utils.Disposable;
+
 import de.lksbhm.gdx.contexts.ContextImplementation;
 import de.lksbhm.mona.puzzle.Puzzle;
-import de.lksbhm.mona.ui.screens.AbstractScreen;
 
-public abstract class Level extends ContextImplementation {
+/**
+ * Levels always belong to a package, otherwise they would just be mere puzzles.
+ *
+ */
+public abstract class Level extends ContextImplementation implements Disposable {
+
+	private final String id;
+	private final LevelPackage pack;
 	private final boolean solved = false;
+	private Puzzle p;
 
-	private AbstractScreen view;
-
-	public void setView(AbstractScreen view) {
-		this.view = view;
+	public Level(LevelPackage pack, String id) {
+		this.pack = pack;
+		this.id = id;
 	}
-
-	public AbstractScreen getView() {
-		return view;
-	}
-
-	public abstract Puzzle getPuzzle();
 
 	public boolean isSolved() {
 		return solved;
 	}
 
-	public abstract String getPackageId();
+	public Puzzle getPuzzle() {
+		if (p == null) {
+			p = instantiatePuzzle();
+		}
+		return p;
+	}
 
-	public abstract String getLevelId();
+	protected abstract Puzzle instantiatePuzzle();
+
+	public String getLevelId() {
+		return id;
+	}
+
+	public LevelPackage getPackage() {
+		return pack;
+	}
+
+	@Override
+	public void dispose() {
+		if (p != null) {
+			p.dispose();
+			p = null;
+		}
+	}
 }

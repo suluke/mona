@@ -12,20 +12,20 @@ import com.badlogic.gdx.utils.ReflectionPool;
 import de.lksbhm.mona.puzzle.Piece.Type;
 import de.lksbhm.mona.puzzle.representations.Board;
 import de.lksbhm.mona.puzzle.representations.Direction;
-import de.lksbhm.mona.puzzle.representations.undirected.UndirectedTileBoard;
+import de.lksbhm.mona.puzzle.representations.directional.DirectionalTileBoard;
 
 public class Puzzle extends Board<Piece> implements Disposable {
 	static final Pool<Piece> fieldPool = new ReflectionPool<Piece>(Piece.class);
-	private final UndirectedTileBoard solution;
+	private final DirectionalTileBoard solution;
 	private final ArrayList<PuzzleChangedListener> listeners = new ArrayList<PuzzleChangedListener>();
 	private final HashSet<Piece> circleRoots = new HashSet<Piece>();
 	private final boolean[][] isInvalid = new boolean[getWidth()][getHeight()];
 
-	public Puzzle(UndirectedTileBoard solution, int width, int height) {
+	public Puzzle(DirectionalTileBoard solution, int width, int height) {
 		this(solution, width, height, true);
 	}
 
-	private Puzzle(UndirectedTileBoard solution, int width, int height,
+	private Puzzle(DirectionalTileBoard solution, int width, int height,
 			boolean initializeTiles) {
 		super(width, height, Piece.class);
 		this.solution = solution;
@@ -57,7 +57,7 @@ public class Puzzle extends Board<Piece> implements Disposable {
 	/**
 	 * @return the solution
 	 */
-	public UndirectedTileBoard getSolution() {
+	public DirectionalTileBoard getSolution() {
 		return solution;
 	}
 

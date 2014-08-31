@@ -5,12 +5,12 @@ import java.util.Random;
 import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.mona.Settings;
 import de.lksbhm.mona.levels.Difficulty;
+import de.lksbhm.mona.puzzle.representations.directional.DirectionalTileBoard;
 import de.lksbhm.mona.puzzle.representations.grouped.GroupedTile;
 import de.lksbhm.mona.puzzle.representations.grouped.GroupedTileBoard;
 import de.lksbhm.mona.puzzle.representations.grouped.TileGroupType;
 import de.lksbhm.mona.puzzle.representations.linked.LinkedTileBoard;
 import de.lksbhm.mona.puzzle.representations.linked.LinkedTileBoardGenerator;
-import de.lksbhm.mona.puzzle.representations.undirected.UndirectedTileBoard;
 
 public class Generator {
 	private Generator() {
@@ -33,11 +33,11 @@ public class Generator {
 	public static Puzzle generate(Difficulty d, Random random,
 			float straightStoneProbability, float edgeStoneProbability) {
 		Settings settings = (Settings) LksBhmGame.getGame().getSettings();
-		int minWidth = settings.getMinPuzzleWidthForDifficulty(d);
-		int maxWidth = settings.getMaxPuzzleWidthForDifficulty(d);
+		int minWidth = settings.statics.getMinPuzzleWidthForDifficulty(d);
+		int maxWidth = settings.statics.getMaxPuzzleWidthForDifficulty(d);
 		int width = minWidth + random.nextInt(maxWidth - minWidth + 1);
-		int minHeight = settings.getMinPuzzleHeightForDifficulty(d);
-		int maxHeight = settings.getMaxPuzzleHeightForDifficulty(d);
+		int minHeight = settings.statics.getMinPuzzleHeightForDifficulty(d);
+		int maxHeight = settings.statics.getMaxPuzzleHeightForDifficulty(d);
 		int height = minHeight + random.nextInt(maxHeight - minHeight + 1);
 		return generate(width, height, random, straightStoneProbability,
 				edgeStoneProbability);
@@ -47,7 +47,7 @@ public class Generator {
 			float straightStoneProbability, float edgeStoneProbability) {
 		LinkedTileBoard path = LinkedTileBoardGenerator.generateBoard(width,
 				height, random);
-		UndirectedTileBoard solution = path.toUndirected();
+		DirectionalTileBoard solution = path.toUndirected();
 		Puzzle result = new Puzzle(solution, width, height);
 		placeStones(result, random, straightStoneProbability,
 				edgeStoneProbability);

@@ -4,6 +4,10 @@ import com.badlogic.gdx.assets.AssetManager;
 
 public class PackagesListScreen extends AbstractScreen {
 
+	public PackagesListScreen() {
+		setClearColor(.1f, .1f, .1f, 1);
+	}
+
 	@Override
 	public void onResourcesLoaded(AssetManager manager) {
 		// TODO Auto-generated method stub

@@ -1,73 +1,42 @@
 package de.lksbhm.mona;
 
-import de.lksbhm.mona.levels.Difficulty;
+import java.util.ArrayList;
 
-public class Settings implements de.lksbhm.gdx.Settings {
-	public int getMinPuzzleWidthForDifficulty(Difficulty d) {
-		switch (d) {
-		case VERY_EASY:
-			return 2;
-		case EASY:
-			return 4;
-		case MEDIUM:
-			return 6;
-		case HARD:
-			return 8;
-		case VERY_HARD:
-			return 10;
-		default:
-			throw new RuntimeException();
-		}
+import de.lksbhm.mona.levels.Level;
+import de.lksbhm.mona.levels.LevelPackage;
+
+public class Settings extends de.lksbhm.gdx.Settings {
+	public StaticSettings statics = new StaticSettings();
+
+	public String getCurrentUserName() {
+		return "default-user";
 	}
 
-	public int getMaxPuzzleWidthForDifficulty(Difficulty d) {
-		switch (d) {
-		case VERY_EASY:
-			return 3;
-		case EASY:
-			return 5;
-		case MEDIUM:
-			return 7;
-		case HARD:
-			return 9;
-		case VERY_HARD:
-			return 11;
-		default:
-			throw new RuntimeException();
-		}
+	public String getEscapedCurrentUserName() {
+		return getCurrentUserName();
 	}
 
-	public int getMinPuzzleHeightForDifficulty(Difficulty d) {
-		switch (d) {
-		case VERY_EASY:
-			return 3;
-		case EASY:
-			return 5;
-		case MEDIUM:
-			return 7;
-		case HARD:
-			return 9;
-		case VERY_HARD:
-			return 11;
-		default:
-			throw new RuntimeException();
+	public String[] getSolvedLevelIdsForPackage(LevelPackage pack) {
+		ArrayList<String> list = new ArrayList<String>();
+		String key;
+		for (Level level : pack) {
+			key = pack.getPackageId() + '/' + level.getLevelId() + ".isSolved";
+			if (getBoolean(key, getEscapedCurrentUserName())) {
+				list.add(level.getLevelId());
+			}
 		}
+		return list.toArray(new String[list.size()]);
 	}
 
-	public int getMaxPuzzleHeightForDifficulty(Difficulty d) {
-		switch (d) {
-		case VERY_EASY:
-			return 4;
-		case EASY:
-			return 6;
-		case MEDIUM:
-			return 8;
-		case HARD:
-			return 10;
-		case VERY_HARD:
-			return 12;
-		default:
-			throw new RuntimeException();
+	public void putSolveldLevelIdForPackage(String id, LevelPackage pack) {
+		String key;
+		for (Level level : pack) {
+			key = pack.getPackageId() + '/' + level.getLevelId() + ".isSolved";
+			if (level.isSolved()) {
+				putBoolean(key, true, getEscapedCurrentUserName());
+			} else {
+				putBoolean(key, false, getEscapedCurrentUserName());
+			}
 		}
 	}
 }

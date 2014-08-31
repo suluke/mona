@@ -1,38 +1,25 @@
 package de.lksbhm.mona.levels;
 
+import java.util.Random;
+
+import de.lksbhm.mona.puzzle.Generator;
 import de.lksbhm.mona.puzzle.Puzzle;
 
 public class GeneratedLevel extends Level {
 
-	private final Puzzle p;
-	private String levelId = "generated";
-	private String packageId = "generated";
+	private final long seed;
+	private final Random random;
 
-	public GeneratedLevel(Puzzle p) {
-		this.p = p;
+	public GeneratedLevel(long seed, Random random, LevelPackage pack, String id) {
+		super(pack, id);
+		this.random = random;
+		this.seed = seed;
 	}
 
 	@Override
-	public Puzzle getPuzzle() {
-		return p;
+	protected Puzzle instantiatePuzzle() {
+		random.setSeed(seed);
+		return Generator.generate(getPackage().getDifficulty(), random, 1.f,
+				1.f);
 	}
-
-	public void setLevelId(String levelId) {
-		this.levelId = levelId;
-	}
-
-	public void setPackageId(String packageId) {
-		this.packageId = packageId;
-	}
-
-	@Override
-	public String getPackageId() {
-		return packageId;
-	}
-
-	@Override
-	public String getLevelId() {
-		return levelId;
-	}
-
 }

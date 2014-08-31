@@ -6,15 +6,15 @@ import com.badlogic.gdx.utils.ReflectionPool;
 
 import de.lksbhm.mona.puzzle.representations.Board;
 import de.lksbhm.mona.puzzle.representations.Direction;
-import de.lksbhm.mona.puzzle.representations.undirected.BottomLeft;
-import de.lksbhm.mona.puzzle.representations.undirected.BottomRight;
-import de.lksbhm.mona.puzzle.representations.undirected.LeftRight;
-import de.lksbhm.mona.puzzle.representations.undirected.TopBottom;
-import de.lksbhm.mona.puzzle.representations.undirected.TopLeft;
-import de.lksbhm.mona.puzzle.representations.undirected.TopRight;
-import de.lksbhm.mona.puzzle.representations.undirected.UndirectedEmpty;
-import de.lksbhm.mona.puzzle.representations.undirected.UndirectedTile;
-import de.lksbhm.mona.puzzle.representations.undirected.UndirectedTileBoard;
+import de.lksbhm.mona.puzzle.representations.directional.BottomLeftTile;
+import de.lksbhm.mona.puzzle.representations.directional.BottomRightTile;
+import de.lksbhm.mona.puzzle.representations.directional.LeftRightTile;
+import de.lksbhm.mona.puzzle.representations.directional.TopBottomTile;
+import de.lksbhm.mona.puzzle.representations.directional.TopLeftTile;
+import de.lksbhm.mona.puzzle.representations.directional.TopRightTile;
+import de.lksbhm.mona.puzzle.representations.directional.NoDirectionTile;
+import de.lksbhm.mona.puzzle.representations.directional.DirectionalTile;
+import de.lksbhm.mona.puzzle.representations.directional.DirectionalTileBoard;
 
 public class LinkedTileBoard extends Board<LinkedTile> implements Disposable {
 	static final Pool<LinkedTile> directedNodePool = new ReflectionPool<LinkedTile>(
@@ -75,11 +75,11 @@ public class LinkedTileBoard extends Board<LinkedTile> implements Disposable {
 		return builder.toString();
 	}
 
-	public UndirectedTileBoard toUndirected() {
-		UndirectedTileBoard result = new UndirectedTileBoard(getWidth(),
+	public DirectionalTileBoard toUndirected() {
+		DirectionalTileBoard result = new DirectionalTileBoard(getWidth(),
 				getHeight());
 		LinkedTile[][] directedNodes = getTiles();
-		UndirectedTile[][] undirectedNodes = result.getTiles();
+		DirectionalTile[][] undirectedNodes = result.getTiles();
 		int x;
 		int y;
 		for (LinkedTile[] array : directedNodes) {
@@ -93,15 +93,15 @@ public class LinkedTileBoard extends Board<LinkedTile> implements Disposable {
 		return result;
 	}
 
-	private UndirectedTile undirectedFromDirectedNode(LinkedTile node, int x,
-			int y, Board<UndirectedTile> b) {
+	private DirectionalTile undirectedFromDirectedNode(LinkedTile node, int x,
+			int y, Board<DirectionalTile> b) {
 		int nodeX = node.getX();
 		int nodeY = node.getY();
 		Direction first;
 		Direction second;
 		LinkedTile parent = node.getParent();
 		if (parent == null) {
-			UndirectedEmpty empty = new UndirectedEmpty();
+			NoDirectionTile empty = new NoDirectionTile();
 			empty.setup(b, x, y);
 			return empty;
 		}
@@ -138,20 +138,20 @@ public class LinkedTileBoard extends Board<LinkedTile> implements Disposable {
 			first = second;
 			second = swap;
 		}
-		UndirectedTile result;
+		DirectionalTile result;
 		switch (first) {
 		case UP: {
 			switch (second) {
 			case DOWN: {
-				result = new TopBottom();
+				result = new TopBottomTile();
 				break;
 			}
 			case LEFT: {
-				result = new TopLeft();
+				result = new TopLeftTile();
 				break;
 			}
 			case RIGHT: {
-				result = new TopRight();
+				result = new TopRightTile();
 				break;
 			}
 			default:
@@ -162,11 +162,11 @@ public class LinkedTileBoard extends Board<LinkedTile> implements Disposable {
 		case DOWN: {
 			switch (second) {
 			case LEFT: {
-				result = new BottomLeft();
+				result = new BottomLeftTile();
 				break;
 			}
 			case RIGHT: {
-				result = new BottomRight();
+				result = new BottomRightTile();
 				break;
 			}
 			default:
@@ -176,7 +176,7 @@ public class LinkedTileBoard extends Board<LinkedTile> implements Disposable {
 		}
 		case LEFT: {
 			if (second == Direction.RIGHT) {
-				result = new LeftRight();
+				result = new LeftRightTile();
 			} else {
 				throw new RuntimeException();
 			}
