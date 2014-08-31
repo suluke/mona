@@ -16,8 +16,10 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.gdx.Router;
+import de.lksbhm.gdx.contexts.AbstractTemplateContextListener;
 import de.lksbhm.gdx.ui.screens.transitions.InterpolateClearColor;
 import de.lksbhm.gdx.ui.screens.transitions.SlideInRight;
+import de.lksbhm.mona.levels.GeneratedLevel;
 import de.lksbhm.mona.puzzle.Generator;
 import de.lksbhm.mona.puzzle.Puzzle;
 
@@ -39,6 +41,26 @@ public class MainMenuScreen extends AbstractScreen {
 
 	public MainMenuScreen() {
 		setClearColor(0.518f, 0.863f, 0.796f, 1f);
+		LksBhmGame
+				.getGame()
+				.getContextManager()
+				.addListener(
+						new AbstractTemplateContextListener<GeneratedLevel>(
+								GeneratedLevel.class) {
+							@Override
+							protected void onEnterContext(GeneratedLevel context) {
+								System.out.println("Enter level "
+										+ context.getPackageId() + "/"
+										+ context.getLevelId());
+
+							}
+
+							@Override
+							protected void onLeaveContext(GeneratedLevel context) {
+								// TODO Auto-generated method stub
+
+							}
+						});
 	}
 
 	private void setupWidgets() {
@@ -51,6 +73,8 @@ public class MainMenuScreen extends AbstractScreen {
 				PuzzleScreen ps = router.obtainScreen(PuzzleScreen.class);
 				Puzzle puzzle = Generator.generate(5, 10,
 						new RandomXS128(1, 4), 1.0f, 1.0f);
+				GeneratedLevel level = new GeneratedLevel(puzzle);
+				level.setView(ps);
 				ps.setPuzzle(puzzle);
 				// TODO implement pooling
 				SlideInRight slide = new SlideInRight();
@@ -58,6 +82,7 @@ public class MainMenuScreen extends AbstractScreen {
 				slide.runParallel(blendColors);
 				slide.setDuration(.6f);
 				router.changeScreen(ps, slide);
+				level.enterContext();
 			}
 		});
 

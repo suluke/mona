@@ -8,6 +8,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.SkinLoader.SkinParameter;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
+import de.lksbhm.gdx.contexts.ContextManager;
 import de.lksbhm.gdx.resources.ResourceConsumer;
 import de.lksbhm.gdx.resources.ResourceConsumerManager;
 import de.lksbhm.gdx.ui.screens.TransitionableResettableConsumerScreen;
@@ -18,8 +19,10 @@ public abstract class LksBhmGame extends Game {
 	private final String defaultSkinPath;
 	private final String defaultSkinAtlasPath;
 
-	private AssetManager assetManager;
-	private ResourceConsumerManager resourceConsumerManager;
+	private final AssetManager assetManager = new AssetManager();
+	private final ResourceConsumerManager resourceConsumerManager = new ResourceConsumerManager(
+			this);
+	private final ContextManager contextManager = new ContextManager();
 	private Router router;
 	private Skin defaultSkin;
 	private int routerHistorySize = 0;
@@ -49,8 +52,6 @@ public abstract class LksBhmGame extends Game {
 		} else {
 			Gdx.app.setLogLevel(Application.LOG_NONE);
 		}
-		assetManager = new AssetManager();
-		resourceConsumerManager = new ResourceConsumerManager(this);
 		router = new Router(this, routerHistorySize);
 
 		initialize();
@@ -117,4 +118,8 @@ public abstract class LksBhmGame extends Game {
 
 	public abstract void animateAssetManagerLoad(AssetManager manager,
 			Class<? extends ResourceConsumer> requester);
+
+	public ContextManager getContextManager() {
+		return contextManager;
+	}
 }
