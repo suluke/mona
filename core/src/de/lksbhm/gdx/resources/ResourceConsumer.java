@@ -9,6 +9,4 @@ public interface ResourceConsumer extends Disposable {
 	void onResourcesLoaded(AssetManager manager);
 
 	boolean isRequestingLoadingAnimation();
-
-	long getEstimatedMemoryUsage();
 }

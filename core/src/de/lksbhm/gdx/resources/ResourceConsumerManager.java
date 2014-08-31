@@ -95,8 +95,7 @@ public class ResourceConsumerManager {
 		while (memoryStrategy.isReleaseRequired()) {
 			ResourceConsumer consumer = lruCache.evict();
 			consumer.dispose();
-			memoryStrategy.notifyReleaseEstimate(consumer
-					.getEstimatedMemoryUsage());
+			memoryStrategy.notifyRelease(consumer);
 		}
 	}
 }

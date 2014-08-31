@@ -8,7 +8,7 @@ public class NeverReleaseStrategy implements MemoryUsageStrategy {
 	}
 
 	@Override
-	public void notifyReleaseEstimate(long estimate) {
+	public void notifyRelease(ResourceConsumer consumer) {
 	}
 
 }

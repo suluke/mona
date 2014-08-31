@@ -151,9 +151,4 @@ public abstract class AbstractScreen implements
 	@Override
 	public void requestResources(AssetManager manager) {
 	}
-
-	@Override
-	public long getEstimatedMemoryUsage() {
-		return 0;
-	}
 }
