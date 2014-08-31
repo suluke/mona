@@ -33,6 +33,7 @@ class PuzzleActorInput implements EventListener {
 			dragListener.dragStop(null, 0, 0, 0);
 			dragListener.cancel();
 		}
+		clickListener.cancel();
 	}
 
 	private class DragListener extends
@@ -48,6 +49,7 @@ class PuzzleActorInput implements EventListener {
 
 		@Override
 		public void dragStart(InputEvent event, float x, float y, int pointer) {
+			clickListener.cancel();
 			startPiece = PuzzleActorCoordinateHelper
 					.coordsToTileIncludingPadding(actor, x, y);
 		}
@@ -96,13 +98,27 @@ class PuzzleActorInput implements EventListener {
 
 	private class ClickListener extends
 			com.badlogic.gdx.scenes.scene2d.utils.ClickListener {
+		public ClickListener() {
+			// setTapCountInterval(0.1f);
+		}
+
 		@Override
 		public void clicked(InputEvent event, float x, float y) {
 			if (!dragListener.isDragging()) {
-				Piece clicked = PuzzleActorCoordinateHelper
-						.coordsToTileIncludingPadding(actor, x, y);
-				if (clicked != null) {
-					clicked.setInOutDirection(Direction.NONE, Direction.NONE);
+				switch (getTapCount()) {
+				case 1: {
+					Piece clicked = PuzzleActorCoordinateHelper
+							.coordsToTileIncludingPadding(actor, x, y);
+					if (clicked != null) {
+						clicked.setInOutDirection(Direction.NONE,
+								Direction.NONE);
+					}
+					break;
+				}
+				case 2: {
+					actor.getPuzzle().clearInOuDirections();
+					break;
+				}
 				}
 			}
 		}

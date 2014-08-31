@@ -363,4 +363,10 @@ public class Puzzle extends Board<Piece> implements Disposable {
 		circleRoots.add(tile);
 		return true;
 	}
+
+	public void clearInOuDirections() {
+		for (Piece p : this) {
+			p.setInOutDirection(Direction.NONE, Direction.NONE);
+		}
+	}
 }
