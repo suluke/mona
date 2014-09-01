@@ -114,6 +114,10 @@ public abstract class LksBhmGame extends Game {
 		super.setScreen(screen);
 	}
 
+	Screen getScreenRaw() {
+		return super.getScreen();
+	}
+
 	@Override
 	public TransitionableResettableConsumerScreen getScreen() {
 		return (TransitionableResettableConsumerScreen) super.getScreen();

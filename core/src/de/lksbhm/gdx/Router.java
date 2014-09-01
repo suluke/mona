@@ -1,11 +1,13 @@
 package de.lksbhm.gdx;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.Pool;
 
 import de.lksbhm.gdx.resources.ResourceConsumerObtainedCallback;
 import de.lksbhm.gdx.ui.screens.TransitionableResettableConsumerScreen;
 import de.lksbhm.gdx.ui.screens.transitions.Transition;
+import de.lksbhm.gdx.ui.screens.transitions.TransitionScreen;
 import de.lksbhm.gdx.util.CircularBuffer;
 import de.lksbhm.gdx.util.Pair;
 
@@ -49,7 +51,6 @@ public class Router {
 				}
 				changeScreen(s);
 			}
-
 		});
 	}
 
@@ -63,7 +64,6 @@ public class Router {
 				}
 				changeScreen(s, t);
 			}
-
 		});
 	}
 
@@ -74,8 +74,18 @@ public class Router {
 
 	public void changeScreen(TransitionableResettableConsumerScreen screen,
 			Transition t) {
-		saveCurrentScreenInHistory();
-		t.apply(game, game.getScreen(), screen);
+		Screen rawScreen = game.getScreenRaw();
+		TransitionableResettableConsumerScreen currentScreen;
+		if (rawScreen.getClass() == TransitionScreen.class) {
+			TransitionScreen transitionScreen = (TransitionScreen) rawScreen;
+			// still unsafe, but does the job in practice
+			currentScreen = (TransitionableResettableConsumerScreen) transitionScreen
+					.getToScreen();
+		} else {
+			currentScreen = game.getScreen();
+		}
+		saveScreenInHistory(currentScreen);
+		t.apply(game, currentScreen, screen);
 	}
 
 	public <T extends TransitionableResettableConsumerScreen> void obtainScreen(
@@ -117,12 +127,18 @@ public class Router {
 
 	public void saveCurrentScreenInHistory() {
 		TransitionableResettableConsumerScreen screen = game.getScreen();
+		saveScreenInHistory(screen);
+	}
+
+	private void saveScreenInHistory(
+			TransitionableResettableConsumerScreen screen) {
 		if (screen != null) {
+			TransitionableResettableConsumerScreen trcScreen = screen;
 			@SuppressWarnings("unchecked")
 			Pair<TransitionableResettableConsumerScreen, Object> pair = pairPool
 					.obtain();
-			pair.setFirst(screen);
-			pair.setSecond(screen.getState());
+			pair.setFirst(trcScreen);
+			pair.setSecond(trcScreen.getState());
 			history.push(pair);
 		}
 	}

@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 
 import de.lksbhm.gdx.ui.screens.TransitionableScreen;
 
-class TransitionScreen implements Screen {
+public class TransitionScreen implements Screen {
 
 	private static TransitionScreen instance;
 
@@ -21,6 +21,9 @@ class TransitionScreen implements Screen {
 	private AbstractTransition transition;
 	private final Color clearColor = new Color();
 
+	private TransitionScreen() {
+	}
+
 	public void setup(AbstractTransition t, TransitionableScreen fromScreen,
 			float x1, float y1, TransitionableScreen toScreen, float x2,
 			float y2) {
@@ -31,6 +34,10 @@ class TransitionScreen implements Screen {
 		this.x2 = x2;
 		this.y2 = y2;
 		this.transition = t;
+	}
+
+	public TransitionableScreen getToScreen() {
+		return toScreen;
 	}
 
 	/**
@@ -146,7 +153,7 @@ class TransitionScreen implements Screen {
 	public void dispose() {
 	}
 
-	public static TransitionScreen getInstance() {
+	static TransitionScreen getInstance() {
 		if (instance == null) {
 			instance = new TransitionScreen();
 		}
