@@ -98,28 +98,48 @@ class PuzzleActorInput implements EventListener {
 
 	private class ClickListener extends
 			com.badlogic.gdx.scenes.scene2d.utils.ClickListener {
+		private int lastClickedTileX = -1;
+		private int lastClickedTileY = -1;
+
 		public ClickListener() {
 			// setTapCountInterval(0.1f);
 		}
 
 		@Override
+		public void cancel() {
+			super.cancel();
+			lastClickedTileX = -1;
+			lastClickedTileY = -1;
+		}
+
+		@Override
 		public void clicked(InputEvent event, float x, float y) {
 			if (!dragListener.isDragging()) {
-				switch (getTapCount()) {
-				case 1: {
-					Piece clicked = PuzzleActorCoordinateHelper
-							.coordsToTileIncludingPadding(actor, x, y);
-					if (clicked != null) {
+				Piece clicked = PuzzleActorCoordinateHelper
+						.coordsToTileIncludingPadding(actor, x, y);
+				if (clicked != null) {
+					int clickedX = clicked.getX();
+					int clickedY = clicked.getY();
+					switch (getTapCount()) {
+					case 2: {
+						if (lastClickedTileX == clickedX
+								&& lastClickedTileY == clickedY) {
+							actor.getPuzzle().clearInOuDirections();
+							break;
+						}
+						// continue with 1
+					}
+					case 1: {
 						clicked.setInOutDirection(Direction.NONE,
 								Direction.NONE);
+						break;
 					}
-					break;
+					}
+					lastClickedTileX = clicked.getX();
+					lastClickedTileY = clicked.getY();
 				}
-				case 2: {
-					actor.getPuzzle().clearInOuDirections();
-					break;
-				}
-				}
+			} else {
+				cancel();
 			}
 		}
 	}
