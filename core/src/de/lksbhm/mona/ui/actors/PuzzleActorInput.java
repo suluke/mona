@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 
 import de.lksbhm.mona.puzzle.Piece;
+import de.lksbhm.mona.puzzle.Puzzle;
 import de.lksbhm.mona.puzzle.representations.Direction;
 
 class PuzzleActorInput implements EventListener {
@@ -49,6 +50,7 @@ class PuzzleActorInput implements EventListener {
 
 		@Override
 		public void dragStart(InputEvent event, float x, float y, int pointer) {
+			System.out.println("Start");
 			clickListener.cancel();
 			startPiece = PuzzleActorCoordinateHelper
 					.coordsToTileIncludingPadding(actor, x, y);
@@ -61,34 +63,75 @@ class PuzzleActorInput implements EventListener {
 			}
 			Piece currentPiece = PuzzleActorCoordinateHelper
 					.coordsToTileIncludingPadding(actor, x, y);
-			if (currentPiece != null && currentPiece != startPiece
-					&& startPiece.isNeighborOf(currentPiece)) {
-				// allow disconnect if going backwards
-				if (currentPiece == lastConnected) {
-					preventDisconnect = false;
+			if (currentPiece != null && currentPiece != startPiece) {
+				if (startPiece.isNeighborOf(currentPiece)) {
+					// allow disconnect if going backwards
+					if (currentPiece == lastConnected) {
+						preventDisconnect = false;
+					}
+					/*
+					 * unset connection if going over it, but only if we did not
+					 * create a connection yet
+					 */
+					if (!preventDisconnect
+							&& startPiece.isConnectedWith(currentPiece)) {
+						startPiece.disconnect(currentPiece);
+					} else {
+						// make connection
+						Direction neighborDir = startPiece
+								.getDirectionOfNeighbor(currentPiece);
+						startPiece.pushInOutDirection(neighborDir);
+						currentPiece.pushInOutDirection(neighborDir
+								.getOpposite());
+						preventDisconnect = true;
+						lastConnected = startPiece;
+					}
+					startPiece = currentPiece;
+				} else if (currentPiece.getX() == startPiece.getX()) {
+					int tileX = currentPiece.getX();
+					int startY = startPiece.getY();
+					int endY = currentPiece.getY();
+					if (endY < startY) {
+						int swap = endY;
+						endY = startY;
+						startY = swap;
+					}
+					Puzzle p = actor.getPuzzle();
+					Piece tile1;
+					Piece tile2;
+					for (int tileY = startY; tileY < endY; tileY++) {
+						tile1 = p.getTile(tileX, tileY);
+						tile2 = p.getTile(tileX, tileY + 1);
+						tile1.pushInOutDirection(Direction.DOWN);
+						tile2.pushInOutDirection(Direction.UP);
+					}
+					startPiece = currentPiece;
+				} else if (currentPiece.getY() == startPiece.getY()) {
+					int tileY = currentPiece.getY();
+					int startX = startPiece.getX();
+					int endX = currentPiece.getX();
+					if (endX < startX) {
+						int swap = endX;
+						endX = startX;
+						startX = swap;
+					}
+					Puzzle p = actor.getPuzzle();
+					Piece tile1;
+					Piece tile2;
+					for (int tileX = startX; tileX < endX; tileX++) {
+						tile1 = p.getTile(tileX, tileY);
+						tile2 = p.getTile(tileX + 1, tileY);
+						tile1.pushInOutDirection(Direction.RIGHT);
+						tile2.pushInOutDirection(Direction.LEFT);
+					}
+					startPiece = currentPiece;
 				}
-				/*
-				 * unset connection if going over it, but only if we did not
-				 * create a connection yet
-				 */
-				if (!preventDisconnect
-						&& startPiece.isConnectedWith(currentPiece)) {
-					startPiece.disconnect(currentPiece);
-				} else {
-					// make connection
-					Direction neighborDir = startPiece
-							.getDirectionOfNeighbor(currentPiece);
-					startPiece.pushInOutDirection(neighborDir);
-					currentPiece.pushInOutDirection(neighborDir.getOpposite());
-					preventDisconnect = true;
-					lastConnected = startPiece;
-				}
-				startPiece = currentPiece;
 			}
 		}
 
 		@Override
 		public void dragStop(InputEvent event, float x, float y, int pointer) {
+			System.out.println("Stop");
 			// Reset everything here as drag may be called before dragStart (?)
 			startPiece = null;
 			preventDisconnect = false;

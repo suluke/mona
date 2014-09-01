@@ -152,6 +152,9 @@ public class Piece extends Tile<Piece> {
 		// we also need to check if the connections are being continued
 		Piece thisIn = getNeighbor(in);
 		Piece thisOut = getNeighbor(out);
+		if (thisIn == null || thisOut == null) {
+			return false;
+		}
 		if (thisIn.in != in.getOpposite() && thisIn.out != in.getOpposite()) {
 			return false;
 		}
