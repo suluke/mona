@@ -37,7 +37,7 @@ public class DirectionalTileBoard extends Board<DirectionalTile> implements
 		DirectionalTile[][] nodes = getTiles();
 		for (int x = 1; x < width - 1; x++) {
 			for (int y = 1; y < height - 1; y++) {
-				nodes[x][y] = obtainEmpty(x, y);
+				nodes[x][y] = obtainNoDirection(x, y);
 			}
 		}
 		for (int x = 1; x < width - 1; x++) {
@@ -54,7 +54,7 @@ public class DirectionalTileBoard extends Board<DirectionalTile> implements
 		nodes[0][height - 1] = obtainTR(0, height - 1);
 	}
 
-	private NoDirectionTile obtainEmpty(int x, int y) {
+	private NoDirectionTile obtainNoDirection(int x, int y) {
 		NoDirectionTile e = emptyPool.obtain();
 		e.setup(this, x, y);
 		return e;
@@ -96,8 +96,8 @@ public class DirectionalTileBoard extends Board<DirectionalTile> implements
 		return lr;
 	}
 
-	public void setTileToEmpty(int x, int y) {
-		setTile(x, y, obtainEmpty(x, y));
+	public void setTileToNoDirection(int x, int y) {
+		setTile(x, y, obtainNoDirection(x, y));
 	}
 
 	public void setTileToTopLeft(int x, int y) {

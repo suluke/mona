@@ -3,8 +3,18 @@
 		"levels": [
 			{
 				"id": "1",
-				"size": 1,
-				"tutorial": "p00.Tutorial00"
+				"tutorial": "p00.Tutorial00",
+				"type": "LiterallyDefined",
+				"data": {
+					"tileTypes": [
+						["EMPTY",	"EMPTY",	"STRAIGHT",	"EMPTY"],
+						["EMPTY",	"EMPTY",	"EMPTY",	"EMPTY"]
+					],
+					"solution": [
+						["BottomRight",	"TopBottom",	"TopBottom",	"TopRight"],
+						["BottomLeft",	"TopBottom",	"TopBottom",	"TopLeft"]
+					]
+				}
 			}
 		]
 	}

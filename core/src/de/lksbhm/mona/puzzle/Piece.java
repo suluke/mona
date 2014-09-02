@@ -127,7 +127,18 @@ public class Piece extends Tile<Piece> {
 	}
 
 	public static enum Type {
-		EMPTY, EDGE, STRAIGHT,
+		EMPTY, EDGE, STRAIGHT, ;
+
+		public static Type fromString(String string) {
+			if ("EMPTY".equalsIgnoreCase(string)) {
+				return EMPTY;
+			} else if (("EDGE").equalsIgnoreCase(string)) {
+				return EDGE;
+			} else if ("STRAIGHT".equalsIgnoreCase(string)) {
+				return STRAIGHT;
+			}
+			throw new IllegalArgumentException("No such tile type: " + string);
+		}
 	}
 
 	public Type getType() {

@@ -4,12 +4,12 @@ import de.lksbhm.mona.puzzle.Piece;
 import de.lksbhm.mona.puzzle.Puzzle;
 import de.lksbhm.mona.puzzle.representations.directional.DirectionalTileBoard;
 
-public class LiteralDefinitionLevel extends Level {
+public class LiterallyDefinedLevel extends Level {
 
 	private final Piece.Type[][] tileTypes;
 	private final DirectionalTileBoard solution;
 
-	public LiteralDefinitionLevel(Piece.Type[][] tileTypes,
+	public LiterallyDefinedLevel(Piece.Type[][] tileTypes,
 			DirectionalTileBoard solution, LevelPackage pack, String id) {
 		super(pack, id);
 		this.tileTypes = tileTypes;

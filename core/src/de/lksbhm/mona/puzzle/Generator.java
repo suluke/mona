@@ -2,6 +2,8 @@ package de.lksbhm.mona.puzzle;
 
 import java.util.Random;
 
+import com.badlogic.gdx.Gdx;
+
 import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.mona.Settings;
 import de.lksbhm.mona.levels.Difficulty;
@@ -17,10 +19,14 @@ public class Generator {
 
 	}
 
+	private static final Random random = new Random();
+
 	public static Puzzle generate(float straightStoneProbability,
 			float edgeStoneProbability) {
-		return generate(new Random(), straightStoneProbability,
-				edgeStoneProbability);
+		long seed = random.nextLong();
+		Gdx.app.log("PuzzleGenerator", "Seed: " + seed);
+		Random r = new Random(seed);
+		return generate(r, straightStoneProbability, edgeStoneProbability);
 	}
 
 	public static Puzzle generate(Random random,

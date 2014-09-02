@@ -1,7 +1,5 @@
 package de.lksbhm.mona.ui.screens;
 
-import java.util.Random;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
@@ -84,8 +82,7 @@ public class MainMenuScreen extends AbstractScreen {
 						new ResourceConsumerObtainedCallback<PuzzleScreen>() {
 							@Override
 							public void onObtained(PuzzleScreen ps) {
-								Puzzle puzzle = Generator.generate(
-										new Random(), 1.f, 1.f);
+								Puzzle puzzle = Generator.generate(1.f, 1.f);
 								ps.setPuzzle(puzzle);
 								// TODO implement pooling
 								SlideInRight slide = new SlideInRight();

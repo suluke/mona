@@ -66,7 +66,7 @@ public class LinkedTileBoard extends Board<LinkedTile> implements Disposable {
 		int y = node.getY();
 		LinkedTile parent = node.getParent();
 		if (parent == null) {
-			b.setTileToEmpty(x, y);
+			b.setTileToNoDirection(x, y);
 			return;
 		}
 		first = node.getDirectionOfNeighbor(parent);
