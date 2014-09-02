@@ -74,6 +74,7 @@ public class Router {
 
 	public void changeScreen(TransitionableResettableConsumerScreen screen,
 			Transition t) {
+		Gdx.input.setInputProcessor(null);
 		Screen rawScreen = game.getScreenRaw();
 		TransitionableResettableConsumerScreen currentScreen;
 		if (rawScreen.getClass() == TransitionScreen.class) {

@@ -34,7 +34,6 @@ class PuzzleActorInput implements EventListener {
 			dragListener.dragStop(null, 0, 0, 0);
 			dragListener.cancel();
 		}
-		clickListener.cancel();
 	}
 
 	private class DragListener extends
@@ -50,8 +49,6 @@ class PuzzleActorInput implements EventListener {
 
 		@Override
 		public void dragStart(InputEvent event, float x, float y, int pointer) {
-			System.out.println("Start");
-			clickListener.cancel();
 			startPiece = PuzzleActorCoordinateHelper
 					.coordsToTileIncludingPadding(actor, x, y);
 		}
@@ -131,7 +128,6 @@ class PuzzleActorInput implements EventListener {
 
 		@Override
 		public void dragStop(InputEvent event, float x, float y, int pointer) {
-			System.out.println("Stop");
 			// Reset everything here as drag may be called before dragStart (?)
 			startPiece = null;
 			preventDisconnect = false;
