@@ -2,6 +2,9 @@ package de.lksbhm.mona.puzzle.representations.directional;
 
 public class NoDirectionTile extends DirectionalTile {
 
+	NoDirectionTile() {
+	}
+
 	@Override
 	public void acceptVisitor(DirectionalTileVisitor visitor) {
 		visitor.visitEmpty(this);

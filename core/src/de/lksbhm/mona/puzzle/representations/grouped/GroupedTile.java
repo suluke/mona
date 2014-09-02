@@ -5,7 +5,7 @@ import de.lksbhm.mona.puzzle.representations.Tile;
 
 public class GroupedTile extends Tile<GroupedTile> {
 
-	public GroupedTile() {
+	GroupedTile() {
 		super(GroupedTile.class);
 	}
 

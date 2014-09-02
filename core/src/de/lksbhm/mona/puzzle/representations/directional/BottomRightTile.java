@@ -2,8 +2,7 @@ package de.lksbhm.mona.puzzle.representations.directional;
 
 public class BottomRightTile extends DirectionalTile {
 
-	public BottomRightTile() {
-		// TODO Auto-generated constructor stub
+	BottomRightTile() {
 	}
 
 	@Override

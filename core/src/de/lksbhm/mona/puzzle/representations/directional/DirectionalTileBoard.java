@@ -2,6 +2,7 @@ package de.lksbhm.mona.puzzle.representations.directional;
 
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Pool;
+import com.badlogic.gdx.utils.ReflectionPool;
 
 import de.lksbhm.mona.puzzle.representations.Board;
 import de.lksbhm.mona.puzzle.representations.grouped.GroupedTile;
@@ -11,48 +12,20 @@ import de.lksbhm.mona.puzzle.representations.grouped.TileGroupType;
 public class DirectionalTileBoard extends Board<DirectionalTile> implements
 		Disposable {
 
-	static final Pool<NoDirectionTile> emptyPool = new Pool<NoDirectionTile>() {
-		@Override
-		protected NoDirectionTile newObject() {
-			return new NoDirectionTile();
-		}
-	};
-	static final Pool<TopLeftTile> tlPool = new Pool<TopLeftTile>() {
-		@Override
-		protected TopLeftTile newObject() {
-			return new TopLeftTile();
-		}
-	};
-	static final Pool<TopRightTile> trPool = new Pool<TopRightTile>() {
-		@Override
-		protected TopRightTile newObject() {
-			return new TopRightTile();
-		}
-	};
-	static final Pool<BottomLeftTile> blPool = new Pool<BottomLeftTile>() {
-		@Override
-		protected BottomLeftTile newObject() {
-			return new BottomLeftTile();
-		}
-	};
-	static final Pool<BottomRightTile> brPool = new Pool<BottomRightTile>() {
-		@Override
-		protected BottomRightTile newObject() {
-			return new BottomRightTile();
-		}
-	};
-	static final Pool<TopBottomTile> tbPool = new Pool<TopBottomTile>() {
-		@Override
-		protected TopBottomTile newObject() {
-			return new TopBottomTile();
-		}
-	};
-	static final Pool<LeftRightTile> lrPool = new Pool<LeftRightTile>() {
-		@Override
-		protected LeftRightTile newObject() {
-			return new LeftRightTile();
-		}
-	};
+	static final Pool<NoDirectionTile> emptyPool = new ReflectionPool<NoDirectionTile>(
+			NoDirectionTile.class);
+	static final Pool<TopLeftTile> tlPool = new ReflectionPool<TopLeftTile>(
+			TopLeftTile.class);
+	static final Pool<TopRightTile> trPool = new ReflectionPool<TopRightTile>(
+			TopRightTile.class);
+	static final Pool<BottomLeftTile> blPool = new ReflectionPool<BottomLeftTile>(
+			BottomLeftTile.class);
+	static final Pool<BottomRightTile> brPool = new ReflectionPool<BottomRightTile>(
+			BottomRightTile.class);
+	static final Pool<TopBottomTile> tbPool = new ReflectionPool<TopBottomTile>(
+			TopBottomTile.class);
+	static final Pool<LeftRightTile> lrPool = new ReflectionPool<LeftRightTile>(
+			LeftRightTile.class);
 
 	public DirectionalTileBoard(int width, int height) {
 		super(width, height, DirectionalTile.class);
@@ -123,6 +96,46 @@ public class DirectionalTileBoard extends Board<DirectionalTile> implements
 		return lr;
 	}
 
+	public void setTileToEmpty(int x, int y) {
+		setTile(x, y, obtainEmpty(x, y));
+	}
+
+	public void setTileToTopLeft(int x, int y) {
+		setTile(x, y, obtainTL(x, y));
+	}
+
+	public void setTileToTopRight(int x, int y) {
+		setTile(x, y, obtainTR(x, y));
+	}
+
+	public void setTileToTopBottom(int x, int y) {
+		setTile(x, y, obtainTB(x, y));
+	}
+
+	public void setTileToBottomLeft(int x, int y) {
+		setTile(x, y, obtainBL(x, y));
+	}
+
+	public void setTileToBottomRight(int x, int y) {
+		setTile(x, y, obtainBR(x, y));
+	}
+
+	public void setTileToLeftRight(int x, int y) {
+		setTile(x, y, obtainLR(x, y));
+	}
+
+	private void setTile(int x, int y, DirectionalTile tile) {
+		if (!isInBounds(x, y)) {
+			throw new RuntimeException();
+		}
+		DirectionalTile[][] tiles = getTiles();
+		DirectionalTile previous = tiles[x][y];
+		if (previous != null) {
+			previous.dispose();
+		}
+		tiles[x][y] = tile;
+	}
+
 	@Override
 	public void dispose() {
 		DirectionalTileVisitor freer = new DirectionalTileVisitor() {
@@ -182,62 +195,6 @@ public class DirectionalTileBoard extends Board<DirectionalTile> implements
 		return super.getTileOrNull(x, y);
 	}
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		final char[] character = new char[1];
-		DirectionalTileVisitor visitor = new DirectionalTileVisitor() {
-
-			@Override
-			public void visitTopRight(TopRightTile topRight) {
-				character[0] = '└'; // '┌', '┐', '└', '┘', '-', '|'
-			}
-
-			@Override
-			public void visitTopLeft(TopLeftTile topLeft) {
-				character[0] = '┘';
-			}
-
-			@Override
-			public void visitTopBottom(TopBottomTile topBottom) {
-				character[0] = '|';
-			}
-
-			@Override
-			public void visitLeftRight(LeftRightTile leftRight) {
-				character[0] = '-';
-			}
-
-			@Override
-			public void visitEmpty(NoDirectionTile empty) {
-				character[0] = ' ';
-			}
-
-			@Override
-			public void visitBottomRight(BottomRightTile bottomRight) {
-				character[0] = '┌';
-			}
-
-			@Override
-			public void visitBottomLeft(BottomLeftTile bottomLeft) {
-				character[0] = '┐';
-			}
-		};
-		DirectionalTile[][] nodes = getTiles();
-		int width = getWidth();
-		int height = getHeight();
-		for (int y = 0; y < height; y++) {
-			for (int x = 0; x < width; x++) {
-				nodes[x][y].acceptVisitor(visitor);
-				sb.append(character[0]);
-			}
-			if (y != height - 1) {
-				sb.append(System.lineSeparator());
-			}
-		}
-		return sb.toString();
-	}
-
 	public GroupedTileBoard toGroupedTileBoard() {
 		DirectionalTile[][] nodes = getTiles();
 		GroupedTileBoard result = new GroupedTileBoard(getWidth(), getHeight());
@@ -295,5 +252,61 @@ public class DirectionalTileBoard extends Board<DirectionalTile> implements
 			}
 		}
 		return copy;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		final char[] character = new char[1];
+		DirectionalTileVisitor visitor = new DirectionalTileVisitor() {
+
+			@Override
+			public void visitTopRight(TopRightTile topRight) {
+				character[0] = '└'; // '┌', '┐', '└', '┘', '-', '|'
+			}
+
+			@Override
+			public void visitTopLeft(TopLeftTile topLeft) {
+				character[0] = '┘';
+			}
+
+			@Override
+			public void visitTopBottom(TopBottomTile topBottom) {
+				character[0] = '|';
+			}
+
+			@Override
+			public void visitLeftRight(LeftRightTile leftRight) {
+				character[0] = '-';
+			}
+
+			@Override
+			public void visitEmpty(NoDirectionTile empty) {
+				character[0] = ' ';
+			}
+
+			@Override
+			public void visitBottomRight(BottomRightTile bottomRight) {
+				character[0] = '┌';
+			}
+
+			@Override
+			public void visitBottomLeft(BottomLeftTile bottomLeft) {
+				character[0] = '┐';
+			}
+		};
+		DirectionalTile[][] nodes = getTiles();
+		int width = getWidth();
+		int height = getHeight();
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
+				nodes[x][y].acceptVisitor(visitor);
+				sb.append(character[0]);
+			}
+			if (y != height - 1) {
+				sb.append(System.lineSeparator());
+			}
+		}
+		return sb.toString();
 	}
 }

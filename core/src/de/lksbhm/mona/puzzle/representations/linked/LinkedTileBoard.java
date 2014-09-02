@@ -6,14 +6,6 @@ import com.badlogic.gdx.utils.ReflectionPool;
 
 import de.lksbhm.mona.puzzle.representations.Board;
 import de.lksbhm.mona.puzzle.representations.Direction;
-import de.lksbhm.mona.puzzle.representations.directional.BottomLeftTile;
-import de.lksbhm.mona.puzzle.representations.directional.BottomRightTile;
-import de.lksbhm.mona.puzzle.representations.directional.LeftRightTile;
-import de.lksbhm.mona.puzzle.representations.directional.TopBottomTile;
-import de.lksbhm.mona.puzzle.representations.directional.TopLeftTile;
-import de.lksbhm.mona.puzzle.representations.directional.TopRightTile;
-import de.lksbhm.mona.puzzle.representations.directional.NoDirectionTile;
-import de.lksbhm.mona.puzzle.representations.directional.DirectionalTile;
 import de.lksbhm.mona.puzzle.representations.directional.DirectionalTileBoard;
 
 public class LinkedTileBoard extends Board<LinkedTile> implements Disposable {
@@ -54,104 +46,51 @@ public class LinkedTileBoard extends Board<LinkedTile> implements Disposable {
 		return super.getTileOrNull(x, y);
 	}
 
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		LinkedTile[][] nodes = getTiles();
-		int height = nodes[0].length;
-		for (int y = 0; y < height; y++) {
-			for (int x = 0; x < nodes.length; x++) {
-				LinkedTile node = nodes[x][y];
-				if (node.getParent() == null) {
-					builder.append(' ');
-				} else {
-					builder.append('O');
-				}
-			}
-			if (y != height - 1) {
-				builder.append(System.lineSeparator());
-			}
-		}
-		return builder.toString();
-	}
-
 	public DirectionalTileBoard toUndirected() {
 		DirectionalTileBoard result = new DirectionalTileBoard(getWidth(),
 				getHeight());
 		LinkedTile[][] directedNodes = getTiles();
-		DirectionalTile[][] undirectedNodes = result.getTiles();
-		int x;
-		int y;
+
 		for (LinkedTile[] array : directedNodes) {
-			for (LinkedTile directed : array) {
-				x = directed.getX();
-				y = directed.getY();
-				undirectedNodes[x][y] = undirectedFromDirectedNode(directed, x,
-						y, result);
+			for (LinkedTile linked : array) {
+				linkedToDirectionalNode(linked, result);
 			}
 		}
 		return result;
 	}
 
-	private DirectionalTile undirectedFromDirectedNode(LinkedTile node, int x,
-			int y, Board<DirectionalTile> b) {
-		int nodeX = node.getX();
-		int nodeY = node.getY();
+	private void linkedToDirectionalNode(LinkedTile node, DirectionalTileBoard b) {
 		Direction first;
 		Direction second;
+		int x = node.getX();
+		int y = node.getY();
 		LinkedTile parent = node.getParent();
 		if (parent == null) {
-			NoDirectionTile empty = new NoDirectionTile();
-			empty.setup(b, x, y);
-			return empty;
+			b.setTileToEmpty(x, y);
+			return;
 		}
+		first = node.getDirectionOfNeighbor(parent);
 		LinkedTile child = node.getChild();
-		if (parent.getX() == nodeX) {
-			if (parent.getY() < nodeY) {
-				first = Direction.UP;
-			} else {
-				first = Direction.DOWN;
-			}
-		} else {
-			if (parent.getX() < nodeX) {
-				first = Direction.LEFT;
-			} else {
-				first = Direction.RIGHT;
-			}
-		}
-		if (child.getX() == nodeX) {
-			if (child.getY() < nodeY) {
-				second = Direction.UP;
-			} else {
-				second = Direction.DOWN;
-			}
-		} else {
-			if (child.getX() < nodeX) {
-				second = Direction.LEFT;
-			} else {
-				second = Direction.RIGHT;
-			}
-		}
+		second = node.getDirectionOfNeighbor(child);
 
 		if (second.isGreater(first)) {
 			Direction swap = first;
 			first = second;
 			second = swap;
 		}
-		DirectionalTile result;
 		switch (first) {
 		case UP: {
 			switch (second) {
 			case DOWN: {
-				result = new TopBottomTile();
+				b.setTileToTopBottom(x, y);
 				break;
 			}
 			case LEFT: {
-				result = new TopLeftTile();
+				b.setTileToTopLeft(x, y);
 				break;
 			}
 			case RIGHT: {
-				result = new TopRightTile();
+				b.setTileToTopRight(x, y);
 				break;
 			}
 			default:
@@ -162,11 +101,11 @@ public class LinkedTileBoard extends Board<LinkedTile> implements Disposable {
 		case DOWN: {
 			switch (second) {
 			case LEFT: {
-				result = new BottomLeftTile();
+				b.setTileToBottomLeft(x, y);
 				break;
 			}
 			case RIGHT: {
-				result = new BottomRightTile();
+				b.setTileToBottomRight(x, y);
 				break;
 			}
 			default:
@@ -176,7 +115,7 @@ public class LinkedTileBoard extends Board<LinkedTile> implements Disposable {
 		}
 		case LEFT: {
 			if (second == Direction.RIGHT) {
-				result = new LeftRightTile();
+				b.setTileToLeftRight(x, y);
 			} else {
 				throw new RuntimeException();
 			}
@@ -185,8 +124,6 @@ public class LinkedTileBoard extends Board<LinkedTile> implements Disposable {
 		default:
 			throw new RuntimeException();
 		}
-		result.setup(b, x, y);
-		return result;
 	}
 
 	@Override
@@ -222,5 +159,26 @@ public class LinkedTileBoard extends Board<LinkedTile> implements Disposable {
 	@Override
 	protected Board<LinkedTile> instantiate(int width, int height) {
 		return new LinkedTileBoard(width, height, false);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		LinkedTile[][] nodes = getTiles();
+		int height = nodes[0].length;
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < nodes.length; x++) {
+				LinkedTile node = nodes[x][y];
+				if (node.getParent() == null) {
+					builder.append(' ');
+				} else {
+					builder.append('O');
+				}
+			}
+			if (y != height - 1) {
+				builder.append(System.lineSeparator());
+			}
+		}
+		return builder.toString();
 	}
 }

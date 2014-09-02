@@ -33,10 +33,7 @@ public abstract class Board<TileBaseType extends Tile<TileBaseType>> implements
 	}
 
 	public TileBaseType getTileOrNull(int x, int y) {
-		if (x < 0 || x >= width) {
-			return null;
-		}
-		if (y < 0 || y >= height) {
+		if (!isInBounds(x, y)) {
 			return null;
 		}
 		return nodes[x][y];
@@ -52,6 +49,10 @@ public abstract class Board<TileBaseType extends Tile<TileBaseType>> implements
 
 	public int getHeight() {
 		return height;
+	}
+
+	public boolean isInBounds(int x, int y) {
+		return x >= 0 && x < width && y >= 0 && y < height;
 	}
 
 	/**
