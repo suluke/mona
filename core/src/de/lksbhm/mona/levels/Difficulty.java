@@ -25,4 +25,19 @@ public enum Difficulty {
 			throw new RuntimeException();
 		}
 	}
+
+	public static Difficulty fromString(String string) {
+		if ("VERY_EASY".equalsIgnoreCase(string)) {
+			return VERY_EASY;
+		} else if ("EASY".equalsIgnoreCase(string)) {
+			return EASY;
+		} else if ("MEDIUM".equalsIgnoreCase(string)) {
+			return MEDIUM;
+		} else if ("HARD".equalsIgnoreCase(string)) {
+			return HARD;
+		} else if ("VERY_HARD".equalsIgnoreCase(string)) {
+			return VERY_HARD;
+		}
+		throw new RuntimeException("No difficulty with name: " + string);
+	}
 }

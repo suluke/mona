@@ -4,13 +4,19 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import de.lksbhm.gdx.LksBhmGame;
+import de.lksbhm.gdx.Router;
+import de.lksbhm.gdx.resources.ResourceConsumerObtainedCallback;
+import de.lksbhm.gdx.ui.screens.transitions.InterpolateClearColor;
+import de.lksbhm.gdx.ui.screens.transitions.SlideInRight;
 import de.lksbhm.mona.levels.LevelPackage;
 import de.lksbhm.mona.levels.LevelPackageCollection;
 
@@ -49,9 +55,31 @@ public class PackagesListScreen extends AbstractScreen {
 		Container<TextButton> buttonContainer;
 		packageButtons = new Container[state.levelPackages.size()];
 		for (int i = 0; i < state.levelPackages.size(); i++) {
-			LevelPackage pack = state.levelPackages.getPackage(i);
+			final LevelPackage pack = state.levelPackages.getPackage(i);
 			packageButton = new TextButton(pack.getPackageId(), LksBhmGame
 					.getGame().getDefaultSkin(), "play");
+			packageButton.addListener(new ClickListener() {
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					final Router router = LksBhmGame.getGame().getRouter();
+					router.obtainScreen(
+							PackageScreen.class,
+							new ResourceConsumerObtainedCallback<PackageScreen>() {
+								@Override
+								public void onObtained(
+										PackageScreen packageScreen) {
+									// TODO implement pooling
+									SlideInRight slide = new SlideInRight();
+									InterpolateClearColor blendColors = new InterpolateClearColor();
+									slide.runParallel(blendColors);
+									slide.setDuration(.6f);
+
+									packageScreen.setLevelPackage(pack);
+									router.changeScreen(packageScreen, slide);
+								}
+							});
+				}
+			});
 			buttonContainer = new Container<TextButton>(packageButton);
 			packageButtons[i] = buttonContainer;
 		}

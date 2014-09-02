@@ -4,6 +4,7 @@ import java.util.Calendar;
 
 public class LevelPackageManager {
 	private final Calendar today;
+	private LevelPackageCollection internalPackages = null;
 
 	public LevelPackageManager() {
 		Calendar now = Calendar.getInstance();
@@ -21,12 +22,9 @@ public class LevelPackageManager {
 	}
 
 	public LevelPackageCollection getInternalPackages() {
-		LevelPackageCollection collection = new LevelPackageCollection(1);
-		collection.setPackage(0, new InternalPackage());
-		return collection;
-	}
-
-	public int getInternalPackagesCount() {
-		return 0;
+		if (internalPackages == null) {
+			internalPackages = InternalPackageLoadHelper.getInternalPackages();
+		}
+		return internalPackages;
 	}
 }

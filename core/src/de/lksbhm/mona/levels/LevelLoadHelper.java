@@ -41,7 +41,7 @@ class LevelLoadHelper {
 		JsonValue data = json.get("data");
 		long seed = data.getLong("seed");
 		Random r;
-		if (data.hasChild("generator")) {
+		if (data.has("generator")) {
 			String generatorName = data.getString("generator");
 			Class<?> classWithName;
 			try {
@@ -121,7 +121,7 @@ class LevelLoadHelper {
 	}
 
 	private static JsonValue stripContainer(JsonValue json) {
-		if (json.hasChild(nameSpace)) {
+		if (json.has(nameSpace)) {
 			json = json.get(nameSpace).get("levels").get(0);
 		}
 		return json;
