@@ -49,4 +49,18 @@ public abstract class LevelPackage implements Iterable<Level> {
 			loaded = true;
 		}
 	}
+
+	public Level getLevelAfter(Level level) {
+		assertLevelsLoaded();
+		if (levels.contains(level)) {
+			for (int i = 0; i < size - 1; i++) {
+				if (levels.get(i).equals(level)) {
+					return levels.get(i + 1);
+				}
+			}
+			return null;
+		} else {
+			return levels.get(0);
+		}
+	}
 }

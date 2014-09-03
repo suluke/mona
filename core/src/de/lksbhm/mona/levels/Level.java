@@ -56,8 +56,7 @@ public abstract class Level extends ContextImplementation implements Disposable 
 		}
 	}
 
-	public Level getNext() {
-		// TODO
-		return null;
+	public Level getNextLevel() {
+		return pack.getLevelAfter(this);
 	}
 }

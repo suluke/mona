@@ -77,10 +77,10 @@ public class PackageScreen extends AbstractScreen {
 				public void clicked(InputEvent event, float x, float y) {
 					final Router router = LksBhmGame.getGame().getRouter();
 					router.obtainScreen(
-							LevelScreen.class,
-							new ResourceConsumerObtainedCallback<LevelScreen>() {
+							LevelScreenOne.class,
+							new ResourceConsumerObtainedCallback<LevelScreenOne>() {
 								@Override
-								public void onObtained(LevelScreen levelScreen) {
+								public void onObtained(LevelScreenOne levelScreen) {
 									levelScreen.setLevel(level);
 									// TODO implement pooling
 									SlideInRight slide = new SlideInRight();
