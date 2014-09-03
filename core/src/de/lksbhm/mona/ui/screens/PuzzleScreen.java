@@ -1,53 +1,18 @@
 package de.lksbhm.mona.ui.screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-
-import de.lksbhm.gdx.LksBhmGame;
-import de.lksbhm.gdx.Router;
-import de.lksbhm.gdx.ui.screens.transitions.InterpolateClearColor;
-import de.lksbhm.gdx.ui.screens.transitions.SlideInRight;
 import de.lksbhm.mona.puzzle.Puzzle;
-import de.lksbhm.mona.puzzle.PuzzleChangedListener;
-import de.lksbhm.mona.ui.actors.PuzzleActor;
 
-public class PuzzleScreen extends AbstractScreen {
+public class PuzzleScreen extends AbstractPuzzleScreen {
 
-	private PuzzleActor puzzle;
-	private PuzzleScreenState state = new PuzzleScreenState();
-	private final PuzzleChangedListener winListener = new PuzzleChangedListener() {
-		@Override
-		public void onChange() {
-			if (state.p.isSolved()) {
-				state.p.dispose();
-				state.p = null;
-				Router router = LksBhmGame.getGame().getRouter();
-				SlideInRight slide = new SlideInRight();
-				InterpolateClearColor blendColors = new InterpolateClearColor();
-				slide.runParallel(blendColors);
-				slide.setDuration(.6f);
-				router.changeScreen(GameWonScreen.class, null, slide);
-			}
-		}
-	};
-	private final InputAdapter backButtonHandler = new BackButtonToMainMenuHandler();
+	private final PuzzleScreenState state = new PuzzleScreenState();
 
 	public PuzzleScreen() {
 		setClearColor(0.1f, 0.1f, 0.1f, 1f);
 	}
 
 	@Override
-	public void onResourcesLoaded(AssetManager manager) {
-		setupWidgets();
-	}
-
-	private void setupWidgets() {
-		// TODO don't use default skin as it should be lightweight and without
-		// custom widgets
-		puzzle = new PuzzleActor(LksBhmGame.getGame().getDefaultSkin());
+	protected void setupWidgets() {
+		super.setupWidgets();
 	}
 
 	@Override
@@ -60,47 +25,30 @@ public class PuzzleScreen extends AbstractScreen {
 		if (state.getClass() != PuzzleScreenState.class) {
 			throw new RuntimeException();
 		}
-		this.state = (PuzzleScreenState) state;
+		super.setState(state);
+		this.state.set((PuzzleScreenState) state);
 		applyState();
 	}
 
 	private void applyState() {
-		state.p.addChangeListener(winListener);
-		puzzle.setPuzzle(state.p);
 	}
 
 	@Override
 	public Object getState() {
+		state.set((AbstractPuzzleScreenState) super.getState());
 		return state;
 	}
 
 	@Override
-	protected void onShow() {
-		InputMultiplexer mux = new InputMultiplexer();
-		mux.addProcessor(Gdx.input.getInputProcessor());
-		mux.addProcessor(backButtonHandler);
-		Gdx.input.setInputProcessor(mux);
-
-		layoutWidgets();
+	protected void layoutWidgets() {
+		super.layoutWidgets();
 	}
 
 	@Override
-	protected void onHide() {
-		puzzle.cancelInput();
-	}
-
-	private void layoutWidgets() {
-		Table base = getBaseTable();
-		base.clear();
-		base.add(puzzle);
-	}
-
 	public void setPuzzle(Puzzle p) {
-		this.state.p = p;
-		applyState();
+		super.setPuzzle(p);
 	}
 
-	private static class PuzzleScreenState {
-		Puzzle p;
+	private static class PuzzleScreenState extends AbstractPuzzleScreenState {
 	}
 }

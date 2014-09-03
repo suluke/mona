@@ -2,6 +2,7 @@ package de.lksbhm.mona.levels;
 
 import java.util.Random;
 
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
@@ -16,6 +17,10 @@ class LevelLoadHelper {
 
 	private LevelLoadHelper() {
 
+	}
+
+	public static Level fromJsonForPackage(FileHandle file, LevelPackage pack) {
+		return fromJsonForPackage(file.readString(), pack);
 	}
 
 	public static Level fromJsonForPackage(String json, LevelPackage pack) {

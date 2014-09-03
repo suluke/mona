@@ -13,10 +13,6 @@ public class LevelPackageManager {
 		today = now;
 	}
 
-	public int getNumberOfDailyPackages() {
-		return DailyPackagesGenerator.getNumberOfPackages(today);
-	}
-
 	public LevelPackageCollection getDailyPackages() {
 		return DailyPackagesGenerator.getDailyPackages(today);
 	}

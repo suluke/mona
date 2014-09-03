@@ -8,6 +8,7 @@ public abstract class LevelPackage implements Iterable<Level> {
 	private final Difficulty difficulty;
 	private final String packageId;
 	private final ArrayList<Level> levels = new ArrayList<Level>();
+	private boolean loaded = false;
 
 	public LevelPackage(String id, int size, Difficulty difficulty) {
 		this.packageId = id;
@@ -38,6 +39,14 @@ public abstract class LevelPackage implements Iterable<Level> {
 
 	@Override
 	public Iterator<Level> iterator() {
+		assertLevelsLoaded();
 		return levels.iterator();
+	}
+
+	private void assertLevelsLoaded() {
+		if (!loaded) {
+			loadLevels();
+			loaded = true;
+		}
 	}
 }

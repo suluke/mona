@@ -414,6 +414,8 @@ public class PuzzleActor extends Widget {
 
 	@Override
 	public void layout() {
+		markers.clear();
+		invalidTiles.clear();
 
 		style.validate();
 		float width = getWidth();
