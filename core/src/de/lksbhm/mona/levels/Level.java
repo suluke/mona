@@ -42,11 +42,22 @@ public abstract class Level extends ContextImplementation implements Disposable 
 		return pack;
 	}
 
+	public void reset() {
+		if (p != null) {
+			p.clearInOuDirections();
+		}
+	}
+
 	@Override
 	public void dispose() {
 		if (p != null) {
 			p.dispose();
 			p = null;
 		}
+	}
+
+	public Level getNext() {
+		// TODO
+		return null;
 	}
 }

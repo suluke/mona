@@ -2,12 +2,12 @@
 	"de.lksbhm.mona":  {
 		"levels": [
 			{
-				"id": "2",
+				"id": "3",
 				"type": "LiterallyDefined",
 				"data": {
 					"tileTypes": [
 						["EMPTY",	"STRAIGHT",	"STRAIGHT",	"EMPTY"],
-						["EMPTY",	"EMPTY",	"EMPTY",	"EMPTY"]
+						["EMPTY",	"STRAIGHT",	"STRAIGHT",	"EMPTY"]
 					],
 					"solution": [
 						["BottomRight",	"TopBottom",	"TopBottom",	"TopRight"],

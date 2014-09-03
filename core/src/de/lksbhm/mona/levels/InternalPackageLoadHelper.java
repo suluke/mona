@@ -32,7 +32,6 @@ class InternalPackageLoadHelper {
 		FileHandle[] packageDirs = packagesDir.list(new FileFilter() {
 			@Override
 			public boolean accept(File pathname) {
-				System.out.println(pathname.getName());
 				if (pathname.isFile()) {
 					return false;
 				}

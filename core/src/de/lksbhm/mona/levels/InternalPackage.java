@@ -48,7 +48,6 @@ public class InternalPackage extends LevelPackage {
 		FileHandle current;
 		for (int i = 0; i < size; i++) {
 			String name = String.format("%1$02d.json", i);
-			System.out.println(name);
 			current = baseDir.child(name);
 			if (!current.exists()) {
 				throw new RuntimeException();

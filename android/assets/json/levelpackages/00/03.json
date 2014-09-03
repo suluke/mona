@@ -1,0 +1,22 @@
+{
+	"de.lksbhm.mona":  {
+		"levels": [
+			{
+				"id": "4",
+				"type": "LiterallyDefined",
+				"data": {
+					"tileTypes": [
+						["EMPTY",	"EMPTY",	"EDGE"],
+						["EMPTY",	"EMPTY",	"EMPTY"],
+						["EMPTY",	"EMPTY",	"EMPTY"],
+					],
+					"solution": [
+						["BottomRight",	"TopBottom",	"TopRight"],
+						["LeftRight",	"NoDirection",	"LeftRight"],
+						["BottomLeft",	"TopBottom",	"TopLeft"],
+					]
+				}
+			}
+		]
+	}
+}
