@@ -9,7 +9,6 @@ public class LevelScreenOne extends AbstractPuzzleScreen {
 	private Level l;
 
 	public void setLevel(Level l) {
-		System.out.println("LevelScreen: set level " + l.getLevelId());
 		this.l = l;
 		l.reset();
 		setPuzzle(l.getPuzzle());

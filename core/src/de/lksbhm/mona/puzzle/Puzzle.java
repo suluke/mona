@@ -1,6 +1,5 @@
 package de.lksbhm.mona.puzzle;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -17,7 +16,7 @@ import de.lksbhm.mona.puzzle.representations.directional.DirectionalTileBoard;
 public class Puzzle extends Board<Piece> implements Disposable {
 	static final Pool<Piece> fieldPool = new ReflectionPool<Piece>(Piece.class);
 	private final DirectionalTileBoard solution;
-	private final ArrayList<PuzzleChangedListener> listeners = new ArrayList<PuzzleChangedListener>();
+	private final LinkedList<PuzzleChangedListener> listeners = new LinkedList<PuzzleChangedListener>();
 	private final HashSet<Piece> circleRoots = new HashSet<Piece>();
 	private final boolean[][] isInvalid = new boolean[getWidth()][getHeight()];
 

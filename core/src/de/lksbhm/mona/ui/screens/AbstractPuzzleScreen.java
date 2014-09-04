@@ -18,8 +18,13 @@ public abstract class AbstractPuzzleScreen extends AbstractScreen {
 		@Override
 		public void onChange() {
 			if (state.p != null && state.p.isSolved()) {
-				state.p.removeChangeListener(winListener);
-				onWin();
+				Gdx.app.postRunnable(new Runnable() {
+					@Override
+					public void run() {
+						state.p.removeChangeListener(winListener);
+						onWin();
+					}
+				});
 			}
 		}
 	};
