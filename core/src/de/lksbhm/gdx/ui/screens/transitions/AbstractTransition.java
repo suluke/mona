@@ -3,7 +3,6 @@ package de.lksbhm.gdx.ui.screens.transitions;
 import com.badlogic.gdx.graphics.Color;
 
 import de.lksbhm.gdx.LksBhmGame;
-import de.lksbhm.gdx.ui.screens.TransitionableScreen;
 
 abstract class AbstractTransition implements Transition {
 
@@ -33,8 +32,8 @@ abstract class AbstractTransition implements Transition {
 				getInitialFromScreenY(), toScreen, getInitialToScreenX(),
 				getInitialToScreenY());
 		setupDecorated();
+		fromScreen.disableHide();
 		game.setScreen(ts);
-		fromScreen.show();
 		toScreen.show();
 	}
 
@@ -113,12 +112,15 @@ abstract class AbstractTransition implements Transition {
 
 	@SuppressWarnings("deprecation")
 	private void tearDown() {
+		toScreen.disableShow();
 		game.setScreen(toScreen);
+		toScreen.enableShow();
 		Color toClearColor = toScreen.getClearColor();
 		ts.setClearColor(toClearColor.r, toClearColor.g, toClearColor.b,
 				toClearColor.a);
 		ts.finish();
 		finished = true;
+		fromScreen.enableHide();
 		fromScreen.hide();
 		fromScreen.getStage().getRoot().setX(0);
 		fromScreen.getStage().getRoot().setY(0);

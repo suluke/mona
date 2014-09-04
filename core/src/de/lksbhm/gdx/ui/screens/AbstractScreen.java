@@ -23,6 +23,8 @@ public abstract class AbstractScreen implements
 	private final LksBhmGame game;
 	private final Color clearColor = new Color(0, 0, 0, 1);
 	private boolean show;
+	private boolean showDisabled = false;
+	private boolean hideDisabled = false;
 
 	public AbstractScreen() {
 		this(1024, 600);
@@ -112,7 +114,7 @@ public abstract class AbstractScreen implements
 
 	@Override
 	public final void show() {
-		if (show) {
+		if (show || showDisabled) {
 			return;
 		}
 		show = true;
@@ -124,6 +126,9 @@ public abstract class AbstractScreen implements
 
 	@Override
 	public final void hide() {
+		if (hideDisabled) {
+			return;
+		}
 		show = false;
 		onHide();
 	}
@@ -150,5 +155,25 @@ public abstract class AbstractScreen implements
 
 	@Override
 	public void requestResources(AssetManager manager) {
+	}
+
+	@Override
+	public void disableHide() {
+		hideDisabled = true;
+	}
+
+	@Override
+	public void enableHide() {
+		hideDisabled = false;
+	}
+
+	@Override
+	public void enableShow() {
+		showDisabled = false;
+	}
+
+	@Override
+	public void disableShow() {
+		showDisabled = true;
 	}
 }

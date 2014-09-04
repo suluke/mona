@@ -7,17 +7,7 @@ public class ContextManager {
 	private final HashMap<Class<?>, ArrayList<ContextListener>> listeners = new HashMap<Class<?>, ArrayList<ContextListener>>();
 
 	public void addListener(ContextListener listener) {
-		Class<?> contextClass;
-		try {
-			contextClass = Class.forName(listener.getContextName());
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("No context found for name "
-					+ listener.getContextName());
-		}
-		if (!Context.class.isAssignableFrom(contextClass)) {
-			throw new RuntimeException("No context found for name "
-					+ listener.getContextName());
-		}
+		Class<?> contextClass = getContextClass(listener.getContextName());
 		ArrayList<ContextListener> list = listeners.get(contextClass);
 		if (list == null) {
 			list = new ArrayList<ContextListener>();
@@ -26,17 +16,40 @@ public class ContextManager {
 		list.add(listener);
 	}
 
+	public boolean removeListener(ContextListener listener) {
+		Class<?> contextClass = getContextClass(listener.getContextName());
+		ArrayList<ContextListener> list = listeners.get(contextClass);
+		return list.remove(listener);
+	}
+
+	private Class<?> getContextClass(String name) {
+		Class<?> contextClass;
+		try {
+			contextClass = Class.forName(name);
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("No context found for name " + name);
+		}
+		if (!Context.class.isAssignableFrom(contextClass)) {
+			throw new RuntimeException("No context found for name " + name);
+		}
+		return contextClass;
+	}
+
 	public void enterContext(Context context) {
 		ArrayList<ContextListener> list = listeners.get(context.getClass());
-		for (ContextListener listener : list) {
-			listener.onEnter(context);
+		if (list != null) {
+			for (ContextListener listener : list) {
+				listener.onEnter(context);
+			}
 		}
 	}
 
 	public void leaveContext(Context context) {
 		ArrayList<ContextListener> list = listeners.get(context.getClass());
-		for (ContextListener listener : list) {
-			listener.onLeave(context);
+		if (list != null) {
+			for (ContextListener listener : list) {
+				listener.onLeave(context);
+			}
 		}
 	}
 }

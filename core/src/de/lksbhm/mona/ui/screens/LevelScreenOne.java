@@ -15,6 +15,18 @@ public class LevelScreenOne extends AbstractPuzzleScreen {
 	}
 
 	@Override
+	protected void onShow() {
+		super.onShow();
+		l.enterContext();
+	}
+
+	@Override
+	protected void onHide() {
+		super.onHide();
+		l.leaveContext();
+	}
+
+	@Override
 	public boolean isRequestingLoadingAnimation() {
 		return false;
 	}

@@ -31,13 +31,19 @@ class LevelLoadHelper {
 	public static Level fromJsonForPackage(JsonValue json, LevelPackage pack) {
 		json = stripContainer(json);
 		String typeName = json.getString("type");
+		Level level;
 		if ("LiterallyDefined".equals(typeName)) {
-			return getLiterallyDefinedLevelFromJson(json, pack);
+			level = getLiterallyDefinedLevelFromJson(json, pack);
 		} else if ("Generated".equals(typeName)) {
-			return getGeneratedLevelFromJson(json, pack);
+			level = getGeneratedLevelFromJson(json, pack);
 		} else {
 			throw new RuntimeException();
 		}
+		if (json.has("tutorial")) {
+			String tutorialName = json.getString("tutorial");
+			level.setTutorialByName(tutorialName);
+		}
+		return level;
 	}
 
 	private static Level getGeneratedLevelFromJson(JsonValue json,

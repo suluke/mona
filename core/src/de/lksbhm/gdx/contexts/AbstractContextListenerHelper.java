@@ -6,11 +6,11 @@ package de.lksbhm.gdx.contexts;
  *
  * @param <ContextType>
  */
-public abstract class AbstractTemplateContextListener<ContextType extends Context>
+public abstract class AbstractContextListenerHelper<ContextType extends Context>
 		implements ContextListener {
 	private final Class<ContextType> contextClass;
 
-	public AbstractTemplateContextListener(Class<ContextType> contextClass) {
+	public AbstractContextListenerHelper(Class<ContextType> contextClass) {
 		this.contextClass = contextClass;
 	}
 
