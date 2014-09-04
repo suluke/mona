@@ -28,13 +28,13 @@ abstract class AbstractTransition implements Transition {
 		Color fromClearColor = fromScreen.getClearColor();
 		ts.setClearColor(fromClearColor.r, fromClearColor.g, fromClearColor.b,
 				fromClearColor.a);
-		ts.setup(this, fromScreen, getInitialFromScreenX(),
-				getInitialFromScreenY(), toScreen, getInitialToScreenX(),
+		ts.setup(this, this.fromScreen, getInitialFromScreenX(),
+				getInitialFromScreenY(), this.toScreen, getInitialToScreenX(),
 				getInitialToScreenY());
 		setupDecorated();
-		fromScreen.disableHide();
-		game.setScreen(ts);
-		toScreen.show();
+		this.fromScreen.disableHide();
+		this.game.setScreen(ts);
+		this.toScreen.show();
 	}
 
 	private void setupDecorated() {
@@ -105,9 +105,16 @@ abstract class AbstractTransition implements Transition {
 		if (finished) {
 			tearDown();
 			if (decorated != null) {
-				decorated.tearDown();
+				decorated.tearDownAsDecorated();
 			}
 		}
+	}
+
+	private void tearDownAsDecorated() {
+		finished = true;
+		fromScreen = null;
+		toScreen = null;
+		game = null;
 	}
 
 	@SuppressWarnings("deprecation")
@@ -119,14 +126,11 @@ abstract class AbstractTransition implements Transition {
 		ts.setClearColor(toClearColor.r, toClearColor.g, toClearColor.b,
 				toClearColor.a);
 		ts.finish();
-		finished = true;
 		fromScreen.enableHide();
 		fromScreen.hide();
 		fromScreen.getStage().getRoot().setX(0);
 		fromScreen.getStage().getRoot().setY(0);
-		fromScreen = null;
-		toScreen = null;
-		game = null;
+		tearDownAsDecorated();
 	}
 
 	/**
