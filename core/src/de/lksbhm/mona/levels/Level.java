@@ -51,7 +51,8 @@ public abstract class Level extends ContextImplementation implements Disposable 
 
 	public void reset() {
 		if (p != null) {
-			p.clearInOuDirections();
+			p.removeAllChangeListeners();
+			p.clearInOutDirections(false);
 		}
 	}
 

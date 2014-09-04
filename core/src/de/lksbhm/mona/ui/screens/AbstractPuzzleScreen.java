@@ -18,6 +18,7 @@ public abstract class AbstractPuzzleScreen extends AbstractScreen {
 		@Override
 		public void onChange() {
 			if (state.p != null && state.p.isSolved()) {
+				state.p.removeChangeListener(winListener);
 				onWin();
 			}
 		}
@@ -65,7 +66,6 @@ public abstract class AbstractPuzzleScreen extends AbstractScreen {
 	}
 
 	protected void onWin() {
-
 	};
 
 	protected void setupWidgets() {

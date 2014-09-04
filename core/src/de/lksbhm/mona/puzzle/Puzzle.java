@@ -180,25 +180,16 @@ public class Puzzle extends Board<Piece> implements Disposable {
 	}
 
 	public void addChangeListener(PuzzleChangedListener listener) {
-		if (listener.getPuzzle() != null) {
-			if (listener.getPuzzle() == this) {
-				return;
-			} else {
-				listener.unregister();
-			}
+		if (!listeners.contains(listener)) {
+			listeners.add(listener);
 		}
-		listeners.add(listener);
 	}
 
 	public void removeChangeListener(PuzzleChangedListener listener) {
-		listener.setPuzzle(null);
 		listeners.remove(listener);
 	}
 
 	public void removeAllChangeListeners() {
-		for (PuzzleChangedListener listener : listeners) {
-			listener.setPuzzle(null);
-		}
 		listeners.clear();
 	}
 
@@ -227,7 +218,7 @@ public class Puzzle extends Board<Piece> implements Disposable {
 				if (newOut == Direction.LEFT || newOut == Direction.RIGHT) {
 					newOut = newOut.getOpposite();
 				}
-				current.setInOutDirection(newIn, newOut);
+				current.setInOutDirection(newIn, newOut, false);
 			}
 		}
 		return copy;
@@ -253,7 +244,7 @@ public class Puzzle extends Board<Piece> implements Disposable {
 				if (newOut == Direction.UP || newOut == Direction.DOWN) {
 					newOut = newOut.getOpposite();
 				}
-				current.setInOutDirection(newIn, newOut);
+				current.setInOutDirection(newIn, newOut, false);
 			}
 		}
 		return copy;
@@ -364,9 +355,9 @@ public class Puzzle extends Board<Piece> implements Disposable {
 		return true;
 	}
 
-	public void clearInOuDirections() {
+	public void clearInOutDirections(boolean notify) {
 		for (Piece p : this) {
-			p.setInOutDirection(Direction.NONE, Direction.NONE);
+			p.setInOutDirection(Direction.NONE, Direction.NONE, notify);
 		}
 	}
 }

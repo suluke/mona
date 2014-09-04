@@ -72,14 +72,14 @@ class PuzzleActorInput implements EventListener {
 					 */
 					if (!preventDisconnect
 							&& startPiece.isConnectedWith(currentPiece)) {
-						startPiece.disconnect(currentPiece);
+						startPiece.disconnect(currentPiece, true);
 					} else {
 						// make connection
 						Direction neighborDir = startPiece
 								.getDirectionOfNeighbor(currentPiece);
-						startPiece.pushInOutDirection(neighborDir);
-						currentPiece.pushInOutDirection(neighborDir
-								.getOpposite());
+						startPiece.pushInOutDirection(neighborDir, false);
+						currentPiece.pushInOutDirection(
+								neighborDir.getOpposite(), true);
 						preventDisconnect = true;
 						lastConnected = startPiece;
 					}
@@ -99,8 +99,8 @@ class PuzzleActorInput implements EventListener {
 					for (int tileY = startY; tileY < endY; tileY++) {
 						tile1 = p.getTile(tileX, tileY);
 						tile2 = p.getTile(tileX, tileY + 1);
-						tile1.pushInOutDirection(Direction.DOWN);
-						tile2.pushInOutDirection(Direction.UP);
+						tile1.pushInOutDirection(Direction.DOWN, false);
+						tile2.pushInOutDirection(Direction.UP, true);
 					}
 					startPiece = currentPiece;
 				} else if (currentPiece.getY() == startPiece.getY()) {
@@ -118,8 +118,8 @@ class PuzzleActorInput implements EventListener {
 					for (int tileX = startX; tileX < endX; tileX++) {
 						tile1 = p.getTile(tileX, tileY);
 						tile2 = p.getTile(tileX + 1, tileY);
-						tile1.pushInOutDirection(Direction.RIGHT);
-						tile2.pushInOutDirection(Direction.LEFT);
+						tile1.pushInOutDirection(Direction.RIGHT, false);
+						tile2.pushInOutDirection(Direction.LEFT, true);
 					}
 					startPiece = currentPiece;
 				}
@@ -163,14 +163,14 @@ class PuzzleActorInput implements EventListener {
 					case 2: {
 						if (lastClickedTileX == clickedX
 								&& lastClickedTileY == clickedY) {
-							actor.getPuzzle().clearInOuDirections();
+							actor.getPuzzle().clearInOutDirections(true);
 							break;
 						}
 						// continue with 1
 					}
 					case 1: {
 						clicked.setInOutDirection(Direction.NONE,
-								Direction.NONE);
+								Direction.NONE, true);
 						break;
 					}
 					}

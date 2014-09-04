@@ -16,17 +16,19 @@ public class Piece extends Tile<Piece> {
 	void setup(Board<Piece> b, int x, int y, Type t, Direction in, Direction out) {
 		super.setup(b, x, y);
 		this.type = t;
-		setInOutDirection(in, out);
+		setInOutDirection(in, out, false);
 	}
 
-	public void setInOutDirection(Direction in, Direction out) {
+	public void setInOutDirection(Direction in, Direction out, boolean notify) {
 		if (in == out && in != Direction.NONE) {
 			throw new RuntimeException(
 					"In and out directions must not be equal");
 		}
 		this.in = in;
 		this.out = out;
-		notifyOnChange();
+		if (notify) {
+			notifyOnChange();
+		}
 	}
 
 	public Direction getInDirection() {
@@ -43,7 +45,7 @@ public class Piece extends Tile<Piece> {
 	 * 
 	 * @param d
 	 */
-	public void pushInOutDirection(Direction d) {
+	public void pushInOutDirection(Direction d, boolean notify) {
 		// don't set d twice
 		if (in == d || out == d) {
 			return;
@@ -56,7 +58,9 @@ public class Piece extends Tile<Piece> {
 			}
 		}
 		in = d;
-		notifyOnChange();
+		if (notify) {
+			notifyOnChange();
+		}
 	}
 
 	public Piece getInAdjacent() {
@@ -105,7 +109,7 @@ public class Piece extends Tile<Piece> {
 		return false;
 	}
 
-	public void disconnect(Piece other) {
+	public void disconnect(Piece other, boolean notify) {
 		Direction d = getDirectionOfNeighbor(other);
 		if (d == Direction.NONE) {
 			return;
@@ -123,7 +127,9 @@ public class Piece extends Tile<Piece> {
 		if (other.out == d) {
 			other.out = Direction.NONE;
 		}
-		notifyOnChange();
+		if (notify) {
+			notifyOnChange();
+		}
 	}
 
 	public static enum Type {
