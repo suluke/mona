@@ -79,7 +79,8 @@ class PuzzleActorInput implements EventListener {
 								.getDirectionOfNeighbor(currentPiece);
 						startPiece.pushInOutDirection(neighborDir, false);
 						currentPiece.pushInOutDirection(
-								neighborDir.getOpposite(), true);
+								neighborDir.getOpposite(), false);
+						actor.getPuzzle().notifyOnChange();
 						preventDisconnect = true;
 						lastConnected = startPiece;
 					}
@@ -100,8 +101,9 @@ class PuzzleActorInput implements EventListener {
 						tile1 = p.getTile(tileX, tileY);
 						tile2 = p.getTile(tileX, tileY + 1);
 						tile1.pushInOutDirection(Direction.DOWN, false);
-						tile2.pushInOutDirection(Direction.UP, true);
+						tile2.pushInOutDirection(Direction.UP, false);
 					}
+					actor.getPuzzle().notifyOnChange();
 					startPiece = currentPiece;
 				} else if (currentPiece.getY() == startPiece.getY()) {
 					int tileY = currentPiece.getY();
@@ -119,8 +121,9 @@ class PuzzleActorInput implements EventListener {
 						tile1 = p.getTile(tileX, tileY);
 						tile2 = p.getTile(tileX + 1, tileY);
 						tile1.pushInOutDirection(Direction.RIGHT, false);
-						tile2.pushInOutDirection(Direction.LEFT, true);
+						tile2.pushInOutDirection(Direction.LEFT, false);
 					}
+					actor.getPuzzle().notifyOnChange();
 					startPiece = currentPiece;
 				}
 			}
