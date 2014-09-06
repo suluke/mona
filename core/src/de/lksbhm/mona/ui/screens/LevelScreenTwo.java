@@ -11,8 +11,7 @@ public class LevelScreenTwo extends LevelScreenOne {
 				new ResourceConsumerObtainedCallback<LevelScreenOne>() {
 					@Override
 					public void onObtained(LevelScreenOne screenOne) {
-						screenOne.setLevel(next);
-						router.changeScreen(screenOne);
+						switchToNextLevelScreen(screenOne, next, router);
 					}
 
 				});

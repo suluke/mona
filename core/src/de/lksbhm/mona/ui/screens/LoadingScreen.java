@@ -62,7 +62,7 @@ public class LoadingScreen implements Screen {
 
 	@Override
 	public void show() {
-		Gdx.gl.glClearColor(1f, 1, 1, 1);
+		Gdx.gl.glClearColor(0, 0, 0, 1);
 	}
 
 	@Override

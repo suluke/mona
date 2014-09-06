@@ -2,6 +2,7 @@ package de.lksbhm.mona.ui.actors;
 
 import java.util.LinkedList;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -15,7 +16,7 @@ import de.lksbhm.mona.puzzle.representations.Direction;
 import de.lksbhm.mona.ui.actors.InvalidMarker.InvalidMarkerStyle;
 
 public class PuzzleActor extends Widget {
-
+	private final Color batchColor = new Color();
 	private Puzzle puzzle;
 	private final PuzzleActorStyle style = new PuzzleActorStyle();
 	private float marginLeft;
@@ -114,10 +115,14 @@ public class PuzzleActor extends Widget {
 		if (puzzle == null) {
 			return;
 		}
+		batchColor.set(batch.getColor());
+		batch.setColor(batchColor.r, batchColor.g, batchColor.g, batchColor.a
+				* parentAlpha);
 		drawTileBackgrounds(batch);
 		drawTileTypes(batch);
 		drawTileConnectors(batch);
 		drawInvalidMarkers(batch);
+		batch.setColor(batchColor);
 	}
 
 	private void drawInvalidMarkers(Batch batch) {

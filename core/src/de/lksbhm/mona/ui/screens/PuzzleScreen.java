@@ -2,8 +2,8 @@ package de.lksbhm.mona.ui.screens;
 
 import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.gdx.Router;
-import de.lksbhm.gdx.ui.screens.transitions.InterpolateClearColor;
-import de.lksbhm.gdx.ui.screens.transitions.SlideInRight;
+import de.lksbhm.gdx.ui.screens.transitions.Transition;
+import de.lksbhm.gdx.ui.screens.transitions.TransitionBuilder;
 import de.lksbhm.mona.puzzle.Puzzle;
 
 public class PuzzleScreen extends AbstractPuzzleScreen {
@@ -20,12 +20,10 @@ public class PuzzleScreen extends AbstractPuzzleScreen {
 		state.p = null;
 		super.setState(state);
 		Router router = LksBhmGame.getGame().getRouter();
-		// TODO implement pooling
-		SlideInRight slide = new SlideInRight();
-		InterpolateClearColor blendColors = new InterpolateClearColor();
-		slide.runParallel(blendColors);
-		slide.setDuration(.6f);
-		router.changeScreen(GameWonScreen.class, null, slide);
+		Transition transition = TransitionBuilder.buildNew().slideInRight()
+				.interpolateClearColor().get();
+		transition.setDuration(.6f);
+		router.changeScreen(GameWonScreen.class, null, transition);
 	}
 
 	@Override

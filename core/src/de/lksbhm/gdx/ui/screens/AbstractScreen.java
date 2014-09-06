@@ -83,6 +83,7 @@ public abstract class AbstractScreen implements
 
 	@Override
 	public void render(float delta, boolean clear) {
+		stage.act(delta);
 		if (clear) {
 			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 		}
@@ -94,8 +95,6 @@ public abstract class AbstractScreen implements
 					(int) viewport.getWorldHeight());
 			batch.end();
 		}
-
-		stage.act(delta);
 		stage.draw();
 	}
 

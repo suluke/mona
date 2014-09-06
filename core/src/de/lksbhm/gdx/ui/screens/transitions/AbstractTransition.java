@@ -19,35 +19,38 @@ abstract class AbstractTransition implements Transition {
 	@Override
 	public void apply(LksBhmGame game, TransitionableScreen fromScreen,
 			TransitionableScreen toScreen) {
-		this.game = game;
-		timePassed = 0;
-		finished = false;
-		this.fromScreen = fromScreen;
-		this.toScreen = toScreen;
-		ts = TransitionScreen.getInstance();
+		setup(game, fromScreen, toScreen);
+
 		Color fromClearColor = fromScreen.getClearColor();
 		ts.setClearColor(fromClearColor.r, fromClearColor.g, fromClearColor.b,
 				fromClearColor.a);
 		ts.setup(this, this.fromScreen, getInitialFromScreenX(),
 				getInitialFromScreenY(), this.toScreen, getInitialToScreenX(),
 				getInitialToScreenY());
-		setupDecorated();
 		this.fromScreen.disableHide();
 		this.game.setScreen(ts);
 		this.toScreen.show();
 	}
 
-	private void setupDecorated() {
-		decorated.fromScreen = fromScreen;
-		decorated.toScreen = toScreen;
-		decorated.duration = duration;
-		decorated.game = game;
-		decorated.ts = ts;
+	private void setup(LksBhmGame game, TransitionableScreen fromScreen,
+			TransitionableScreen toScreen) {
+		this.game = game;
+		this.fromScreen = fromScreen;
+		this.toScreen = toScreen;
+		ts = TransitionScreen.getInstance();
+		timePassed = 0;
+		finished = false;
+		if (decorated != null) {
+			decorated.setup(game, fromScreen, toScreen);
+		}
 	}
 
 	@Override
 	public void setDuration(float duration) {
 		this.duration = duration;
+		if (decorated != null) {
+			decorated.setDuration(duration);
+		}
 	}
 
 	@Override

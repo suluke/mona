@@ -3,6 +3,8 @@ package de.lksbhm.mona.ui.screens;
 import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.gdx.Router;
 import de.lksbhm.gdx.resources.ResourceConsumerObtainedCallback;
+import de.lksbhm.gdx.ui.screens.transitions.Transition;
+import de.lksbhm.gdx.ui.screens.transitions.TransitionBuilder;
 import de.lksbhm.mona.levels.Level;
 
 public class LevelScreenOne extends AbstractPuzzleScreen {
@@ -54,10 +56,18 @@ public class LevelScreenOne extends AbstractPuzzleScreen {
 				new ResourceConsumerObtainedCallback<LevelScreenTwo>() {
 					@Override
 					public void onObtained(LevelScreenTwo screenTwo) {
-						screenTwo.setLevel(next);
-						router.changeScreen(screenTwo);
+						switchToNextLevelScreen(screenTwo, next, router);
 					}
 
 				});
+	}
+
+	protected void switchToNextLevelScreen(LevelScreenOne screen, Level next,
+			Router router) {
+		screen.setLevel(next);
+		Transition transition = TransitionBuilder.buildNew().slideInRight()
+				.interpolateClearColor().get();
+		transition.setDuration(.6f);
+		router.changeScreen(screen, transition);
 	}
 }

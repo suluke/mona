@@ -13,8 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.gdx.Router;
 import de.lksbhm.gdx.resources.ResourceConsumerObtainedCallback;
-import de.lksbhm.gdx.ui.screens.transitions.InterpolateClearColor;
-import de.lksbhm.gdx.ui.screens.transitions.SlideInRight;
+import de.lksbhm.gdx.ui.screens.transitions.Transition;
+import de.lksbhm.gdx.ui.screens.transitions.TransitionBuilder;
 import de.lksbhm.mona.levels.Level;
 import de.lksbhm.mona.levels.LevelPackage;
 
@@ -80,14 +80,14 @@ public class PackageScreen extends AbstractScreen {
 							LevelScreenOne.class,
 							new ResourceConsumerObtainedCallback<LevelScreenOne>() {
 								@Override
-								public void onObtained(LevelScreenOne levelScreen) {
+								public void onObtained(
+										LevelScreenOne levelScreen) {
 									levelScreen.setLevel(level);
-									// TODO implement pooling
-									SlideInRight slide = new SlideInRight();
-									InterpolateClearColor blendColors = new InterpolateClearColor();
-									slide.runParallel(blendColors);
-									slide.setDuration(.6f);
-									router.changeScreen(levelScreen, slide);
+									Transition transition = TransitionBuilder
+											.buildNew().slideInRight()
+											.interpolateClearColor().get();
+									transition.setDuration(.6f);
+									router.changeScreen(levelScreen, transition);
 								}
 							});
 				}
