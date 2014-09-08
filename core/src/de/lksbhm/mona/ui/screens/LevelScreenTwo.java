@@ -4,7 +4,7 @@ import de.lksbhm.gdx.Router;
 import de.lksbhm.gdx.resources.ResourceConsumerObtainedCallback;
 import de.lksbhm.mona.levels.Level;
 
-public class LevelScreenTwo extends LevelScreenOne {
+public class LevelScreenTwo extends AbstractLevelScreen {
 	@Override
 	protected void goToNextLevel(final Level next, final Router router) {
 		router.obtainScreen(LevelScreenOne.class,

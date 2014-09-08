@@ -14,6 +14,7 @@ abstract class AbstractTransition implements Transition {
 	private TransitionableScreen toScreen;
 	private LksBhmGame game;
 	private AbstractTransition decorated = null;
+	private boolean disposeOnFinish = false;
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -121,6 +122,9 @@ abstract class AbstractTransition implements Transition {
 		fromScreen = null;
 		toScreen = null;
 		game = null;
+		if (disposeOnFinish) {
+			dispose();
+		}
 	}
 
 	@SuppressWarnings("deprecation")
@@ -155,5 +159,10 @@ abstract class AbstractTransition implements Transition {
 
 	public void runParallel(AbstractTransition transition) {
 		this.decorated = transition;
+	}
+
+	@Override
+	public void setDisposeOnFinish(boolean b) {
+		disposeOnFinish = b;
 	}
 }

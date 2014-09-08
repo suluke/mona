@@ -1,8 +1,10 @@
 package de.lksbhm.gdx.ui.screens.transitions;
 
+import com.badlogic.gdx.utils.Disposable;
+
 import de.lksbhm.gdx.LksBhmGame;
 
-public interface Transition {
+public interface Transition extends Disposable {
 	void apply(LksBhmGame onGame, TransitionableScreen fromScreen,
 			TransitionableScreen toScreen);
 
@@ -11,4 +13,6 @@ public interface Transition {
 	float getDuration();
 
 	void abort();
+
+	void setDisposeOnFinish(boolean b);
 }

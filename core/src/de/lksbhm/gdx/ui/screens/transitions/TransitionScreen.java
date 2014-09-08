@@ -49,56 +49,56 @@ public class TransitionScreen implements Screen {
 	 * 
 	 * @return x1
 	 */
-	public float getX1() {
+	public float getFromX() {
 		return x1;
 	}
 
 	/**
 	 * @param x1
 	 */
-	void setX1(float x1) {
+	void setFromX(float x1) {
 		this.x1 = x1;
 	}
 
 	/**
 	 * @return y1
 	 */
-	float getY1() {
+	float getFromY() {
 		return y1;
 	}
 
 	/**
 	 * @param y1
 	 */
-	void setY1(float y1) {
+	void setFromY(float y1) {
 		this.y1 = y1;
 	}
 
 	/**
 	 * @return x2
 	 */
-	float getX2() {
+	float getToX() {
 		return x2;
 	}
 
 	/**
 	 * @param x2
 	 */
-	void setX2(float x2) {
+	void setToX(float x2) {
 		this.x2 = x2;
 	}
 
 	/**
 	 * @return y2
 	 */
-	float getY2() {
+	float getToY() {
 		return y2;
 	}
 
 	/**
 	 * @param y2
 	 */
-	void setY2(float y2) {
+	void setToY(float y2) {
 		this.y2 = y2;
 	}
 

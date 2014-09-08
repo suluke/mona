@@ -22,7 +22,7 @@ public abstract class AbstractScreen extends
 	protected static class BackButtonToMainMenuHandler extends InputAdapter {
 		@Override
 		public boolean keyUp(int keycode) {
-			if (keycode == Keys.BACK) {
+			if (keycode == Keys.BACK || keycode == Keys.ESCAPE) {
 				LksBhmGame.getGame().getRouter()
 						.changeScreen(MainMenuScreen.class, null);
 				return true;
