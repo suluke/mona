@@ -9,4 +9,6 @@ public interface Transition {
 	void setDuration(float duration);
 
 	float getDuration();
+
+	void abort();
 }

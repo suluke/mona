@@ -2,7 +2,7 @@ package de.lksbhm.gdx.ui.screens.transitions;
 
 import com.badlogic.gdx.graphics.Color;
 
-public class InterpolateClearColor extends AbstractTransition {
+class InterpolateClearColor extends AbstractTransition {
 
 	@Override
 	protected void update(TransitionScreen ts, float progress) {

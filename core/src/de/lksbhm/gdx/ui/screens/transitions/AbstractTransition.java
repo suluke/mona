@@ -22,6 +22,9 @@ abstract class AbstractTransition implements Transition {
 		setup(game, fromScreen, toScreen);
 
 		Color fromClearColor = fromScreen.getClearColor();
+		if (ts.getTransition() != null) {
+			ts.getTransition().abort();
+		}
 		ts.setClearColor(fromClearColor.r, fromClearColor.g, fromClearColor.b,
 				fromClearColor.a);
 		ts.setup(this, this.fromScreen, getInitialFromScreenX(),
@@ -134,6 +137,11 @@ abstract class AbstractTransition implements Transition {
 		fromScreen.getStage().getRoot().setX(0);
 		fromScreen.getStage().getRoot().setY(0);
 		tearDownAsDecorated();
+	}
+
+	@Override
+	public void abort() {
+		tearDown();
 	}
 
 	/**

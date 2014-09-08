@@ -25,6 +25,9 @@ public class TransitionScreen implements Screen {
 	public void setup(AbstractTransition t, TransitionableScreen fromScreen,
 			float x1, float y1, TransitionableScreen toScreen, float x2,
 			float y2) {
+		if (this.transition != null) {
+			throw new RuntimeException();
+		}
 		this.fromScreen = fromScreen;
 		this.x1 = x1;
 		this.y1 = y1;
@@ -32,6 +35,10 @@ public class TransitionScreen implements Screen {
 		this.x2 = x2;
 		this.y2 = y2;
 		this.transition = t;
+	}
+
+	public Transition getTransition() {
+		return transition;
 	}
 
 	public TransitionableScreen getToScreen() {
@@ -96,6 +103,7 @@ public class TransitionScreen implements Screen {
 	}
 
 	public void finish() {
+		transition = null;
 		fromScreen = null;
 		toScreen = null;
 	}

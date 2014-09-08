@@ -1,6 +1,6 @@
 package de.lksbhm.gdx.ui.screens.transitions;
 
-public class SlideInRight extends AbstractTransition {
+class SlideInRight extends AbstractTransition {
 
 	@Override
 	public void update(TransitionScreen ts, float progress) {
