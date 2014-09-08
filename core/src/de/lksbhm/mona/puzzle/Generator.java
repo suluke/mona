@@ -19,11 +19,16 @@ public class Generator {
 
 	}
 
-	private static final Random random = new Random();
+	public static final Random random = new Random();
 
 	public static Puzzle generate(float straightStoneProbability,
 			float edgeStoneProbability) {
 		long seed = random.nextLong();
+		return generate(seed, straightStoneProbability, edgeStoneProbability);
+	}
+
+	public static Puzzle generate(long seed, float straightStoneProbability,
+			float edgeStoneProbability) {
 		Gdx.app.log("PuzzleGenerator", "Seed: " + seed);
 		Random r = new Random(seed);
 		return generate(r, straightStoneProbability, edgeStoneProbability);

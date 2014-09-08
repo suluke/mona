@@ -30,7 +30,7 @@ public class InvalidMarker {
 		this.cellSize = cellSize;
 	}
 
-	public void render(Batch batch, float offsetX, float offsetY) {
+	public void render(Batch batch) {
 		timePassed += Gdx.graphics.getDeltaTime();
 		if (style.repeat) {
 			if (timePassed > style.expandTime) {
@@ -60,8 +60,8 @@ public class InvalidMarker {
 		}
 		Color c = batch.getColor();
 		batch.setColor(c.r, c.g, c.b, c.a * currentAlpha);
-		style.texture.draw(batch, midX - currentWidth / 2 + offsetX, midY
-				- currentHeight / 2 + offsetY, currentWidth, currentHeight);
+		style.texture.draw(batch, midX - currentWidth / 2, midY - currentHeight
+				/ 2, currentWidth, currentHeight);
 		batch.setColor(c);
 	}
 

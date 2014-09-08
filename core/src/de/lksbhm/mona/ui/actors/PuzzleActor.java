@@ -126,10 +126,8 @@ public class PuzzleActor extends Widget {
 	}
 
 	private void drawInvalidMarkers(Batch batch) {
-		float offsetX = getX();
-		float offsetY = getY();
 		for (InvalidMarker marker : markers) {
-			marker.render(batch, offsetX, offsetY);
+			marker.render(batch);
 		}
 	}
 
@@ -263,6 +261,11 @@ public class PuzzleActor extends Widget {
 			endY += lineWidth / 2;
 		}
 
+		startX += getX();
+		endX += getX();
+		startY += getY();
+		endY += getY();
+
 		// draw, finally
 		if (horizontal) {
 			style.connectorHorizontal.draw(batch, startX, startY,
@@ -332,6 +335,8 @@ public class PuzzleActor extends Widget {
 		if (!invertY) {
 			drawY = getHeight() - drawY - cellHeight;
 		}
+		drawX += getX();
+		drawY += getY();
 		style.innerTile.draw(batch, drawX, drawY, cellWidth, cellHeight);
 	}
 
@@ -343,6 +348,8 @@ public class PuzzleActor extends Widget {
 		if (!invertY) {
 			drawY = getHeight() - drawY - cellHeight;
 		}
+		drawX += getX();
+		drawY += getY();
 		style.rightInnerTile.draw(batch, drawX, drawY, cellWidth, cellHeight);
 	}
 
@@ -353,6 +360,8 @@ public class PuzzleActor extends Widget {
 		if (!invertY) {
 			drawY = getHeight() - drawY - cellHeight;
 		}
+		drawX += getX();
+		drawY += getY();
 		style.rightInnerTile.draw(batch, drawX, drawY, cellWidth, cellHeight);
 	}
 
@@ -364,6 +373,8 @@ public class PuzzleActor extends Widget {
 		if (!invertY) {
 			drawY = getHeight() - drawY - cellHeight;
 		}
+		drawX += getX();
+		drawY += getY();
 		style.rightInnerTile.draw(batch, drawX, drawY, cellWidth, cellHeight);
 	}
 
@@ -375,6 +386,8 @@ public class PuzzleActor extends Widget {
 		if (!invertY) {
 			drawY = getHeight() - drawY - cellHeight;
 		}
+		drawX += getX();
+		drawY += getY();
 		style.rightInnerTile.draw(batch, drawX, drawY, cellWidth, cellHeight);
 	}
 
@@ -385,6 +398,8 @@ public class PuzzleActor extends Widget {
 		if (!invertY) {
 			drawY = getHeight() - drawY - cellHeight;
 		}
+		drawX += getX();
+		drawY += getY();
 		style.rightInnerTile.draw(batch, drawX, drawY, cellWidth, cellHeight);
 	}
 
@@ -395,6 +410,8 @@ public class PuzzleActor extends Widget {
 		if (!invertY) {
 			drawY = getHeight() - drawY - cellHeight;
 		}
+		drawX += getX();
+		drawY += getY();
 		style.innerTile.draw(batch, drawX, drawY, cellWidth, cellHeight);
 	}
 
@@ -405,6 +422,8 @@ public class PuzzleActor extends Widget {
 		if (!invertY) {
 			drawY = getHeight() - drawY - cellHeight;
 		}
+		drawX += getX();
+		drawY += getY();
 		style.rightInnerTile.draw(batch, drawX, drawY, cellWidth, cellHeight);
 	}
 
@@ -414,6 +433,8 @@ public class PuzzleActor extends Widget {
 		if (!invertY) {
 			drawY = getHeight() - drawY - cellHeight;
 		}
+		drawX += getX();
+		drawY += getY();
 		style.innerTile.draw(batch, drawX, drawY, cellWidth, cellHeight);
 	}
 

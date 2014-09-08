@@ -6,6 +6,9 @@
 		red: { a: 1, b: 0, g: 0, r: 1 },
 		black: { a: 1, b: 0.1, g: 0.1, r: 0.1 }
 	},
+	com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
+		default: { font: default-font, fontColor: black }
+	},
 	com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
 		dark: { down: "widgets/button-dark/down", up: "widgets/button-dark/up", disabled: "widgets/button-dark/disabled" }
 	},
@@ -13,6 +16,8 @@
 		play: { down: "widgets/button-dark/down", up: "widgets/button-dark/up", disabled: "widgets/button-dark/disabled", font: default-font, fontColor: black }
 	},
 	com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
+		default: { font: default-font, fontColor: white },
+		title: { font: default-font, fontColor: black },
 		won: { font: default-font, fontColor: black }
 	},
 	de.lksbhm.mona.ui.actors.PuzzleActorStyle: {

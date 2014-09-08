@@ -1,16 +1,21 @@
 package de.lksbhm.mona.ui.screens;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+
 import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.gdx.Router;
 import de.lksbhm.gdx.ui.screens.transitions.Transition;
 import de.lksbhm.gdx.ui.screens.transitions.TransitionBuilder;
 import de.lksbhm.mona.puzzle.Puzzle;
 
-public class PuzzleScreen extends AbstractPuzzleScreen {
+public class RandomPuzzleScreen extends AbstractPuzzleScreen {
 
 	private final PuzzleScreenState state = new PuzzleScreenState();
+	private Label seedLabel;
+	private long seed;
 
-	public PuzzleScreen() {
+	public RandomPuzzleScreen() {
 		setClearColor(0.1f, 0.1f, 0.1f, 1f);
 	}
 
@@ -29,6 +34,7 @@ public class PuzzleScreen extends AbstractPuzzleScreen {
 	@Override
 	protected void setupWidgets() {
 		super.setupWidgets();
+		seedLabel = new Label("" + seed, LksBhmGame.getGame().getDefaultSkin());
 	}
 
 	@Override
@@ -57,7 +63,13 @@ public class PuzzleScreen extends AbstractPuzzleScreen {
 
 	@Override
 	protected void layoutWidgets() {
-		super.layoutWidgets();
+		seedLabel.setFontScale(0.3f);
+
+		Table base = getBaseTable();
+		base.clear();
+		base.add(getPuzzleActor()).height(getDefaultViewportHeight() * 0.9f)
+				.row();
+		base.add(seedLabel);
 	}
 
 	@Override
@@ -67,5 +79,10 @@ public class PuzzleScreen extends AbstractPuzzleScreen {
 	}
 
 	private static class PuzzleScreenState extends AbstractPuzzleScreenState {
+	}
+
+	public void setSeed(long seed) {
+		this.seed = seed;
+		seedLabel.setText("" + seed);
 	}
 }

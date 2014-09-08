@@ -95,6 +95,10 @@ public abstract class AbstractPuzzleScreen extends AbstractScreen {
 		applyState();
 	}
 
+	protected PuzzleActor getPuzzleActor() {
+		return puzzle;
+	}
+
 	protected static class AbstractPuzzleScreenState {
 		Puzzle p;
 

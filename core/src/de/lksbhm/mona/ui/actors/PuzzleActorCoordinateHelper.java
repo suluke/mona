@@ -65,7 +65,7 @@ class PuzzleActorCoordinateHelper {
 	}
 
 	public static float getTileOriginX(PuzzleActor actor, Piece tile) {
-		return actor.getMarginLeft() + tile.getX()
+		return actor.getX() + actor.getMarginLeft() + tile.getX()
 				* (actor.getCellWidth() + actor.getPaddingWidth());
 	}
 
@@ -75,6 +75,7 @@ class PuzzleActorCoordinateHelper {
 		if (!actor.isInvertY()) {
 			result = actor.getHeight() - result - actor.getCellHeight();
 		}
+		result += actor.getY();
 		return result;
 	}
 }

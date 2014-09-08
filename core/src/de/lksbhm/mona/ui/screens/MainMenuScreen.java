@@ -8,8 +8,11 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.ColorAction;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -28,6 +31,7 @@ public class MainMenuScreen extends AbstractScreen {
 	private TextButton playButton;
 	private TextButton dailiesButton;
 	private TextButton randomLevelButton;
+	private Label title;
 	private final InputAdapter backButtonHandler = new InputAdapter() {
 		@Override
 		public boolean keyUp(int keycode) {
@@ -44,8 +48,10 @@ public class MainMenuScreen extends AbstractScreen {
 	}
 
 	private void setupWidgets() {
-		playButton = new TextButton("play", LksBhmGame.getGame()
-				.getDefaultSkin(), "play");
+		Skin skin = LksBhmGame.getGame().getDefaultSkin();
+		title = new Label("MONA", skin, "title");
+
+		playButton = new TextButton("play", skin, "play");
 		playButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -70,21 +76,23 @@ public class MainMenuScreen extends AbstractScreen {
 			}
 		});
 
-		dailiesButton = new TextButton("dailies", LksBhmGame.getGame()
-				.getDefaultSkin(), "play");
+		dailiesButton = new TextButton("dailies", skin, "play");
 
-		randomLevelButton = new TextButton("random", LksBhmGame.getGame()
-				.getDefaultSkin(), "play");
+		randomLevelButton = new TextButton("random", skin, "play");
 		randomLevelButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				final Router router = LksBhmGame.getGame().getRouter();
-				router.obtainScreen(PuzzleScreen.class,
-						new ResourceConsumerObtainedCallback<PuzzleScreen>() {
+				router.obtainScreen(
+						RandomPuzzleScreen.class,
+						new ResourceConsumerObtainedCallback<RandomPuzzleScreen>() {
 							@Override
-							public void onObtained(PuzzleScreen ps) {
-								Puzzle puzzle = Generator.generate(1.f, 1.f);
+							public void onObtained(RandomPuzzleScreen ps) {
+								long seed = Generator.random.nextLong();
+								Puzzle puzzle = Generator.generate(seed, 1.f,
+										1.f);
 								ps.setPuzzle(puzzle);
+								ps.setSeed(seed);
 								Transition transition = TransitionBuilder
 										.buildNew().slideInRight()
 										.interpolateClearColor().get();
@@ -103,6 +111,9 @@ public class MainMenuScreen extends AbstractScreen {
 		float w, h;
 		w = vp.getWorldWidth() * 0.6f;
 		h = vp.getWorldHeight() * 0.15f;
+		title.setAlignment(Align.center);
+		title.setFontScale(2);
+		base.add(title).size(w, h).top().spaceBottom(50).row();
 		base.add(playButton).size(w, h).center().spaceBottom(10).row();
 		base.add(dailiesButton).size(w, h).center().spaceBottom(10).row();
 		base.add(randomLevelButton).size(w, h).center().row();
