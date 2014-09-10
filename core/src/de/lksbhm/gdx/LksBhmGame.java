@@ -12,6 +12,8 @@ import de.lksbhm.gdx.contexts.ContextManager;
 import de.lksbhm.gdx.resources.ResourceConsumer;
 import de.lksbhm.gdx.resources.ResourceConsumerManager;
 import de.lksbhm.gdx.ui.screens.TransitionableResettableConsumerScreen;
+import de.lksbhm.gdx.users.User;
+import de.lksbhm.gdx.users.UserManager;
 
 public abstract class LksBhmGame extends Game {
 	private static LksBhmGame instance;
@@ -26,6 +28,8 @@ public abstract class LksBhmGame extends Game {
 	private Router router;
 	private Skin defaultSkin;
 	private int routerHistorySize = 0;
+	private User currentUser;
+	private final UserManager userManager = new UserManager();
 
 	public LksBhmGame() {
 		instance = this;
@@ -134,5 +138,17 @@ public abstract class LksBhmGame extends Game {
 
 	public ContextManager getContextManager() {
 		return contextManager;
+	}
+
+	public User getCurrentUser() {
+		return currentUser;
+	}
+
+	protected void setCurrentUser(User user) {
+		this.currentUser = user;
+	}
+
+	public UserManager getUserManager() {
+		return userManager;
 	}
 }
