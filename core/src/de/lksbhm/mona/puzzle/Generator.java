@@ -3,6 +3,7 @@ package de.lksbhm.mona.puzzle;
 import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.RandomXS128;
 
 import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.mona.Settings;
@@ -19,7 +20,7 @@ public class Generator {
 
 	}
 
-	public static final Random random = new Random();
+	public static final Random random = new RandomXS128();
 
 	public static Puzzle generate(float straightStoneProbability,
 			float edgeStoneProbability) {

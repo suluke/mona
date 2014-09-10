@@ -1,0 +1,14 @@
+{
+	"de.lksbhm.mona":  {
+		"levels": [
+			{
+				"id": "7",
+				"type": "Generated",
+				"data": {
+					"seed": -419959914227741228,
+					"generator": "com.badlogic.gdx.math.RandomXS128"
+				}
+			}
+		]
+	}
+}
