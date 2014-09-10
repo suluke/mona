@@ -50,7 +50,7 @@ public class InternalPackage extends LevelPackage {
 			String name = String.format("%1$02d.json", i);
 			current = baseDir.child(name);
 			if (!current.exists()) {
-				throw new RuntimeException();
+				throw new RuntimeException("Missing level: " + name);
 			}
 			if (current.isDirectory()) {
 				throw new RuntimeException();

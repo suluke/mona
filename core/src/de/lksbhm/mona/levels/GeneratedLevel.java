@@ -19,7 +19,6 @@ public class GeneratedLevel extends Level {
 	@Override
 	protected Puzzle instantiatePuzzle() {
 		random.setSeed(seed);
-		return Generator.generate(getPackage().getDifficulty(), random, 1.f,
-				1.f);
+		return Generator.generate(random, 1.f, 1.f);
 	}
 }

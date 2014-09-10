@@ -2,7 +2,6 @@ package de.lksbhm.mona.puzzle;
 
 import java.util.Random;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.RandomXS128;
 
 import de.lksbhm.gdx.LksBhmGame;
@@ -20,7 +19,12 @@ public class Generator {
 
 	}
 
-	public static final Random random = new RandomXS128();
+	/**
+	 * WARNING: java.util.Random's setSeed() will not guarantee same random
+	 * values across platforms for same seed. Only use this Random instance if
+	 * you really don't care about it's output.
+	 */
+	public static final Random random = new Random();
 
 	public static Puzzle generate(float straightStoneProbability,
 			float edgeStoneProbability) {
@@ -30,8 +34,9 @@ public class Generator {
 
 	public static Puzzle generate(long seed, float straightStoneProbability,
 			float edgeStoneProbability) {
-		Gdx.app.log("PuzzleGenerator", "Seed: " + seed);
-		Random r = new Random(seed);
+		// Don't use java.util.Random here, because behavior is
+		// platform-dependent
+		Random r = new RandomXS128(seed);
 		return generate(r, straightStoneProbability, edgeStoneProbability);
 	}
 

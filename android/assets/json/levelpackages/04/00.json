@@ -2,10 +2,10 @@
 	"de.lksbhm.mona":  {
 		"levels": [
 			{
-				"id": "1",
+				"id": "5",
 				"type": "Generated",
 				"data": {
-					"seed": 1045632822292096241,
+					"seed": -6005777597465719792,
 					"generator": "com.badlogic.gdx.math.RandomXS128"
 				}
 			}
