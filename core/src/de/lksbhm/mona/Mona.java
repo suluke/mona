@@ -17,6 +17,11 @@ public class Mona extends LksBhmGame {
 	private LoadingScreen loadingScreen;
 	private final Settings settings = new Settings();
 	private final LevelPackageManager packageManager = new LevelPackageManager();
+	private final DropInBehavior dropinBehavior = new DropInBehavior();
+
+	public Mona() {
+		dropinBehavior.load();
+	}
 
 	@Override
 	protected void initialize() {
