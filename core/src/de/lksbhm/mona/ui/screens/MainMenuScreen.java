@@ -53,8 +53,8 @@ public class MainMenuScreen extends AbstractScreen {
 			public void clicked(InputEvent event, float x, float y) {
 				Mona mona = (Mona) LksBhmGame.getGame();
 				Transition transition = TransitionBuilder.buildNew()
-						.slideInRight().interpolateClearColor().get();
-				transition.setDuration(.6f);
+						.slideInRight().interpolateClearColor().duration(.6f)
+						.get();
 				LevelPackageManager pacman = mona.getLevelPackageManager();
 				PackagesListScreen.showAsCurrentScreen(
 						pacman.getInternalPackages(), transition);
@@ -79,8 +79,8 @@ public class MainMenuScreen extends AbstractScreen {
 								ps.setSeed(generated.getFirst());
 								Transition transition = TransitionBuilder
 										.buildNew().slideInRight()
-										.interpolateClearColor().get();
-								transition.setDuration(.6f);
+										.interpolateClearColor().duration(.6f)
+										.get();
 								router.changeScreen(ps, transition);
 							}
 						});

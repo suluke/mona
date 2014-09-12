@@ -1,8 +1,6 @@
 package de.lksbhm.mona.ui.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
@@ -28,7 +26,6 @@ public abstract class AbstractPuzzleScreen extends AbstractScreen {
 			}
 		}
 	};
-	private final InputAdapter backButtonHandler = new BackButtonToMainMenuHandler();
 
 	public AbstractPuzzleScreen() {
 		setClearColor(0.1f, 0.1f, 0.1f, 1f);
@@ -62,11 +59,6 @@ public abstract class AbstractPuzzleScreen extends AbstractScreen {
 
 	@Override
 	protected void onShow() {
-		InputMultiplexer mux = new InputMultiplexer();
-		mux.addProcessor(Gdx.input.getInputProcessor());
-		mux.addProcessor(backButtonHandler);
-		Gdx.input.setInputProcessor(mux);
-
 		layoutWidgets();
 	}
 

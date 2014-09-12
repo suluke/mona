@@ -24,7 +24,15 @@ import de.lksbhm.mona.levels.LevelPackageCollection;
 public class PackagesListScreen extends AbstractScreen {
 
 	private PackagesListScreenState state;
-	private final InputAdapter backButtonHandler = new BackButtonToMainMenuHandler();
+	private final InputAdapter backButtonHandler = new AbstractBackButtonHandler() {
+		@Override
+		protected void onBackButtonPressed() {
+			Transition transition = TransitionBuilder.buildNew().slideInLeft()
+					.interpolateClearColor().duration(.6f).get();
+			LksBhmGame.getGame().getRouter()
+					.changeScreen(MainMenuScreen.class, null, transition);
+		}
+	};
 	private final VerticalGroup packagesList = new VerticalGroup();
 	private final ScrollPane listScroll = new ScrollPane(packagesList);
 	@SuppressWarnings("rawtypes")
@@ -62,23 +70,9 @@ public class PackagesListScreen extends AbstractScreen {
 			packageButton.addListener(new ClickListener() {
 				@Override
 				public void clicked(InputEvent event, float x, float y) {
-					final Router router = LksBhmGame.getGame().getRouter();
-					router.obtainScreen(
-							PackageScreen.class,
-							new ResourceConsumerObtainedCallback<PackageScreen>() {
-								@Override
-								public void onObtained(
-										PackageScreen packageScreen) {
-									Transition transition = TransitionBuilder
-											.buildNew().slideInRight()
-											.interpolateClearColor().get();
-									transition.setDuration(.6f);
-
-									packageScreen.setLevelPackage(pack);
-									router.changeScreen(packageScreen,
-											transition);
-								}
-							});
+					Transition transition = TransitionBuilder.buildNew()
+							.slideInRight().interpolateClearColor().get();
+					PackageScreen.showAsCurrentScreen(pack, transition);
 				}
 			});
 			buttonContainer = new Container<TextButton>(packageButton);

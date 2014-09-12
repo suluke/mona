@@ -1,5 +1,8 @@
 package de.lksbhm.mona.ui.screens;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
@@ -14,9 +17,19 @@ public class RandomPuzzleScreen extends AbstractPuzzleScreen {
 	private final PuzzleScreenState state = new PuzzleScreenState();
 	private Label seedLabel;
 	private long seed;
+	private final InputAdapter backButtonHandler = new BackButtonToMainMenuHandler();
 
 	public RandomPuzzleScreen() {
 		setClearColor(0.1f, 0.1f, 0.1f, 1f);
+	}
+
+	@Override
+	protected void onShow() {
+		super.onShow();
+		InputMultiplexer mux = new InputMultiplexer();
+		mux.addProcessor(Gdx.input.getInputProcessor());
+		mux.addProcessor(backButtonHandler);
+		Gdx.input.setInputProcessor(mux);
 	}
 
 	@Override
@@ -26,8 +39,7 @@ public class RandomPuzzleScreen extends AbstractPuzzleScreen {
 		super.setState(state);
 		Router router = LksBhmGame.getGame().getRouter();
 		Transition transition = TransitionBuilder.buildNew().slideInRight()
-				.interpolateClearColor().get();
-		transition.setDuration(.6f);
+				.interpolateClearColor().duration(.6f).get();
 		router.changeScreen(GameWonScreen.class, null, transition);
 	}
 

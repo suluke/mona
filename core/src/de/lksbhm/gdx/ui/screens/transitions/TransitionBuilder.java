@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Pool;
 
 public class TransitionBuilder {
+	private float duration = -1;
 	private static final TransitionBuilder instance = new TransitionBuilder();
 	private AbstractTransition transition = null;
 	private final Pool<ExtraDistanceSlideInLeft> extraDistanceSlideInLeftPool = new Pool<ExtraDistanceSlideInLeft>() {
@@ -91,7 +92,16 @@ public class TransitionBuilder {
 
 	public Transition get() {
 		Transition result = transition;
+		if (duration >= 0) {
+			result.setDuration(duration);
+		}
+		duration = -1;
 		transition = null;
 		return result;
+	}
+
+	public TransitionBuilder duration(float duration) {
+		this.duration = duration;
+		return this;
 	}
 }

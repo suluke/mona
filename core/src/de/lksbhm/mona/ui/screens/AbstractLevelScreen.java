@@ -1,5 +1,7 @@
 package de.lksbhm.mona.ui.screens;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
@@ -13,6 +15,14 @@ import de.lksbhm.mona.levels.Level;
 abstract class AbstractLevelScreen extends AbstractPuzzleScreen {
 	private Level l;
 	private Label idLabel;
+	private final AbstractBackButtonHandler backButtonHandler = new AbstractBackButtonHandler() {
+		@Override
+		protected void onBackButtonPressed() {
+			Transition transition = TransitionBuilder.buildNew().slideInLeft()
+					.interpolateClearColor().duration(.6f).get();
+			PackageScreen.showAsCurrentScreen(l.getPackage(), transition);
+		}
+	};
 
 	public void setLevel(Level l) {
 		this.l = l;
@@ -25,6 +35,11 @@ abstract class AbstractLevelScreen extends AbstractPuzzleScreen {
 	protected void onShow() {
 		super.onShow();
 		l.enterContext();
+		InputMultiplexer mux = new InputMultiplexer();
+		mux.addProcessor(Gdx.input.getInputProcessor());
+		mux.addProcessor(backButtonHandler);
+		Gdx.input.setInputProcessor(mux);
+
 	}
 
 	@Override
@@ -66,8 +81,8 @@ abstract class AbstractLevelScreen extends AbstractPuzzleScreen {
 							packageScreen.setLevelPackage(l.getPackage());
 							Transition transition = TransitionBuilder
 									.buildNew().extraDistanceSlideInRight()
-									.interpolateClearColor().get();
-							transition.setDuration(.6f);
+									.interpolateClearColor().duration(.6f)
+									.get();
 							router.changeScreen(packageScreen, transition);
 						}
 					});
@@ -80,8 +95,7 @@ abstract class AbstractLevelScreen extends AbstractPuzzleScreen {
 			Level next, Router router) {
 		screen.setLevel(next);
 		Transition transition = TransitionBuilder.buildNew().slideInRight()
-				.interpolateClearColor().get();
-		transition.setDuration(.6f);
+				.interpolateClearColor().duration(.6f).get();
 		router.changeScreen(screen, transition);
 	}
 }

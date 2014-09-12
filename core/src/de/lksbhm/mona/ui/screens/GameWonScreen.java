@@ -49,8 +49,8 @@ public class GameWonScreen extends AbstractScreen {
 			public void clicked(InputEvent event, float x, float y) {
 				Router router = LksBhmGame.getGame().getRouter();
 				Transition transition = TransitionBuilder.buildNew()
-						.slideInRight().interpolateClearColor().get();
-				transition.setDuration(.6f);
+						.slideInRight().interpolateClearColor().duration(.6f)
+						.get();
 				router.changeScreen(MainMenuScreen.class, null, transition);
 			}
 		});
