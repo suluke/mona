@@ -92,7 +92,7 @@ class InternalPackageLoadHelper {
 			id = currentValue.getString("id");
 			d = Difficulty.fromString(currentValue.getString("difficulty"));
 			size = currentValue.getInt("size");
-			pack = new InternalPackage(id, size, d, packagesDirs[i]);
+			pack = new InternalPackage(id, size, d, collection, packagesDirs[i]);
 			collection.setPackage(i, pack);
 		}
 		return collection;

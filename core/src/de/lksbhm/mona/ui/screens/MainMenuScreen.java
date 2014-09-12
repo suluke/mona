@@ -1,8 +1,6 @@
 package de.lksbhm.mona.ui.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
@@ -34,14 +32,10 @@ public class MainMenuScreen extends AbstractScreen {
 	private TextButton dailiesButton;
 	private TextButton randomLevelButton;
 	private Label title;
-	private final InputAdapter backButtonHandler = new InputAdapter() {
+	private final AbstractBackButtonHandler backButtonHandler = new AbstractBackButtonHandler() {
 		@Override
-		public boolean keyUp(int keycode) {
-			if (keycode == Keys.BACK) {
-				Gdx.app.exit();
-				return true;
-			}
-			return false;
+		protected void onBackButtonPressed() {
+			Gdx.app.exit();
 		}
 	};
 

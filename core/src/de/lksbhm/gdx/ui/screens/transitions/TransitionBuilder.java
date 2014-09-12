@@ -1,5 +1,6 @@
 package de.lksbhm.gdx.ui.screens.transitions;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Pool;
 
 public class TransitionBuilder {
@@ -33,11 +34,25 @@ public class TransitionBuilder {
 		};
 	};
 
+	private final Pool<SlideInLeft> slideInLeftPool = new Pool<SlideInLeft>() {
+		@Override
+		public SlideInLeft newObject() {
+			SlideInLeft transition = new SlideInLeft();
+			transition.setPool(this);
+			transition.setDisposeOnFinish(true);
+			return transition;
+		};
+	};
+
 	private TransitionBuilder() {
 
 	}
 
 	public static TransitionBuilder buildNew() {
+		if (instance.transition != null) {
+			Gdx.app.error("TransitionBuilder",
+					"Starting a new transition before old one is retrieved");
+		}
 		instance.transition = null;
 		return instance;
 	}
@@ -52,13 +67,19 @@ public class TransitionBuilder {
 	public TransitionBuilder slideInRight() {
 		SlideInRight transition = slideInRightPool.obtain();
 		set(transition);
-		return instance;
+		return this;
 	}
 
 	public TransitionBuilder interpolateClearColor() {
 		InterpolateClearColor transition = interpolateClearColorPool.obtain();
 		set(transition);
-		return instance;
+		return this;
+	}
+
+	public TransitionBuilder slideInLeft() {
+		SlideInLeft transition = slideInLeftPool.obtain();
+		set(transition);
+		return this;
 	}
 
 	private void set(AbstractTransition t) {
@@ -69,6 +90,8 @@ public class TransitionBuilder {
 	}
 
 	public Transition get() {
-		return transition;
+		Transition result = transition;
+		transition = null;
+		return result;
 	}
 }

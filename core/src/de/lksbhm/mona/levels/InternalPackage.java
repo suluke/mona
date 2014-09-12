@@ -9,8 +9,8 @@ public class InternalPackage extends LevelPackage {
 	private final FileHandle baseDir;
 
 	InternalPackage(String id, int size, Difficulty difficulty,
-			FileHandle baseDir) {
-		super(id, size, difficulty);
+			LevelPackageCollection collection, FileHandle baseDir) {
+		super(id, size, difficulty, collection);
 		this.baseDir = baseDir;
 	}
 

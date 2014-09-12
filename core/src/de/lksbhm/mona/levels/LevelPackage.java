@@ -9,11 +9,14 @@ public abstract class LevelPackage implements Iterable<Level> {
 	private final String packageId;
 	private final ArrayList<Level> levels = new ArrayList<Level>();
 	private boolean loaded = false;
+	private final LevelPackageCollection collection;
 
-	public LevelPackage(String id, int size, Difficulty difficulty) {
+	public LevelPackage(String id, int size, Difficulty difficulty,
+			LevelPackageCollection collection) {
 		this.packageId = id;
 		this.difficulty = difficulty;
 		this.size = size;
+		this.collection = collection;
 	}
 
 	public int getSize() {
@@ -62,5 +65,9 @@ public abstract class LevelPackage implements Iterable<Level> {
 		} else {
 			return levels.get(0);
 		}
+	}
+
+	public LevelPackageCollection getLevelPackageCollection() {
+		return collection;
 	}
 }

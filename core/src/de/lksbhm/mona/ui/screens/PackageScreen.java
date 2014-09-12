@@ -17,11 +17,22 @@ import de.lksbhm.gdx.ui.screens.transitions.Transition;
 import de.lksbhm.gdx.ui.screens.transitions.TransitionBuilder;
 import de.lksbhm.mona.levels.Level;
 import de.lksbhm.mona.levels.LevelPackage;
+import de.lksbhm.mona.levels.LevelPackageCollection;
 
 public class PackageScreen extends AbstractScreen {
 
 	private final PackageScreenState state = new PackageScreenState();
-	private final InputAdapter backButtonHandler = new BackButtonToMainMenuHandler();
+	private final InputAdapter backButtonHandler = new AbstractBackButtonHandler() {
+		@Override
+		protected void onBackButtonPressed() {
+			Transition transition = TransitionBuilder.buildNew().slideInLeft()
+					.interpolateClearColor().get();
+			transition.setDuration(.6f);
+			LevelPackageCollection collection = state.pack
+					.getLevelPackageCollection();
+			PackagesListScreen.showAsCurrentScreen(collection, transition);
+		}
+	};
 	private final Table levelButtonGrid = new Table();
 	private TextButton[] levelButtons;
 	private static final int levelButtonsPerRow = 5;
