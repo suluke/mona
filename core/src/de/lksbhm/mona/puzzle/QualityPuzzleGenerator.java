@@ -33,7 +33,7 @@ public class QualityPuzzleGenerator {
 	private static int getNonEmptyTilesCount(Puzzle p) {
 		int result = 0;
 		for (Piece tile : p) {
-			if (tile.getType() != Type.EDGE) {
+			if (tile.getType() != Type.EMPTY) {
 				result++;
 			}
 		}
