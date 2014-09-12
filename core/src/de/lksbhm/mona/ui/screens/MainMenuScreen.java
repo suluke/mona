@@ -57,24 +57,13 @@ public class MainMenuScreen extends AbstractScreen {
 		playButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				final Mona mona = (Mona) LksBhmGame.getGame();
-				final Router router = mona.getRouter();
-				router.obtainScreen(
-						PackagesListScreen.class,
-						new ResourceConsumerObtainedCallback<PackagesListScreen>() {
-							@Override
-							public void onObtained(PackagesListScreen listScreen) {
-								Transition transition = TransitionBuilder
-										.buildNew().slideInRight()
-										.interpolateClearColor().get();
-								transition.setDuration(.6f);
-								LevelPackageManager pacman = mona
-										.getLevelPackageManager();
-								listScreen.setLevelPackageCollection(pacman
-										.getInternalPackages());
-								router.changeScreen(listScreen, transition);
-							}
-						});
+				Mona mona = (Mona) LksBhmGame.getGame();
+				Transition transition = TransitionBuilder.buildNew()
+						.slideInRight().interpolateClearColor().get();
+				transition.setDuration(.6f);
+				LevelPackageManager pacman = mona.getLevelPackageManager();
+				PackagesListScreen.showAsCurrentScreen(
+						pacman.getInternalPackages(), transition);
 			}
 		});
 

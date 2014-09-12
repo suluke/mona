@@ -17,6 +17,7 @@ import de.lksbhm.gdx.Router;
 import de.lksbhm.gdx.resources.ResourceConsumerObtainedCallback;
 import de.lksbhm.gdx.ui.screens.transitions.Transition;
 import de.lksbhm.gdx.ui.screens.transitions.TransitionBuilder;
+import de.lksbhm.mona.Mona;
 import de.lksbhm.mona.levels.LevelPackage;
 import de.lksbhm.mona.levels.LevelPackageCollection;
 
@@ -31,7 +32,7 @@ public class PackagesListScreen extends AbstractScreen {
 
 	public PackagesListScreen() {
 		state = new PackagesListScreenState();
-		setClearColor(.1f, .1f, .1f, 1);
+		setClearColor(.6f, .6f, .6f, 1);
 		packagesList.setWidth(getDefaultViewportWidth() * .7f);
 	}
 
@@ -137,5 +138,19 @@ public class PackagesListScreen extends AbstractScreen {
 		mux.addProcessor(backButtonHandler);
 		Gdx.input.setInputProcessor(mux);
 		layoutWidgets();
+	}
+
+	public static void showAsCurrentScreen(
+			final LevelPackageCollection collection, final Transition transition) {
+		Mona mona = (Mona) LksBhmGame.getGame();
+		final Router router = mona.getRouter();
+		router.obtainScreen(PackagesListScreen.class,
+				new ResourceConsumerObtainedCallback<PackagesListScreen>() {
+					@Override
+					public void onObtained(PackagesListScreen listScreen) {
+						listScreen.setLevelPackageCollection(collection);
+						router.changeScreen(listScreen, transition);
+					}
+				});
 	}
 }

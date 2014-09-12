@@ -1,5 +1,8 @@
 package de.lksbhm.mona.ui.screens;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+
 import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.gdx.Router;
 import de.lksbhm.gdx.resources.ResourceConsumerObtainedCallback;
@@ -9,10 +12,12 @@ import de.lksbhm.mona.levels.Level;
 
 abstract class AbstractLevelScreen extends AbstractPuzzleScreen {
 	private Level l;
+	private Label idLabel;
 
 	public void setLevel(Level l) {
 		this.l = l;
 		l.reset();
+		idLabel.setText(l.getPackage().getPackageId() + "/" + l.getLevelId());
 		setPuzzle(l.getPuzzle());
 	}
 
@@ -20,6 +25,20 @@ abstract class AbstractLevelScreen extends AbstractPuzzleScreen {
 	protected void onShow() {
 		super.onShow();
 		l.enterContext();
+	}
+
+	@Override
+	protected void setupWidgets() {
+		super.setupWidgets();
+		idLabel = new Label("", LksBhmGame.getGame().getDefaultSkin());
+	}
+
+	@Override
+	protected void layoutWidgets() {
+		Table base = getBaseTable();
+		base.clear();
+		base.add(idLabel).row();
+		base.add(getPuzzleActor()).height(0.9f * getDefaultViewportHeight());
 	}
 
 	@Override

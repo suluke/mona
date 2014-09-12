@@ -19,15 +19,26 @@ public abstract class AbstractScreen extends
 		return 600;
 	}
 
-	protected static class BackButtonToMainMenuHandler extends InputAdapter {
+	protected static abstract class AbstractBackButtonHandler extends
+			InputAdapter {
 		@Override
 		public boolean keyUp(int keycode) {
 			if (keycode == Keys.BACK || keycode == Keys.ESCAPE) {
-				LksBhmGame.getGame().getRouter()
-						.changeScreen(MainMenuScreen.class, null);
+				onBackButtonPressed();
 				return true;
 			}
 			return false;
+		}
+
+		protected abstract void onBackButtonPressed();
+	}
+
+	protected static class BackButtonToMainMenuHandler extends
+			AbstractBackButtonHandler {
+		@Override
+		protected void onBackButtonPressed() {
+			LksBhmGame.getGame().getRouter()
+					.changeScreen(MainMenuScreen.class, null);
 		}
 	};
 }
