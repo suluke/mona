@@ -1,14 +1,32 @@
 package de.lksbhm.gdx.users;
 
-import de.lksbhm.gdx.util.KeyValueStore;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
+
+import de.lksbhm.gdx.LksBhmGame;
 
 /**
  * Responsible for loading and persisting {@link User}s and their attached data.
  * 
  *
  */
-public class UserManager implements KeyValueStore<User> {
-	public User createUser(String name) {
+public class UserManager {
+	private static final String userPreferencesName = "users";
+
+	private User currentUser;
+	private final UserDataStorage userDataStorage = new UserDataStorage();
+	private final Preferences userPreferences = Gdx.app
+			.getPreferences(userPreferencesName);
+
+	public UserManager() {
+
+	}
+
+	private int generateNewUserId() {
+		return 0;
+	}
+
+	public User createUser() {
 		return null;
 	}
 
@@ -17,36 +35,33 @@ public class UserManager implements KeyValueStore<User> {
 	}
 
 	public void updateUser(User user) {
-
+		user.storeAttributes(userDataStorage);
 	}
 
-	public User getLastUser() {
-		return null;
-	}
-
-	public String[] listUserNames() {
-		return null;
-	}
-
-	@Override
-	public String get(String key, User user) {
-		return null;
-	}
-
-	@Override
-	public void put(String key, String value, User user) {
-
-	}
-
-	public static boolean isUserNameValid(String name) {
-		if ("default".equalsIgnoreCase(name)) {
-			return false;
-		} else if ("preferences".equalsIgnoreCase(name)) {
-			return false;
-		} else if ("settings".equalsIgnoreCase(name)) {
-			return false;
+	public User[] listUsers() {
+		LksBhmGame game = LksBhmGame.getGame();
+		int usersCount = getUsersCount();
+		User[] userList = new User[usersCount];
+		User current;
+		for (int i = 0; i < usersCount; i++) {
+			current = game.instantiateUserImplementation();
+			current.setUserId(userPreferences.getInteger("user" + i));
+			userList[i] = current;
 		}
+		return null;
+	}
 
-		return true;
+	public int getUsersCount() {
+		return userPreferences.getInteger("usersCount");
+	}
+
+	public User getCurrentUser() {
+		return currentUser;
+	}
+
+	public void setCurrentUser(User user) {
+		currentUser = user;
+		userPreferences.putInteger("currentUser", user.getUserId());
+		userPreferences.flush();
 	}
 }

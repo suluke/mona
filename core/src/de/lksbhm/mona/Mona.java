@@ -20,6 +20,7 @@ public class Mona extends LksBhmGame {
 	private final DropInBehavior dropinBehavior = new DropInBehavior();
 
 	public Mona() {
+		// TODO lucky this works...
 		dropinBehavior.load();
 	}
 
@@ -88,5 +89,10 @@ public class Mona extends LksBhmGame {
 
 	public LevelPackageManager getLevelPackageManager() {
 		return packageManager;
+	}
+
+	@Override
+	public User instantiateUserImplementation() {
+		return new User();
 	}
 }

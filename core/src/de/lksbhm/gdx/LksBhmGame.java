@@ -8,14 +8,15 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.SkinLoader.SkinParameter;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
+import de.lksbhm.gdx.contexts.Context;
 import de.lksbhm.gdx.contexts.ContextManager;
 import de.lksbhm.gdx.resources.ResourceConsumer;
 import de.lksbhm.gdx.resources.ResourceConsumerManager;
 import de.lksbhm.gdx.ui.screens.TransitionableResettableConsumerScreen;
-import de.lksbhm.gdx.users.User;
 import de.lksbhm.gdx.users.UserManager;
+import de.lksbhm.mona.User;
 
-public abstract class LksBhmGame extends Game {
+public abstract class LksBhmGame extends Game implements Context {
 	private static LksBhmGame instance;
 
 	private final String defaultSkinPath;
@@ -28,8 +29,7 @@ public abstract class LksBhmGame extends Game {
 	private Router router;
 	private Skin defaultSkin;
 	private int routerHistorySize = 0;
-	private User currentUser;
-	private final UserManager userManager = new UserManager();
+	private UserManager userManager;
 
 	public LksBhmGame() {
 		instance = this;
@@ -57,6 +57,7 @@ public abstract class LksBhmGame extends Game {
 			Gdx.app.setLogLevel(Application.LOG_NONE);
 		}
 		router = new Router(this, routerHistorySize);
+		userManager = new UserManager();
 
 		initialize();
 		loadAndStart();
@@ -76,6 +77,7 @@ public abstract class LksBhmGame extends Game {
 				defaultSkin = assetManager.get(defaultSkinPath);
 				screen.onResourcesLoaded(assetManager);
 				setScreen(screen);
+				enterContext();
 			}
 		});
 	}
@@ -140,15 +142,19 @@ public abstract class LksBhmGame extends Game {
 		return contextManager;
 	}
 
-	public User getCurrentUser() {
-		return currentUser;
-	}
-
-	protected void setCurrentUser(User user) {
-		this.currentUser = user;
-	}
-
 	public UserManager getUserManager() {
 		return userManager;
 	}
+
+	@Override
+	public void enterContext() {
+		contextManager.enterContext(this);
+	}
+
+	@Override
+	public void leaveContext() {
+		contextManager.leaveContext(this);
+	}
+
+	public abstract User instantiateUserImplementation();
 }

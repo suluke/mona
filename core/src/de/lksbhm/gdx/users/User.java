@@ -1,19 +1,21 @@
 package de.lksbhm.gdx.users;
 
-import de.lksbhm.gdx.LksBhmGame;
+import com.badlogic.gdx.utils.TimeUtils;
+
 import de.lksbhm.gdx.util.KeyValueStore;
 
 public abstract class User {
 
-	private final int userId;
 	private String displayName;
-
-	public User(int id) {
-		userId = id;
-	}
+	private long creationTime = TimeUtils.millis();
+	private int userId;
 
 	int getUserId() {
 		return userId;
+	}
+
+	void setUserId(int userId) {
+		this.userId = userId;
 	}
 
 	public void setName(String name) {
@@ -24,19 +26,30 @@ public abstract class User {
 		return displayName;
 	}
 
-	void loadAttributes() {
-		loadAttributes(LksBhmGame.getGame().getUserManager());
+	/*
+	 * To allow sorting by time of creation
+	 */
+	public long getCreationTime() {
+		return creationTime;
+	}
+
+	final void callLoadAttributes(KeyValueStore<User> store) {
+		displayName = store.get("name", this);
+		creationTime = store.getLong("creationTime", this);
+		loadAttributes(store);
 	}
 
 	protected void loadAttributes(KeyValueStore<User> store) {
-		displayName = store.get("name", this);
+
 	}
 
-	void storeAttributes() {
-		storeAttributes(LksBhmGame.getGame().getUserManager());
+	final void callStoreAttributes(KeyValueStore<User> store) {
+		store.put("name", displayName, this);
+		store.put("creationTime", creationTime, this);
+		storeAttributes(store);
 	}
 
 	protected void storeAttributes(KeyValueStore<User> store) {
-		store.put("name", displayName, this);
+
 	}
 }
