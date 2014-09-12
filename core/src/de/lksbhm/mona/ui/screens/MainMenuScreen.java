@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.RandomXS128;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.ColorAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -21,10 +22,11 @@ import de.lksbhm.gdx.Router;
 import de.lksbhm.gdx.resources.ResourceConsumerObtainedCallback;
 import de.lksbhm.gdx.ui.screens.transitions.Transition;
 import de.lksbhm.gdx.ui.screens.transitions.TransitionBuilder;
+import de.lksbhm.gdx.util.Pair;
 import de.lksbhm.mona.Mona;
 import de.lksbhm.mona.levels.LevelPackageManager;
-import de.lksbhm.mona.puzzle.Generator;
 import de.lksbhm.mona.puzzle.Puzzle;
+import de.lksbhm.mona.puzzle.QualityPuzzleGenerator;
 
 public class MainMenuScreen extends AbstractScreen {
 
@@ -88,11 +90,10 @@ public class MainMenuScreen extends AbstractScreen {
 						new ResourceConsumerObtainedCallback<RandomPuzzleScreen>() {
 							@Override
 							public void onObtained(RandomPuzzleScreen ps) {
-								long seed = Generator.random.nextLong();
-								Puzzle puzzle = Generator.generate(seed, 1.f,
-										1.f);
-								ps.setPuzzle(puzzle);
-								ps.setSeed(seed);
+								Pair<Long, Puzzle> generated = QualityPuzzleGenerator
+										.generateSeedAndPuzzle(new RandomXS128());
+								ps.setPuzzle(generated.getSecond());
+								ps.setSeed(generated.getFirst());
 								Transition transition = TransitionBuilder
 										.buildNew().slideInRight()
 										.interpolateClearColor().get();
