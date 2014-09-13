@@ -7,7 +7,7 @@ import de.lksbhm.gdx.util.KeyValueStore;
 public abstract class User {
 
 	private String displayName;
-	private long creationTime = TimeUtils.millis();
+	private long creationTime;
 	private int userId;
 
 	int getUserId() {
@@ -51,5 +51,9 @@ public abstract class User {
 
 	protected void storeAttributes(KeyValueStore<User> store) {
 
+	}
+
+	public void setInitialAttributeValues() {
+		creationTime = TimeUtils.millis();
 	}
 }

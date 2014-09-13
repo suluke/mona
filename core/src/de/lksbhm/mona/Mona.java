@@ -12,7 +12,7 @@ import de.lksbhm.mona.levels.LevelPackageManager;
 import de.lksbhm.mona.ui.screens.LoadingScreen;
 import de.lksbhm.mona.ui.screens.MainMenuScreen;
 
-public class Mona extends LksBhmGame {
+public class Mona extends LksBhmGame<Mona, User> {
 
 	private LoadingScreen loadingScreen;
 	private final Settings settings = new Settings();
@@ -20,6 +20,7 @@ public class Mona extends LksBhmGame {
 	private final DropInBehavior dropinBehavior = new DropInBehavior();
 
 	public Mona() {
+		super(Mona.class, User.class);
 		// TODO lucky this works...
 		dropinBehavior.load();
 	}

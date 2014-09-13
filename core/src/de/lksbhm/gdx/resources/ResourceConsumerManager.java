@@ -18,13 +18,14 @@ import de.lksbhm.gdx.util.LRUCache;
 public class ResourceConsumerManager {
 	private final LRUCache<Class<? extends ResourceConsumer>, ResourceConsumer> lruCache;
 	private MemoryUsageStrategy memoryStrategy;
-	private final LksBhmGame game;
+	private final LksBhmGame<?, ?> game;
 
-	public ResourceConsumerManager(LksBhmGame game) {
+	public ResourceConsumerManager(LksBhmGame<?, ?> game) {
 		this(game, new NeverReleaseStrategy());
 	}
 
-	public ResourceConsumerManager(LksBhmGame game, MemoryUsageStrategy strategy) {
+	public ResourceConsumerManager(LksBhmGame<?, ?> game,
+			MemoryUsageStrategy strategy) {
 		lruCache = new LRUCache<Class<? extends ResourceConsumer>, ResourceConsumer>();
 		memoryStrategy = strategy;
 		this.game = game;

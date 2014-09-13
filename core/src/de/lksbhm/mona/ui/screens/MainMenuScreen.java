@@ -51,7 +51,7 @@ public class MainMenuScreen extends AbstractScreen {
 		playButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				Mona mona = (Mona) LksBhmGame.getGame();
+				Mona mona = LksBhmGame.getGame(Mona.class);
 				Transition transition = TransitionBuilder.buildNew()
 						.slideInRight().interpolateClearColor().duration(.6f)
 						.get();

@@ -136,7 +136,7 @@ public class PackagesListScreen extends AbstractScreen {
 
 	public static void showAsCurrentScreen(
 			final LevelPackageCollection collection, final Transition transition) {
-		Mona mona = (Mona) LksBhmGame.getGame();
+		Mona mona = LksBhmGame.getGame(Mona.class);
 		final Router router = mona.getRouter();
 		router.obtainScreen(PackagesListScreen.class,
 				new ResourceConsumerObtainedCallback<PackagesListScreen>() {

@@ -20,7 +20,7 @@ public abstract class AbstractScreen implements
 	private final Table table;
 	private Texture background = null;
 	private final Viewport viewport;
-	private final LksBhmGame game;
+	private final LksBhmGame<?, ?> game;
 	private final Color clearColor = new Color(0, 0, 0, 1);
 	private boolean show;
 	private boolean showDisabled = false;
@@ -68,7 +68,7 @@ public abstract class AbstractScreen implements
 		return viewport;
 	}
 
-	protected LksBhmGame getGame() {
+	protected LksBhmGame<?, ?> getGame() {
 		return game;
 	}
 
