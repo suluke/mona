@@ -25,27 +25,32 @@ class UserDataStorage implements KeyValueStore<User> {
 
 	@Override
 	public float getFloat(String key, User user) {
-		return Float.parseFloat(get(key, user));
+		Preferences prefs = getPreferencesForUser(user);
+		return prefs.getFloat(key);
 	}
 
 	@Override
 	public double getDouble(String key, User user) {
-		return Double.parseDouble(get(key, user));
+		Preferences prefs = getPreferencesForUser(user);
+		return prefs.getFloat(key);
 	}
 
 	@Override
 	public int getInt(String key, User user) {
-		return Integer.parseInt(get(key, user));
+		Preferences prefs = getPreferencesForUser(user);
+		return prefs.getInteger(key);
 	}
 
 	@Override
 	public long getLong(String key, User user) {
-		return Long.parseLong(get(key, user));
+		Preferences prefs = getPreferencesForUser(user);
+		return prefs.getLong(key);
 	}
 
 	@Override
 	public boolean getBoolean(String key, User user) {
-		return Boolean.parseBoolean(get(key, user));
+		Preferences prefs = getPreferencesForUser(user);
+		return prefs.getBoolean(key);
 	}
 
 	@Override
@@ -55,26 +60,31 @@ class UserDataStorage implements KeyValueStore<User> {
 
 	@Override
 	public void put(String key, float value, User user) {
-		put(key, Float.toString(value), user);
+		Preferences prefs = getPreferencesForUser(user);
+		prefs.putFloat(key, value);
 	}
 
 	@Override
 	public void put(String key, long value, User user) {
-		put(key, Long.toString(value), user);
+		Preferences prefs = getPreferencesForUser(user);
+		prefs.putLong(key, value);
 	}
 
 	@Override
 	public void put(String key, int value, User user) {
-		put(key, Integer.toString(value), user);
+		Preferences prefs = getPreferencesForUser(user);
+		prefs.putInteger(key, value);
 	}
 
 	@Override
 	public void put(String key, boolean value, User user) {
-		put(key, Boolean.toString(value), user);
+		Preferences prefs = getPreferencesForUser(user);
+		prefs.putBoolean(key, value);
 	}
 
 	@Override
 	public void persist(User user) {
+		System.out.println("persist");
 		getPreferencesForUser(user).flush();
 	}
 }
