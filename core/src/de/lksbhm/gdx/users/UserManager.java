@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.reflect.ReflectionException;
  */
 public class UserManager<UserImplementation extends User> {
 	private static final String userPreferencesName = "users";
+	private static final String currentUserKey = "currentUser";
 
 	private UserImplementation currentUser;
 	private final UserDataStorage userDataStorage = new UserDataStorage();
@@ -31,6 +32,17 @@ public class UserManager<UserImplementation extends User> {
 		} catch (ReflectionException e) {
 			throw new RuntimeException();
 		}
+		if (userPreferences.contains(currentUserKey)) {
+			int currentUserId = userPreferences.getInteger(currentUserKey);
+			currentUser = loadUser(currentUserId);
+		}
+	}
+
+	private UserImplementation loadUser(int id) {
+		UserImplementation user = instantiateUser();
+		user.setUserId(id);
+		user.callLoadAttributes(userDataStorage);
+		return user;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -52,6 +64,7 @@ public class UserManager<UserImplementation extends User> {
 		UserImplementation user = instantiateUser();
 		user.setUserId(generateNewUserId());
 		user.setInitialAttributeValues();
+		user.storeAttributes(userDataStorage);
 		return user;
 	}
 
@@ -91,7 +104,7 @@ public class UserManager<UserImplementation extends User> {
 
 	public void setCurrentUser(UserImplementation user) {
 		currentUser = user;
-		userPreferences.putInteger("currentUser", user.getUserId());
+		userPreferences.putInteger(currentUserKey, user.getUserId());
 		userPreferences.flush();
 	}
 }

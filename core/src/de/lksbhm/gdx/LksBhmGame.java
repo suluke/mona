@@ -171,6 +171,4 @@ public abstract class LksBhmGame<GameImplementation extends LksBhmGame, UserImpl
 	public void leaveContext() {
 		contextManager.leaveContext(this);
 	}
-
-	public abstract UserImplementation instantiateUserImplementation();
 }

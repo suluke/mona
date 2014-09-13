@@ -47,6 +47,7 @@ public abstract class User {
 		store.put("name", displayName, this);
 		store.put("creationTime", creationTime, this);
 		storeAttributes(store);
+		store.persist(this);
 	}
 
 	protected void storeAttributes(KeyValueStore<User> store) {

@@ -3,6 +3,11 @@ package de.lksbhm.mona;
 import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.gdx.contexts.AbstractContextListenerHelper;
 
+/**
+ * Must not access anything that gets instantiated/loaded/set after
+ * game.initialize
+ *
+ */
 class DropInBehavior {
 	public void load() {
 		loadTutorialsOnFirstStartBehavior();
@@ -18,7 +23,7 @@ class DropInBehavior {
 							protected void onEnterContext(Mona mona) {
 								if (!mona.getUserManager().getCurrentUser()
 										.hasPlayedTutorials()) {
-
+									System.out.println("Play tutorial!");
 								}
 							}
 

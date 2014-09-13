@@ -8,6 +8,7 @@ import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.gdx.resources.ResourceConsumer;
 import de.lksbhm.gdx.resources.ResourceConsumerManager;
 import de.lksbhm.gdx.ui.screens.TransitionableResettableConsumerScreen;
+import de.lksbhm.gdx.users.UserManager;
 import de.lksbhm.mona.levels.LevelPackageManager;
 import de.lksbhm.mona.ui.screens.LoadingScreen;
 import de.lksbhm.mona.ui.screens.MainMenuScreen;
@@ -21,14 +22,20 @@ public class Mona extends LksBhmGame<Mona, User> {
 
 	public Mona() {
 		super(Mona.class, User.class);
-		// TODO lucky this works...
-		dropinBehavior.load();
 	}
 
 	@Override
 	protected void initialize() {
 		Gdx.input.setCatchBackKey(true);
 		loadingScreen = new LoadingScreen();
+		UserManager<User> userManager = getUserManager();
+		if (userManager.getCurrentUser() == null) {
+			// First start ever O.O, no?
+			userManager.setCurrentUser(userManager.createUser());
+		}
+
+		// TODO lucky this works...
+		dropinBehavior.load();
 	};
 
 	@Override
@@ -90,10 +97,5 @@ public class Mona extends LksBhmGame<Mona, User> {
 
 	public LevelPackageManager getLevelPackageManager() {
 		return packageManager;
-	}
-
-	@Override
-	public User instantiateUserImplementation() {
-		return new User();
 	}
 }

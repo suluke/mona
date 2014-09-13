@@ -71,4 +71,9 @@ class UserDataStorage implements KeyValueStore<User> {
 	public void put(String key, boolean value, User context) {
 		put(key, Boolean.toString(value), context);
 	}
+
+	@Override
+	public void persist(User context) {
+		getPreferencesForUser(context).flush();
+	}
 }
