@@ -64,7 +64,7 @@ public class UserManager<UserImplementation extends User> {
 		UserImplementation user = instantiateUser();
 		user.setUserId(generateNewUserId());
 		user.setInitialAttributeValues();
-		user.storeAttributes(userDataStorage);
+		user.callStoreAttributes(userDataStorage);
 		return user;
 	}
 
@@ -73,7 +73,7 @@ public class UserManager<UserImplementation extends User> {
 	}
 
 	public void updateUser(UserImplementation user) {
-		user.storeAttributes(userDataStorage);
+		user.callStoreAttributes(userDataStorage);
 	}
 
 	@SuppressWarnings("unchecked")

@@ -55,6 +55,7 @@ public abstract class User {
 	}
 
 	public void setInitialAttributeValues() {
+		displayName = "";
 		creationTime = TimeUtils.millis();
 	}
 }
