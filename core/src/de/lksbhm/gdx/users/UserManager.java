@@ -57,7 +57,7 @@ public class UserManager<UserImplementation extends User> {
 
 	private int generateNewUserId() {
 		// TODO
-		return 0;
+		return userPreferences.getInteger("user" + (getUsersCount() - 1)) + 1;
 	}
 
 	public UserImplementation createUser() {
@@ -69,7 +69,7 @@ public class UserManager<UserImplementation extends User> {
 	}
 
 	public void deleteUser(UserImplementation user) {
-
+		// TODO
 	}
 
 	public void updateUser(UserImplementation user) {

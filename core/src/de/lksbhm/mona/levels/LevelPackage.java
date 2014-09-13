@@ -70,4 +70,9 @@ public abstract class LevelPackage implements Iterable<Level> {
 	public LevelPackageCollection getLevelPackageCollection() {
 		return collection;
 	}
+
+	public Level getLevel(int index) {
+		assertLevelsLoaded();
+		return levels.get(index);
+	}
 }

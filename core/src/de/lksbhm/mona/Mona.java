@@ -33,9 +33,6 @@ public class Mona extends LksBhmGame<Mona, User> {
 			// First start ever O.O, no?
 			userManager.setCurrentUser(userManager.createUser());
 		}
-
-		// TODO lucky this works...
-		dropinBehavior.load();
 	};
 
 	@Override
@@ -97,5 +94,13 @@ public class Mona extends LksBhmGame<Mona, User> {
 
 	public LevelPackageManager getLevelPackageManager() {
 		return packageManager;
+	}
+
+	@Override
+	public void enterContext() {
+		if (!dropinBehavior.isLoaded()) {
+			dropinBehavior.load();
+		}
+		super.enterContext();
 	}
 }
