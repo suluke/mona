@@ -1,8 +1,9 @@
 package de.lksbhm.mona;
 
 import de.lksbhm.gdx.LksBhmGame;
-import de.lksbhm.gdx.contexts.AbstractContextListenerHelper;
-import de.lksbhm.gdx.resources.ResourceConsumerObtainedCallback;
+import de.lksbhm.gdx.contexts.AbstractContextListenerAdapter;
+import de.lksbhm.mona.levels.Level;
+import de.lksbhm.mona.ui.screens.SplashScreen;
 import de.lksbhm.mona.ui.screens.LevelScreenOne;
 
 /**
@@ -24,37 +25,33 @@ class DropInBehavior {
 				.getGame(Mona.class)
 				.getContextManager()
 				.addListener(
-						new AbstractContextListenerHelper<Mona>(Mona.class) {
+						new AbstractContextListenerAdapter<SplashScreen>(
+								SplashScreen.class) {
 							@Override
-							protected void onEnterContext(final Mona mona) {
-								if (!mona.getUserManager().getCurrentUser()
-										.hasPlayedTutorials()) {
-									System.out.println("Play tutorials!");
-									mona.getRouter()
-											.obtainScreen(
-													LevelScreenOne.class,
-													new ResourceConsumerObtainedCallback<LevelScreenOne>() {
-
-														@Override
-														public void onObtained(
-																LevelScreenOne screen) {
-															screen.setLevel(mona
-																	.getLevelPackageManager()
-																	.getInternalPackages()
-																	.getPackage(
-																			0)
-																	.getLevel(0));
-															mona.getRouter()
-																	.changeScreen(
-																			screen);
-														}
-
-													});
+							protected void onEnterContext(
+									final SplashScreen screen) {
+								System.out.println("flashscreen");
+								final Mona mona = LksBhmGame
+										.getGame(Mona.class);
+								final Level tutorialLevel = mona
+										.getUserManager().getCurrentUser()
+										.getTutorialLevelToPlay();
+								if (tutorialLevel != null) {
+									System.out.println("Play tutorial!");
+									LevelScreenOne levelScreen = mona
+											.getResourceConsumerManager()
+											.obtainConsumerInstanceWithoutLoadingResources(
+													LevelScreenOne.class);
+									mona.getAssetManager().finishLoading();
+									levelScreen.onResourcesLoaded(mona
+											.getAssetManager());
+									levelScreen.setLevel(tutorialLevel);
+									screen.setNextScreen(levelScreen);
 								}
 							}
 
 							@Override
-							protected void onLeaveContext(Mona mona) {
+							protected void onLeaveContext(SplashScreen screen) {
 							}
 						});
 	}

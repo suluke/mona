@@ -6,12 +6,11 @@ import com.badlogic.gdx.assets.AssetManager;
 
 import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.gdx.resources.ResourceConsumer;
-import de.lksbhm.gdx.resources.ResourceConsumerManager;
 import de.lksbhm.gdx.ui.screens.TransitionableResettableConsumerScreen;
 import de.lksbhm.gdx.users.UserManager;
 import de.lksbhm.mona.levels.LevelPackageManager;
+import de.lksbhm.mona.ui.screens.SplashScreen;
 import de.lksbhm.mona.ui.screens.LoadingScreen;
-import de.lksbhm.mona.ui.screens.MainMenuScreen;
 
 public class Mona extends LksBhmGame<Mona, User> {
 
@@ -33,14 +32,14 @@ public class Mona extends LksBhmGame<Mona, User> {
 			// First start ever O.O, no?
 			userManager.setCurrentUser(userManager.createUser());
 		}
+		if (!dropinBehavior.isLoaded()) {
+			dropinBehavior.load();
+		}
 	};
 
 	@Override
 	protected void requestResources(AssetManager manager) {
-		ResourceConsumerManager consumerManager = getResourceConsumerManager();
-		// automatically handled by LksBhmGame:
-		consumerManager
-				.obtainConsumerInstanceWithoutLoadingResources(MainMenuScreen.class);
+
 	}
 
 	@Override
@@ -61,7 +60,7 @@ public class Mona extends LksBhmGame<Mona, User> {
 
 	@Override
 	protected Class<? extends TransitionableResettableConsumerScreen> getFirstScreen() {
-		return MainMenuScreen.class;
+		return SplashScreen.class;
 	}
 
 	@Override
@@ -94,13 +93,5 @@ public class Mona extends LksBhmGame<Mona, User> {
 
 	public LevelPackageManager getLevelPackageManager() {
 		return packageManager;
-	}
-
-	@Override
-	public void enterContext() {
-		if (!dropinBehavior.isLoaded()) {
-			dropinBehavior.load();
-		}
-		super.enterContext();
 	}
 }

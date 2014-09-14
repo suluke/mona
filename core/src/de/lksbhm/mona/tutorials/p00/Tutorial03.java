@@ -7,7 +7,7 @@ import de.lksbhm.mona.levels.Level;
 import de.lksbhm.mona.levels.LiterallyDefinedLevel;
 import de.lksbhm.mona.tutorials.Tutorial;
 
-public class Tutorial00 extends Tutorial {
+public class Tutorial03 extends Tutorial {
 
 	private final ContextListener contextListener = new AbstractContextListenerAdapter<LiterallyDefinedLevel>(
 			LiterallyDefinedLevel.class) {
@@ -17,7 +17,7 @@ public class Tutorial00 extends Tutorial {
 				return;
 			}
 
-			System.out.println("You are playing level 00");
+			System.out.println("You are playing level 03");
 		}
 
 		@Override
@@ -27,7 +27,7 @@ public class Tutorial00 extends Tutorial {
 		}
 	};
 
-	public Tutorial00(Level level) {
+	public Tutorial03(Level level) {
 		super(level);
 	}
 

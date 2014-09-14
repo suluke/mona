@@ -1,5 +1,6 @@
 package de.lksbhm.gdx.ui.screens.transitions;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 
 import de.lksbhm.gdx.LksBhmGame;
@@ -12,13 +13,13 @@ abstract class AbstractTransition implements Transition {
 	private boolean finished;
 	private TransitionableScreen fromScreen;
 	private TransitionableScreen toScreen;
-	private LksBhmGame game;
+	private LksBhmGame<?, ?> game;
 	private AbstractTransition decorated = null;
 	private boolean disposeOnFinish = false;
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public void apply(LksBhmGame game, TransitionableScreen fromScreen,
+	public void apply(LksBhmGame<?, ?> game, TransitionableScreen fromScreen,
 			TransitionableScreen toScreen) {
 		setup(game, fromScreen, toScreen);
 
@@ -36,7 +37,7 @@ abstract class AbstractTransition implements Transition {
 		this.toScreen.show();
 	}
 
-	private void setup(LksBhmGame game, TransitionableScreen fromScreen,
+	private void setup(LksBhmGame<?, ?> game, TransitionableScreen fromScreen,
 			TransitionableScreen toScreen) {
 		this.game = game;
 		this.fromScreen = fromScreen;
@@ -76,6 +77,14 @@ abstract class AbstractTransition implements Transition {
 
 	protected float getInitialToScreenY() {
 		return 0;
+	}
+
+	protected TransitionableScreen getScreenRenderedBelow() {
+		return getFromScreen();
+	}
+
+	protected TransitionableScreen getScreenRenderedAbove() {
+		return getToScreen();
 	}
 
 	protected TransitionableScreen getFromScreen() {
@@ -129,6 +138,9 @@ abstract class AbstractTransition implements Transition {
 
 	@SuppressWarnings("deprecation")
 	private void tearDown() {
+		Color clearColor = toScreen.getClearColor();
+		Gdx.gl.glClearColor(clearColor.r, clearColor.g, clearColor.b,
+				clearColor.a);
 		toScreen.disableShow();
 		game.setScreen(toScreen);
 		toScreen.enableShow();

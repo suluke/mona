@@ -24,6 +24,4 @@ public interface KeyValueStore<Context> {
 	public void put(String key, boolean value, Context context);
 
 	public void put(String key, String value, Context context);
-
-	public void persist(Context context);
 }

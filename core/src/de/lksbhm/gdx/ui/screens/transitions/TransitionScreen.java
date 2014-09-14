@@ -128,8 +128,8 @@ public class TransitionScreen implements Screen {
 		Group toRoot = toScreen.getStage().getRoot();
 		toRoot.setX(Math.round(x2));
 		toRoot.setY(Math.round(y2));
-		fromScreen.render(delta, false);
-		toScreen.render(delta, false);
+		transition.getScreenRenderedBelow().render(delta, false);
+		transition.getScreenRenderedAbove().render(delta, false);
 		transition.afterRender();
 	}
 

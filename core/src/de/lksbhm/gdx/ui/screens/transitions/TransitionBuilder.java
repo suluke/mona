@@ -3,6 +3,8 @@ package de.lksbhm.gdx.ui.screens.transitions;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Pool;
 
+import de.lksbhm.gdx.ui.screens.transitions.CallbackBasedTransition.Callback;
+
 public class TransitionBuilder {
 	private float duration = -1;
 	private static final TransitionBuilder instance = new TransitionBuilder();
@@ -39,6 +41,15 @@ public class TransitionBuilder {
 		@Override
 		public SlideInLeft newObject() {
 			SlideInLeft transition = new SlideInLeft();
+			transition.setPool(this);
+			transition.setDisposeOnFinish(true);
+			return transition;
+		};
+	};
+	private final Pool<CallbackBasedTransition> callbackBasedTransitionPool = new Pool<CallbackBasedTransition>() {
+		@Override
+		public CallbackBasedTransition newObject() {
+			CallbackBasedTransition transition = new CallbackBasedTransition();
 			transition.setPool(this);
 			transition.setDisposeOnFinish(true);
 			return transition;
@@ -102,6 +113,14 @@ public class TransitionBuilder {
 
 	public TransitionBuilder duration(float duration) {
 		this.duration = duration;
+		return this;
+	}
+
+	public TransitionBuilder callbackBasedTransition(Callback callback) {
+		CallbackBasedTransition transition = callbackBasedTransitionPool
+				.obtain();
+		transition.setCallback(callback);
+		set(transition);
 		return this;
 	}
 }

@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.Disposable;
 import de.lksbhm.gdx.LksBhmGame;
 
 public interface Transition extends Disposable {
-	void apply(LksBhmGame onGame, TransitionableScreen fromScreen,
+	void apply(LksBhmGame<?, ?> onGame, TransitionableScreen fromScreen,
 			TransitionableScreen toScreen);
 
 	void setDuration(float duration);

@@ -82,9 +82,7 @@ class UserDataStorage implements KeyValueStore<User> {
 		prefs.putBoolean(key, value);
 	}
 
-	@Override
 	public void persist(User user) {
-		System.out.println("persist");
 		getPreferencesForUser(user).flush();
 	}
 }
