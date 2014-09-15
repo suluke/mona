@@ -9,8 +9,8 @@ import de.lksbhm.gdx.resources.ResourceConsumer;
 import de.lksbhm.gdx.ui.screens.TransitionableResettableConsumerScreen;
 import de.lksbhm.gdx.users.UserManager;
 import de.lksbhm.mona.levels.LevelPackageManager;
-import de.lksbhm.mona.ui.screens.SplashScreen;
 import de.lksbhm.mona.ui.screens.LoadingScreen;
+import de.lksbhm.mona.ui.screens.SplashScreen;
 
 public class Mona extends LksBhmGame<Mona, User> {
 

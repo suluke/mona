@@ -1,6 +1,10 @@
 package de.lksbhm.mona.ui.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
@@ -32,19 +36,21 @@ public class SplashScreen extends AbstractScreen implements Context, Callback {
 	private HorizontalGroup foregroundGroup;
 	private Cell<?> foregroundCell;
 	private boolean movedToNextScreen = false;
+	private final ShapeRenderer shapeRenderer = new ShapeRenderer(8);
 	private final Action moveToNextScreenAction = new Action() {
 		@Override
 		public boolean act(float delta) {
 			if (movedToNextScreen) {
 				return true;
 			} else {
-				System.out.println("Move to next screen");
 				moveTotNextScreen();
 				movedToNextScreen = true;
 				return true;
 			}
 		}
 	};
+
+	private float progress;
 
 	@Override
 	public void onResourcesLoaded(AssetManager manager) {
@@ -72,10 +78,14 @@ public class SplashScreen extends AbstractScreen implements Context, Callback {
 
 	@Override
 	protected void onShow() {
+		progress = 0;
 		enterContext();
+		Color color = foregroundGroup.getColor();
+		color.a = 0;
+		foregroundGroup.setColor(color);
 		movedToNextScreen = false;
 		Action foregroundAlpha = Actions.alpha(1, 1);
-		Action sequence = Actions.sequence(foregroundAlpha,
+		Action sequence = Actions.sequence(foregroundAlpha, Actions.delay(.6f),
 				moveToNextScreenAction);
 		foregroundGroup.addAction(sequence);
 	}
@@ -87,8 +97,10 @@ public class SplashScreen extends AbstractScreen implements Context, Callback {
 
 	@Override
 	public void update(float progress) {
-		// TODO Auto-generated method stub
-
+		foregroundGroup.space(getDefaultViewportWidth() * progress);
+		foregroundGroup.invalidate();
+		getBaseTable().invalidate();
+		this.progress = progress;
 	}
 
 	@Override
@@ -103,7 +115,7 @@ public class SplashScreen extends AbstractScreen implements Context, Callback {
 
 	public void moveTotNextScreen() {
 		Transition transition = TransitionBuilder.buildNew()
-				.callbackBasedTransition(SplashScreen.this).duration(.6f).get();
+				.callbackBasedTransition(SplashScreen.this).duration(2f).get();
 		Router router = LksBhmGame.getGame().getRouter();
 		if (nextScreen != null) {
 			router.changeScreen(nextScreen, transition);
@@ -114,5 +126,23 @@ public class SplashScreen extends AbstractScreen implements Context, Callback {
 
 	public void setNextScreen(TransitionableResettableConsumerScreen screen) {
 		nextScreen = screen;
+	}
+
+	@Override
+	public void render(float delta, boolean clear) {
+		float halfWidth = Gdx.graphics.getWidth() / 2;
+		float height = Gdx.graphics.getHeight();
+		shapeRenderer.begin(ShapeType.Filled);
+		shapeRenderer.setColor(getClearColor());
+		shapeRenderer.rect(0, 0, halfWidth * (1 - progress), height);
+		shapeRenderer.rect(halfWidth + halfWidth * progress, 0, halfWidth
+				* (1 - progress), height);
+		shapeRenderer.end();
+		super.render(delta, clear);
+	}
+
+	@Override
+	protected void onDispose() {
+		shapeRenderer.dispose();
 	}
 }

@@ -32,9 +32,13 @@ abstract class AbstractTransition implements Transition {
 		ts.setup(this, this.fromScreen, getInitialFromScreenX(),
 				getInitialFromScreenY(), this.toScreen, getInitialToScreenX(),
 				getInitialToScreenY());
+		initialize();
 		this.fromScreen.disableHide();
 		this.game.setScreen(ts);
 		this.toScreen.show();
+	}
+
+	protected void initialize() {
 	}
 
 	private void setup(LksBhmGame<?, ?> game, TransitionableScreen fromScreen,

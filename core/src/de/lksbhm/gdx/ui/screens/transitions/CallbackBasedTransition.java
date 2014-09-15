@@ -1,6 +1,7 @@
 package de.lksbhm.gdx.ui.screens.transitions;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Pool;
 
 public class CallbackBasedTransition extends AbstractTransition {
@@ -51,5 +52,12 @@ public class CallbackBasedTransition extends AbstractTransition {
 
 	public void setPool(Pool<CallbackBasedTransition> pool) {
 		this.pool = pool;
+	}
+
+	@Override
+	protected void initialize() {
+		Color toClearColor = getToScreen().getClearColor();
+		TransitionScreen.getInstance().setClearColor(toClearColor.r,
+				toClearColor.g, toClearColor.b, toClearColor.a);
 	}
 }
