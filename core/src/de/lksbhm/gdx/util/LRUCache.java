@@ -75,4 +75,13 @@ public class LRUCache<Key, Value> {
 		map.remove(node.getData().getKey());
 		return node.getData().getSecond();
 	}
+
+	public Value remove(Key key) {
+		DoubleLinkedNode<Pair<Key, Value>> node = map.remove(key);
+		DoubleLinkedNode<Pair<Key, Value>> previous = node.getPrevious();
+		DoubleLinkedNode<Pair<Key, Value>> next = node.getNext();
+		previous.setNext(next);
+		next.setPrevious(previous);
+		return node.getData().getValue();
+	}
 }

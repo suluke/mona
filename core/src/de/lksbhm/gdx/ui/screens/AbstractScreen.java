@@ -109,6 +109,7 @@ public abstract class AbstractScreen implements
 		if (background != null) {
 			background.dispose();
 		}
+		onDispose();
 	}
 
 	@Override

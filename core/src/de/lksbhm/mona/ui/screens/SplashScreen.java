@@ -93,6 +93,8 @@ public class SplashScreen extends AbstractScreen implements Context, Callback {
 	@Override
 	protected void onHide() {
 		leaveContext();
+		LksBhmGame.getGame().getResourceConsumerManager()
+				.dispose(SplashScreen.class);
 	}
 
 	@Override

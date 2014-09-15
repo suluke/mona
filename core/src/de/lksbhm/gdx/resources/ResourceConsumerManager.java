@@ -114,4 +114,8 @@ public class ResourceConsumerManager {
 			memoryStrategy.notifyRelease(consumer);
 		}
 	}
+
+	public void dispose(Class<? extends ResourceConsumer> class1) {
+		lruCache.remove(class1).dispose();
+	}
 }
