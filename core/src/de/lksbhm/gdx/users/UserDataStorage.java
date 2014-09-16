@@ -1,5 +1,7 @@
 package de.lksbhm.gdx.users;
 
+import java.util.HashMap;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
@@ -7,8 +9,17 @@ import de.lksbhm.gdx.util.KeyValueStore;
 
 class UserDataStorage implements KeyValueStore<User> {
 
+	private final HashMap<Integer, Preferences> preferences = new HashMap<Integer, Preferences>();
+
 	private Preferences getPreferencesForUser(User user) {
-		return Gdx.app.getPreferences("user" + user.getUserId());
+		if (preferences.containsKey(user.getUserId())) {
+			return preferences.get(user.getUserId());
+		} else {
+			Preferences prefs = Gdx.app.getPreferences("user"
+					+ user.getUserId());
+			preferences.put(user.getUserId(), prefs);
+			return prefs;
+		}
 	}
 
 	@Override
