@@ -29,7 +29,7 @@ public abstract class Level extends ContextImplementation implements Disposable 
 		public void onWin() {
 			if (!isSolved()) {
 				LksBhmGame.getGame(Mona.class).getUserManager()
-						.getCurrentUser().setLevelSolved(Level.this, true);
+						.getCurrentUser().setLevelSolved(Level.this);
 			}
 		}
 	};
