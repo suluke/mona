@@ -10,7 +10,6 @@ import de.lksbhm.gdx.Router;
 import de.lksbhm.gdx.resources.ResourceConsumerObtainedCallback;
 import de.lksbhm.gdx.ui.screens.transitions.Transition;
 import de.lksbhm.gdx.ui.screens.transitions.TransitionBuilder;
-import de.lksbhm.mona.Mona;
 import de.lksbhm.mona.levels.Level;
 
 abstract class AbstractLevelScreen extends AbstractPuzzleScreen {
@@ -70,8 +69,6 @@ abstract class AbstractLevelScreen extends AbstractPuzzleScreen {
 
 	@Override
 	protected void onWin() {
-		LksBhmGame.getGame(Mona.class).getUserManager().getCurrentUser()
-				.setLevelSolved(l, true);
 		Level next = l.getNextLevel();
 		final Router router = LksBhmGame.getGame().getRouter();
 		if (next != null) {

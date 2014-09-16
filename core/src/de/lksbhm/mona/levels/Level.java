@@ -9,6 +9,7 @@ import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.gdx.contexts.ContextImplementation;
 import de.lksbhm.mona.Mona;
 import de.lksbhm.mona.puzzle.Puzzle;
+import de.lksbhm.mona.puzzle.PuzzleWonListener;
 import de.lksbhm.mona.tutorials.Tutorial;
 
 /**
@@ -23,10 +24,23 @@ public abstract class Level extends ContextImplementation implements Disposable 
 	private final LevelPackage pack;
 	private Puzzle p;
 	private Tutorial tutorial;
+	private final PuzzleWonListener solvedListener = new PuzzleWonListener() {
+		@Override
+		public void onWin() {
+			if (!isSolved()) {
+				LksBhmGame.getGame(Mona.class).getUserManager()
+						.getCurrentUser().setLevelSolved(Level.this, true);
+			}
+		}
+	};
+	private final String canonicalId;
+
+	private static final String idSeparator = "/";
 
 	public Level(LevelPackage pack, String id) {
 		this.pack = pack;
 		this.id = id;
+		this.canonicalId = pack.getPackageId() + idSeparator + id;
 	}
 
 	public boolean isSolved() {
@@ -37,6 +51,7 @@ public abstract class Level extends ContextImplementation implements Disposable 
 	public Puzzle getPuzzle() {
 		if (p == null) {
 			p = instantiatePuzzle();
+			p.addWinListener(solvedListener);
 		}
 		return p;
 	}
@@ -54,6 +69,7 @@ public abstract class Level extends ContextImplementation implements Disposable 
 	public void reset() {
 		if (p != null) {
 			p.reset();
+			p.addWinListener(solvedListener);
 		}
 	}
 
@@ -109,5 +125,9 @@ public abstract class Level extends ContextImplementation implements Disposable 
 			tutorial.dispose();
 			tutorial = null;
 		}
+	}
+
+	public String getCanonicalId() {
+		return canonicalId;
 	}
 }

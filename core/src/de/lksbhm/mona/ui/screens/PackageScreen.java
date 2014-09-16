@@ -36,7 +36,8 @@ public class PackageScreen extends AbstractScreen {
 	private final Table levelButtonGrid = new Table();
 	private TextButton[] levelButtons;
 	private static final int levelButtonsPerRow = 4;
-	private TextButtonStyle buttonStyle;
+	private TextButtonStyle buttonStyleUnsolved;
+	private TextButtonStyle buttonStyleSolved;
 
 	public PackageScreen() {
 		setClearColor(0.75f, 0.5f, 0.5f, 1);
@@ -44,8 +45,10 @@ public class PackageScreen extends AbstractScreen {
 
 	@Override
 	public void onResourcesLoaded(AssetManager manager) {
-		buttonStyle = LksBhmGame.getGame().getDefaultSkin()
-				.get("play", TextButtonStyle.class);
+		buttonStyleUnsolved = LksBhmGame.getGame().getDefaultSkin()
+				.get("levelUnsolved", TextButtonStyle.class);
+		buttonStyleSolved = LksBhmGame.getGame().getDefaultSkin()
+				.get("levelSolved", TextButtonStyle.class);
 		setupStandardWidgets();
 	}
 
@@ -78,14 +81,14 @@ public class PackageScreen extends AbstractScreen {
 	}
 
 	private void setupPackageWidgets() {
+		// TODO pool buttons
 		levelButtons = new TextButton[state.pack.getSize()];
 		int i = 0;
 		for (Level l : state.pack) {
 			final Level level = l;
-			levelButtons[i] = new TextButton(l.getLevelId(), buttonStyle);
+			levelButtons[i] = new TextButton(l.getLevelId(),
+					buttonStyleUnsolved);
 			if (!l.isSolved()) {
-				levelButtons[i].setBackground(LksBhmGame.getGame()
-						.getDefaultSkin().getDrawable("buttonBackground"));
 			}
 			levelButtons[i].addListener(new ClickListener() {
 				@Override

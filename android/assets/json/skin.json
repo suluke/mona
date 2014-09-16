@@ -6,18 +6,16 @@
 		red: { a: 1, b: 0, g: 0, r: 1 },
 		black: { a: 1, b: 0.1, g: 0.1, r: 0.1 }
 	},
-	com.badlogic.gdx.scenes.scene2d.utils.Drawable: {
-		buttonBackground: "widgets/button-dark/background"
-	}
-	,
 	com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
 		default: { font: default-font, fontColor: black }
 	},
 	com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
-		dark: { down: "widgets/button-dark/down", up: "widgets/button-dark/up", disabled: "widgets/button-dark/disabled" }
+		dark: { down: "widgets/button-dark/down", up: "widgets/button-dark/up", disabled: "widgets/button-dark/disabled" },
 	},
 	com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
-		play: { down: "widgets/button-dark/down", up: "widgets/button-dark/up", disabled: "widgets/button-dark/disabled", font: default-font, fontColor: black }
+		play: { down: "widgets/button-dark/down", up: "widgets/button-dark/up", disabled: "widgets/button-dark/disabled", font: default-font, fontColor: black },
+		levelSolved: { down: "widgets/button-dark/down", up: "widgets/button-dark/up", disabled: "widgets/button-dark/disabled", font: default-font, fontColor: black },
+		levelUnsolved: { down: "widgets/button-dark/up", up: "widgets/button-dark/down", disabled: "widgets/button-dark/disabled", font: default-font, fontColor: black }
 	},
 	com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 		default: { font: default-font, fontColor: white },

@@ -29,6 +29,8 @@ public class User extends de.lksbhm.gdx.users.User {
 	}
 
 	public void setLevelSolved(Level l, boolean b) {
+		System.out.println("User persists solving of level "
+				+ l.getCanonicalId());
 	}
 
 	public boolean isLevelSolved(Level l) {
