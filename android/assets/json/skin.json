@@ -6,6 +6,10 @@
 		red: { a: 1, b: 0, g: 0, r: 1 },
 		black: { a: 1, b: 0.1, g: 0.1, r: 0.1 }
 	},
+	com.badlogic.gdx.scenes.scene2d.utils.Drawable: {
+		buttonBackground: "widgets/button-dark/background"
+	}
+	,
 	com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
 		default: { font: default-font, fontColor: black }
 	},

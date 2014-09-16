@@ -5,6 +5,7 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
@@ -34,7 +35,7 @@ public class PackageScreen extends AbstractScreen {
 	};
 	private final Table levelButtonGrid = new Table();
 	private TextButton[] levelButtons;
-	private static final int levelButtonsPerRow = 5;
+	private static final int levelButtonsPerRow = 4;
 	private TextButtonStyle buttonStyle;
 
 	public PackageScreen() {
@@ -82,6 +83,10 @@ public class PackageScreen extends AbstractScreen {
 		for (Level l : state.pack) {
 			final Level level = l;
 			levelButtons[i] = new TextButton(l.getLevelId(), buttonStyle);
+			if (!l.isSolved()) {
+				levelButtons[i].setBackground(LksBhmGame.getGame()
+						.getDefaultSkin().getDrawable("buttonBackground"));
+			}
 			levelButtons[i].addListener(new ClickListener() {
 				@Override
 				public void clicked(InputEvent event, float x, float y) {
@@ -132,10 +137,18 @@ public class PackageScreen extends AbstractScreen {
 		Table base = getBaseTable();
 		base.clear();
 		levelButtonGrid.clear();
+		float width = getDefaultViewportWidth();
+		float height = getDefaultViewportHeight();
+		Cell<?> cell;
 		for (int i = 0; i < levelButtons.length; i++) {
-			levelButtonGrid.add(levelButtons[i]);
+			levelButtons[i].getLabel().setFontScale(0.7f);
+			cell = levelButtonGrid.add(levelButtons[i])
+					.width(width * 0.8f / levelButtonsPerRow)
+					.spaceBottom(height * 0.03f);
 			if (i % levelButtonsPerRow == levelButtonsPerRow - 1) {
 				levelButtonGrid.row();
+			} else {
+				cell.spaceRight(width * 0.1f / (levelButtonsPerRow - 1));
 			}
 		}
 		base.add(levelButtonGrid);
