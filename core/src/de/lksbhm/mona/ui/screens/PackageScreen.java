@@ -86,9 +86,13 @@ public class PackageScreen extends AbstractScreen {
 		int i = 0;
 		for (Level l : state.pack) {
 			final Level level = l;
-			levelButtons[i] = new TextButton(l.getLevelId(),
-					buttonStyleUnsolved);
-			if (!l.isSolved()) {
+
+			if (l.isSolved()) {
+				levelButtons[i] = new TextButton(l.getLevelId(),
+						buttonStyleSolved);
+			} else {
+				levelButtons[i] = new TextButton(l.getLevelId(),
+						buttonStyleUnsolved);
 			}
 			levelButtons[i].addListener(new ClickListener() {
 				@Override
