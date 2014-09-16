@@ -6,21 +6,21 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.mona.puzzle.Puzzle;
-import de.lksbhm.mona.puzzle.PuzzleChangedListener;
+import de.lksbhm.mona.puzzle.PuzzleWonListener;
 import de.lksbhm.mona.ui.actors.PuzzleActor;
 
 public abstract class AbstractPuzzleScreen extends AbstractScreen {
 	private PuzzleActor puzzle;
 	private AbstractPuzzleScreenState state = new AbstractPuzzleScreenState();
-	private final PuzzleChangedListener winListener = new PuzzleChangedListener() {
+	private final PuzzleWonListener winListener = new PuzzleWonListener() {
 		@Override
-		public void onChange() {
-			if (state.p != null && state.p.isSolved()) {
+		public void onWin() {
+			if (state.p != null) {
 				Gdx.app.postRunnable(new Runnable() {
 					@Override
 					public void run() {
-						state.p.removeChangeListener(winListener);
-						onWin();
+						state.p.removeWinListener(winListener);
+						AbstractPuzzleScreen.this.onWin();
 					}
 				});
 			}
@@ -52,9 +52,9 @@ public abstract class AbstractPuzzleScreen extends AbstractScreen {
 
 	private void applyState() {
 		if (state.p != null) {
-			state.p.addChangeListener(winListener);
-			puzzle.setPuzzle(state.p);
+			state.p.addWinListener(winListener);
 		}
+		puzzle.setPuzzle(state.p);
 	}
 
 	@Override

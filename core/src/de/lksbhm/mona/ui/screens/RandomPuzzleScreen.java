@@ -18,6 +18,7 @@ public class RandomPuzzleScreen extends AbstractPuzzleScreen {
 	private Label seedLabel;
 	private long seed;
 	private final InputAdapter backButtonHandler = new BackButtonToMainMenuHandler();
+	private boolean disposePuzzle = false;
 
 	public RandomPuzzleScreen() {
 		setClearColor(0.1f, 0.1f, 0.1f, 1f);
@@ -34,9 +35,7 @@ public class RandomPuzzleScreen extends AbstractPuzzleScreen {
 
 	@Override
 	protected void onWin() {
-		state.p.dispose();
-		state.p = null;
-		super.setState(state);
+		disposePuzzle = true;
 		Router router = LksBhmGame.getGame().getRouter();
 		Transition transition = TransitionBuilder.buildNew().slideInRight()
 				.interpolateClearColor().duration(.6f).get();
@@ -96,5 +95,16 @@ public class RandomPuzzleScreen extends AbstractPuzzleScreen {
 	public void setSeed(long seed) {
 		this.seed = seed;
 		seedLabel.setText("" + seed);
+	}
+
+	@Override
+	protected void onHide() {
+		super.onHide();
+		if (disposePuzzle) {
+			state.p.dispose();
+			state.p = null;
+			super.setState(state);
+			disposePuzzle = false;
+		}
 	}
 }

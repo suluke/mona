@@ -16,9 +16,12 @@ import de.lksbhm.mona.puzzle.representations.directional.DirectionalTileBoard;
 public class Puzzle extends Board<Piece> implements Disposable {
 	static final Pool<Piece> fieldPool = new ReflectionPool<Piece>(Piece.class);
 	private final DirectionalTileBoard solution;
-	private final LinkedList<PuzzleChangedListener> listeners = new LinkedList<PuzzleChangedListener>();
+	private final LinkedList<PuzzleChangedListener> changeListeners = new LinkedList<PuzzleChangedListener>();
+	private final LinkedList<PuzzleWonListener> winListeners = new LinkedList<PuzzleWonListener>();
 	private final HashSet<Piece> circleRoots = new HashSet<Piece>();
 	private final boolean[][] isInvalid = new boolean[getWidth()][getHeight()];
+	private final LinkedList<Piece> invalidTiles = new LinkedList<Piece>();
+	private boolean isSolved = false;
 
 	public Puzzle(DirectionalTileBoard solution, int width, int height) {
 		this(solution, width, height, true);
@@ -60,37 +63,6 @@ public class Puzzle extends Board<Piece> implements Disposable {
 		return solution;
 	}
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		Piece[][] pieces = getTiles();
-		int width = getWidth();
-		int height = getHeight();
-		Piece p;
-		for (int y = 0; y < height; y++) {
-			for (int x = 0; x < width; x++) {
-				p = pieces[x][y];
-				switch (p.getType()) {
-				case EDGE:
-					sb.append('#');
-					break;
-				case EMPTY:
-					sb.append(' ');
-					break;
-				case STRAIGHT:
-					sb.append('+');
-					break;
-				default:
-					throw new RuntimeException();
-				}
-			}
-			if (y != height - 1) {
-				sb.append(System.lineSeparator());
-			}
-		}
-		return sb.toString();
-	}
-
 	public boolean looksEqualTo(Puzzle other) {
 		int width = getWidth();
 		int height = getHeight();
@@ -113,18 +85,27 @@ public class Puzzle extends Board<Piece> implements Disposable {
 		return true;
 	}
 
-	public boolean isSolved() {
+	private void updateSolvedState() {
+		if (isSolved) {
+			return;
+		}
 		Piece[][] tiles = getTiles();
 		int width = getWidth();
 		int height = getHeight();
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
 				if (!tiles[x][y].isValid()) {
-					return false;
+					isSolved = false;
+					return;
 				}
 			}
 		}
-		return isAllConnectedInOneCircle();
+		isSolved = isAllConnectedInOneCircle();
+		if (isSolved) {
+			for (PuzzleWonListener listener : winListeners) {
+				listener.onWin();
+			}
+		}
 	}
 
 	private boolean isAllConnectedInOneCircle() {
@@ -173,83 +154,39 @@ public class Puzzle extends Board<Piece> implements Disposable {
 
 	@Override
 	public void notifyOnChange() {
-		for (PuzzleChangedListener listener : listeners) {
+		updateInvalidTilesList();
+		updateSolvedState();
+		for (PuzzleChangedListener listener : changeListeners) {
 			listener.onChange();
 		}
 	}
 
+	public void addWinListener(PuzzleWonListener listener) {
+		if (!winListeners.contains(listener)) {
+			winListeners.add(listener);
+		}
+	}
+
+	public void removeWinListener(PuzzleWonListener listener) {
+		winListeners.remove(listener);
+	}
+
 	public void addChangeListener(PuzzleChangedListener listener) {
-		if (!listeners.contains(listener)) {
-			listeners.add(listener);
+		if (!changeListeners.contains(listener)) {
+			changeListeners.add(listener);
 		}
 	}
 
 	public void removeChangeListener(PuzzleChangedListener listener) {
-		listeners.remove(listener);
+		changeListeners.remove(listener);
 	}
 
 	public void removeAllChangeListeners() {
-		listeners.clear();
+		changeListeners.clear();
 	}
 
-	@Override
-	protected Board<Piece> instantiate(int width, int height) {
-		return new Puzzle(null, getWidth(), getHeight(), false);
-	}
-
-	@Override
-	public Puzzle shallowCopyHorizontalFlipped() {
-		Puzzle copy = (Puzzle) super.shallowCopyHorizontalFlipped();
-		Piece[][] tiles = copy.getTiles();
-		int width = getWidth();
-		int height = getHeight();
-		Piece current;
-		Direction newIn;
-		Direction newOut;
-		for (int x = 0; x < width; x++) {
-			for (int y = 0; y < height; y++) {
-				current = tiles[x][y];
-				newIn = current.getInDirection();
-				newOut = current.getOutDirection();
-				if (newIn == Direction.LEFT || newIn == Direction.RIGHT) {
-					newIn = newIn.getOpposite();
-				}
-				if (newOut == Direction.LEFT || newOut == Direction.RIGHT) {
-					newOut = newOut.getOpposite();
-				}
-				current.setInOutDirection(newIn, newOut, false);
-			}
-		}
-		return copy;
-	}
-
-	@Override
-	public Puzzle shallowCopyVerticalFlipped() {
-		Puzzle copy = (Puzzle) super.shallowCopyHorizontalFlipped();
-		Piece[][] tiles = copy.getTiles();
-		int width = getWidth();
-		int height = getHeight();
-		Piece current;
-		Direction newIn;
-		Direction newOut;
-		for (int x = 0; x < width; x++) {
-			for (int y = 0; y < height; y++) {
-				current = tiles[x][y];
-				newIn = current.getInDirection();
-				newOut = current.getOutDirection();
-				if (newIn == Direction.UP || newIn == Direction.DOWN) {
-					newIn = newIn.getOpposite();
-				}
-				if (newOut == Direction.UP || newOut == Direction.DOWN) {
-					newOut = newOut.getOpposite();
-				}
-				current.setInOutDirection(newIn, newOut, false);
-			}
-		}
-		return copy;
-	}
-
-	public void updateInvalidListTiles(LinkedList<Piece> list) {
+	private void updateInvalidTilesList() {
+		LinkedList<Piece> list = invalidTiles;
 		resetIsValidArray();
 
 		Iterator<Piece> previouslyInvalid = list.iterator();
@@ -292,6 +229,10 @@ public class Puzzle extends Board<Piece> implements Disposable {
 				}
 			}
 		}
+	}
+
+	public Iterator<Piece> invalidTilesIterator() {
+		return invalidTiles.iterator();
 	}
 
 	private void resetIsValidArray() {
@@ -354,9 +295,105 @@ public class Puzzle extends Board<Piece> implements Disposable {
 		return true;
 	}
 
+	public void reset() {
+		changeListeners.clear();
+		winListeners.clear();
+		clearInOutDirections(false);
+		invalidTiles.clear();
+		isSolved = false;
+	}
+
 	public void clearInOutDirections(boolean notify) {
 		for (Piece p : this) {
 			p.setInOutDirection(Direction.NONE, Direction.NONE, notify);
 		}
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		Piece[][] pieces = getTiles();
+		int width = getWidth();
+		int height = getHeight();
+		Piece p;
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
+				p = pieces[x][y];
+				switch (p.getType()) {
+				case EDGE:
+					sb.append('#');
+					break;
+				case EMPTY:
+					sb.append(' ');
+					break;
+				case STRAIGHT:
+					sb.append('+');
+					break;
+				default:
+					throw new RuntimeException();
+				}
+			}
+			if (y != height - 1) {
+				sb.append(System.lineSeparator());
+			}
+		}
+		return sb.toString();
+	}
+
+	@Override
+	protected Board<Piece> instantiate(int width, int height) {
+		return new Puzzle(null, getWidth(), getHeight(), false);
+	}
+
+	@Override
+	public Puzzle shallowCopyHorizontalFlipped() {
+		Puzzle copy = (Puzzle) super.shallowCopyHorizontalFlipped();
+		Piece[][] tiles = copy.getTiles();
+		int width = getWidth();
+		int height = getHeight();
+		Piece current;
+		Direction newIn;
+		Direction newOut;
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				current = tiles[x][y];
+				newIn = current.getInDirection();
+				newOut = current.getOutDirection();
+				if (newIn == Direction.LEFT || newIn == Direction.RIGHT) {
+					newIn = newIn.getOpposite();
+				}
+				if (newOut == Direction.LEFT || newOut == Direction.RIGHT) {
+					newOut = newOut.getOpposite();
+				}
+				current.setInOutDirection(newIn, newOut, false);
+			}
+		}
+		return copy;
+	}
+
+	@Override
+	public Puzzle shallowCopyVerticalFlipped() {
+		Puzzle copy = (Puzzle) super.shallowCopyHorizontalFlipped();
+		Piece[][] tiles = copy.getTiles();
+		int width = getWidth();
+		int height = getHeight();
+		Piece current;
+		Direction newIn;
+		Direction newOut;
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				current = tiles[x][y];
+				newIn = current.getInDirection();
+				newOut = current.getOutDirection();
+				if (newIn == Direction.UP || newIn == Direction.DOWN) {
+					newIn = newIn.getOpposite();
+				}
+				if (newOut == Direction.UP || newOut == Direction.DOWN) {
+					newOut = newOut.getOpposite();
+				}
+				current.setInOutDirection(newIn, newOut, false);
+			}
+		}
+		return copy;
 	}
 }

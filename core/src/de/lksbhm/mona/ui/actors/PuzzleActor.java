@@ -1,9 +1,11 @@
 package de.lksbhm.mona.ui.actors;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Widget;
@@ -43,27 +45,50 @@ public class PuzzleActor extends Widget {
 			object.reset();
 		};
 	};
-	private final LinkedList<InvalidMarker> markers = new LinkedList<InvalidMarker>();
-	protected LinkedList<Piece> invalidTiles = new LinkedList<Piece>();
+	private boolean puzzleHasChanged = false;
 	private final PuzzleChangedListener changeListener = new PuzzleChangedListener() {
 		@Override
 		public void onChange() {
-			puzzle.updateInvalidListTiles(invalidTiles);
-			for (InvalidMarker marker : markers) {
-				markerPool.free(marker);
-			}
 			markers.clear();
-			for (Piece tile : invalidTiles) {
-				InvalidMarker marker = markerPool.obtain();
-				marker.setStyle(markerStyle);
-				marker.setCellSize(Math.min(cellWidth, cellHeight));
-				marker.setMid(
-						PuzzleActorCoordinateHelper.getTileOriginX(
-								PuzzleActor.this, tile) + cellWidth / 2,
-						PuzzleActorCoordinateHelper.getTileOriginY(
-								PuzzleActor.this, tile) + cellHeight / 2);
-				markers.add(marker);
+			puzzleHasChanged = true;
+		}
+	};
+	private final LinkedList<InvalidMarker> markers = new LinkedList<InvalidMarker>();
+	private final Action updateMarkersDaemon = new Action() {
+		private final float duration = (markerStyle.expandTime + markerStyle.repeatTimeout);
+		private float time;
+
+		@Override
+		public boolean act(float delta) {
+			if (time < duration) {
+				time += delta;
+				if (time < duration) {
+					return false;
+				}
 			}
+			time = 0;
+
+			if (puzzleHasChanged) {
+				Iterator<Piece> invalidTilesIterator = puzzle
+						.invalidTilesIterator();
+				for (InvalidMarker marker : markers) {
+					markerPool.free(marker);
+				}
+				markers.clear();
+				while (invalidTilesIterator.hasNext()) {
+					Piece tile = invalidTilesIterator.next();
+					InvalidMarker marker = markerPool.obtain();
+					marker.setStyle(markerStyle);
+					marker.setCellSize(Math.min(cellWidth, cellHeight));
+					marker.setMid(
+							PuzzleActorCoordinateHelper.getTileOriginX(
+									PuzzleActor.this, tile) + cellWidth / 2,
+							PuzzleActorCoordinateHelper.getTileOriginY(
+									PuzzleActor.this, tile) + cellHeight / 2);
+					markers.add(marker);
+				}
+			}
+			return false;
 		}
 	};
 
@@ -71,6 +96,7 @@ public class PuzzleActor extends Widget {
 		this.style.set(style);
 		this.markerStyle.set(markerStyle);
 		addListener(inputListener);
+		addAction(updateMarkersDaemon);
 	}
 
 	public PuzzleActor(Skin skin) {
@@ -84,9 +110,14 @@ public class PuzzleActor extends Widget {
 	}
 
 	public void setPuzzle(Puzzle puzzle) {
+		if (this.puzzle != null) {
+			this.puzzle.removeChangeListener(changeListener);
+		}
+		if (puzzle != null) {
+			puzzle.addChangeListener(changeListener);
+		}
 		this.puzzle = puzzle;
 		invalidate();
-		puzzle.addChangeListener(changeListener);
 	}
 
 	@Override
@@ -441,7 +472,6 @@ public class PuzzleActor extends Widget {
 	@Override
 	public void layout() {
 		markers.clear();
-		invalidTiles.clear();
 
 		style.validate();
 		float width = getWidth();
