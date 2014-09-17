@@ -35,6 +35,7 @@ public class RandomPuzzleScreen extends AbstractPuzzleScreen {
 
 	@Override
 	protected void onWin() {
+		super.onWin();
 		disposePuzzle = true;
 		Router router = LksBhmGame.getGame().getRouter();
 		Transition transition = TransitionBuilder.buildNew().slideInRight()

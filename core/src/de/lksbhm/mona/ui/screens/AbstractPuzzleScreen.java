@@ -2,6 +2,7 @@ package de.lksbhm.mona.ui.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import de.lksbhm.gdx.LksBhmGame;
@@ -10,7 +11,7 @@ import de.lksbhm.mona.puzzle.PuzzleWonListener;
 import de.lksbhm.mona.ui.actors.PuzzleActor;
 
 public abstract class AbstractPuzzleScreen extends AbstractScreen {
-	private PuzzleActor puzzle;
+	private PuzzleActor puzzleActor;
 	private AbstractPuzzleScreenState state = new AbstractPuzzleScreenState();
 	private final PuzzleWonListener winListener = new PuzzleWonListener() {
 		@Override
@@ -25,6 +26,18 @@ public abstract class AbstractPuzzleScreen extends AbstractScreen {
 				});
 			}
 		}
+	};
+	private final TemporalAction increaseBrightness = new TemporalAction(0.6f) {
+
+		@Override
+		protected void update(float percent) {
+			puzzleActor.setBrightnessIncrease(percent);
+		}
+
+		@Override
+		protected void end() {
+			puzzleActor.setBrightnessIncrease(0);
+		};
 	};
 
 	public AbstractPuzzleScreen() {
@@ -54,7 +67,7 @@ public abstract class AbstractPuzzleScreen extends AbstractScreen {
 		if (state.p != null) {
 			state.p.addWinListener(winListener);
 		}
-		puzzle.setPuzzle(state.p);
+		puzzleActor.setPuzzle(state.p);
 	}
 
 	@Override
@@ -63,23 +76,25 @@ public abstract class AbstractPuzzleScreen extends AbstractScreen {
 	}
 
 	protected void onWin() {
+		increaseBrightness.restart();
+		puzzleActor.addAction(increaseBrightness);
 	};
 
 	protected void setupWidgets() {
 		// TODO don't use default skin as it should be lightweight and without
 		// custom widgets
-		puzzle = new PuzzleActor(LksBhmGame.getGame().getDefaultSkin());
+		puzzleActor = new PuzzleActor(LksBhmGame.getGame().getDefaultSkin());
 	}
 
 	@Override
 	protected void onHide() {
-		puzzle.cancelInput();
+		puzzleActor.cancelInput();
 	}
 
 	protected void layoutWidgets() {
 		Table base = getBaseTable();
 		base.clear();
-		base.add(puzzle);
+		base.add(puzzleActor);
 	}
 
 	protected void setPuzzle(Puzzle p) {
@@ -88,7 +103,7 @@ public abstract class AbstractPuzzleScreen extends AbstractScreen {
 	}
 
 	protected PuzzleActor getPuzzleActor() {
-		return puzzle;
+		return puzzleActor;
 	}
 
 	protected static class AbstractPuzzleScreenState {

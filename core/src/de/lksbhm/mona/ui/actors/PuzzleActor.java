@@ -5,6 +5,7 @@ import java.util.LinkedList;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -29,6 +30,10 @@ public class PuzzleActor extends Widget {
 	private float paddingWidth;
 	private float paddingHeight;
 	private final boolean invertY = false; // false means, origin is down left
+	/*
+	 * alpha will be ignored anyways
+	 */
+	private float brightnessIncrease = 0;
 	private final PuzzleActorInput inputListener = new PuzzleActorInput(this);
 	private final InvalidMarkerStyle markerStyle = new InvalidMarkerStyle();
 	private final Pool<InvalidMarker> markerPool = new Pool<InvalidMarker>() {
@@ -149,10 +154,26 @@ public class PuzzleActor extends Widget {
 		batchColor.set(batch.getColor());
 		batch.setColor(batchColor.r, batchColor.g, batchColor.g, batchColor.a
 				* parentAlpha);
+		ShaderProgram brightnessShader = PuzzleActorStyle.getBrightnessShader();
+		if (brightnessIncrease != 0 && brightnessShader != null) {
+			if (brightnessShader.isCompiled()) {
+				batch.setShader(brightnessShader);
+				brightnessShader.setUniformf(
+						style.brightnessShaderUniformLocation,
+						brightnessIncrease);
+			} else {
+				System.out.println(brightnessShader.getLog());
+			}
+		}
 		drawTileBackgrounds(batch);
 		drawTileTypes(batch);
 		drawTileConnectors(batch);
 		drawInvalidMarkers(batch);
+		if (brightnessIncrease != 0 && brightnessShader != null
+				&& brightnessShader.isCompiled()) {
+			// reset shader
+			batch.setShader(null);
+		}
 		batch.setColor(batchColor);
 	}
 
@@ -526,6 +547,10 @@ public class PuzzleActor extends Widget {
 
 	public void cancelInput() {
 		inputListener.cancel();
+	}
+
+	public void setBrightnessIncrease(float increase) {
+		brightnessIncrease = increase;
 	}
 
 	/**

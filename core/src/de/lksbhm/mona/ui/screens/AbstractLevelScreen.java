@@ -69,6 +69,7 @@ abstract class AbstractLevelScreen extends AbstractPuzzleScreen {
 
 	@Override
 	protected void onWin() {
+		super.onWin();
 		Level next = l.getNextLevel();
 		final Router router = LksBhmGame.getGame().getRouter();
 		if (next != null) {
