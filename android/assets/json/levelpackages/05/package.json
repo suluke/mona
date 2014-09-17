@@ -2,9 +2,9 @@
 	"de.lksbhm.mona":  {
 		"packages": [
 			{
-				"id": "5",
-				"difficulty": "MEDIUM",
-				"size": 3,
+				"id": "6",
+				"difficulty": "HARD",
+				"size": 20,
 			}
 		]
 	}
