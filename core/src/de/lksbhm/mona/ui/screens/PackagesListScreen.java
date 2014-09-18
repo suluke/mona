@@ -73,10 +73,10 @@ public class PackagesListScreen extends AbstractScreen {
 		for (int i = 0; i < state.levelPackages.size(); i++) {
 			final LevelPackage pack = state.levelPackages.getPackage(i);
 			if (pack.isSolved()) {
-				packageButton = new TextButton(pack.getPackageId(),
+				packageButton = new TextButton(pack.getDisplayName(),
 						solvedButtonStyle);
 			} else {
-				packageButton = new TextButton(pack.getPackageId(),
+				packageButton = new TextButton(pack.getDisplayName(),
 						unsolvedButtonStyle);
 			}
 			packageButton.addListener(new ClickListener() {

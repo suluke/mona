@@ -27,7 +27,7 @@ abstract class AbstractLevelScreen extends AbstractPuzzleScreen {
 	public void setLevel(Level l) {
 		this.l = l;
 		l.reset();
-		idLabel.setText(l.getPackage().getPackageId() + "/" + l.getLevelId());
+		idLabel.setText(l.getPackage().getDisplayName() + "/" + l.getLevelId());
 		setPuzzle(l.getPuzzle());
 	}
 

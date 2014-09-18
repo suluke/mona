@@ -62,6 +62,18 @@ public class MainMenuScreen extends AbstractScreen {
 		});
 
 		dailiesButton = new TextButton("dailies", skin, "play");
+		dailiesButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				Mona mona = LksBhmGame.getGame(Mona.class);
+				Transition transition = TransitionBuilder.buildNew()
+						.slideInRight().interpolateClearColor().duration(.6f)
+						.get();
+				LevelPackageManager pacman = mona.getLevelPackageManager();
+				PackagesListScreen.showAsCurrentScreen(
+						pacman.getDailyPackages(), transition);
+			}
+		});
 
 		randomLevelButton = new TextButton("random", skin, "play");
 		randomLevelButton.addListener(new ClickListener() {
@@ -74,7 +86,7 @@ public class MainMenuScreen extends AbstractScreen {
 							@Override
 							public void onObtained(RandomPuzzleScreen ps) {
 								Pair<Long, Puzzle> generated = QualityPuzzleGenerator
-										.generateSeedAndPuzzle(new RandomXS128());
+										.generateRandomSeedAndPuzzle(new RandomXS128());
 								ps.setPuzzle(generated.getSecond());
 								ps.setSeed(generated.getFirst());
 								Transition transition = TransitionBuilder

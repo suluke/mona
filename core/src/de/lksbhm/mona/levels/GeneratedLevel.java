@@ -21,4 +21,12 @@ public class GeneratedLevel extends Level {
 		random.setSeed(seed);
 		return Generator.generate(random, 1.f, 1.f);
 	}
+
+	protected long getSeed() {
+		return seed;
+	}
+
+	protected Random getRandom() {
+		return random;
+	}
 }

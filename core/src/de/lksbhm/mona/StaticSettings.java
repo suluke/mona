@@ -8,7 +8,7 @@ public final class StaticSettings {
 	}
 
 	public int getLevelsPerPackage() {
-		return 25;
+		return 20;
 	}
 
 	public int getMaximumNumberOfUsers() {
@@ -81,5 +81,13 @@ public final class StaticSettings {
 		default:
 			throw new RuntimeException();
 		}
+	}
+
+	public int getMinimumNumberOfDailyPackages() {
+		return 1;
+	}
+
+	public int getMaximumNumberOfDailyPackages() {
+		return 4;
 	}
 }
