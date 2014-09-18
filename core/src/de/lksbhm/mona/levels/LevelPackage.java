@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import de.lksbhm.gdx.LksBhmGame;
+import de.lksbhm.gdx.users.UserManager;
 import de.lksbhm.mona.Mona;
+import de.lksbhm.mona.User;
 
 public abstract class LevelPackage implements Iterable<Level> {
 	private final int size;
@@ -83,5 +85,30 @@ public abstract class LevelPackage implements Iterable<Level> {
 		boolean solved = LksBhmGame.getGame(Mona.class).getUserManager()
 				.getCurrentUser().isPackageSolved(this);
 		return solved;
+	}
+
+	public void notifySolved() {
+		UserManager<User> userManager = LksBhmGame.getGame(Mona.class)
+				.getUserManager();
+		User user = userManager.getCurrentUser();
+		switch (difficulty) {
+		case VERY_EASY:
+			user.addReward(1);
+			break;
+		case EASY:
+			user.addReward(2);
+			break;
+		case MEDIUM:
+			user.addReward(3);
+			break;
+		case HARD:
+			user.addReward(4);
+			break;
+		case VERY_HARD:
+			user.addReward(5);
+			break;
+		default:
+			break;
+		}
 	}
 }

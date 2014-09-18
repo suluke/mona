@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import de.lksbhm.gdx.LksBhmGame;
+import de.lksbhm.gdx.users.UserManager;
 import de.lksbhm.gdx.util.KeyValueStore;
 import de.lksbhm.mona.levels.Level;
 import de.lksbhm.mona.levels.LevelPackage;
@@ -13,10 +14,13 @@ public class User extends de.lksbhm.gdx.users.User {
 	private static final String packageIdSeparator = ";";
 	private static final String levelIdsKey = "solvedLevels";
 	private static final String packageIdsKey = "solvedPackages";
+	private static final String rewardCountKey = "rewardCount";
 
 	private final HashSet<String> solvedLevels = new HashSet<String>();
 	private final HashSet<String> solvedPackages = new HashSet<String>();
 	private final HashMap<String, Integer> solvedLevelsInPackage = new HashMap<String, Integer>();
+
+	private int rewardCount;
 
 	public int getRewardsCount() {
 		return 0;
@@ -29,6 +33,8 @@ public class User extends de.lksbhm.gdx.users.User {
 
 	@Override
 	protected void storeAttributes(KeyValueStore<de.lksbhm.gdx.users.User> store) {
+		store.put(rewardCountKey, rewardCount, this);
+
 		StringBuilder sb = new StringBuilder();
 		for (String solved : solvedLevels) {
 			sb.append(solved);
@@ -45,6 +51,8 @@ public class User extends de.lksbhm.gdx.users.User {
 
 	@Override
 	protected void loadAttributes(KeyValueStore<de.lksbhm.gdx.users.User> store) {
+		rewardCount = store.getInt(rewardCountKey, this);
+
 		String solvedLevelIds = store.get(levelIdsKey, this);
 		String solvedPackageIds = store.get(packageIdsKey, this);
 		String[] packageIds = solvedPackageIds.split(packageIdSeparator);
@@ -79,24 +87,35 @@ public class User extends de.lksbhm.gdx.users.User {
 				solvedCount = 0;
 			}
 			if (solvedCount == l.getPackage().getSize() - 1) {
-				// whole package solved
-				solvedPackages.add(packId);
-				solvedLevelsInPackage.remove(packId);
+				setPackageSolved(l.getPackage());
 			} else {
 				// another single level solved
 				solvedLevels.add(l.getCanonicalId());
 				solvedLevelsInPackage.put(packId, solvedCount + 1);
 			}
-			LksBhmGame.getGame(Mona.class).getUserManager().updateUser(this);
+			getUserManager().updateUser(this);
 		}
 	}
 
+	private void setPackageSolved(LevelPackage pack) {
+		// whole package solved
+		String packId = pack.getPackageId();
+		solvedPackages.add(packId);
+		solvedLevelsInPackage.remove(packId);
+		pack.notifySolved();
+	}
+
 	public int getRewardCount() {
-		return 0;
+		return rewardCount;
+	}
+
+	private UserManager<User> getUserManager() {
+		return LksBhmGame.getGame(Mona.class).getUserManager();
 	}
 
 	public void addReward(int reward) {
-
+		rewardCount += reward;
+		getUserManager().updateUser(this);
 	}
 
 	public boolean isLevelSolved(Level l) {

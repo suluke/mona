@@ -15,7 +15,7 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration.disableAudio = true;
 		config.preferencesDirectory = ".config/lksbhm/mona";
 		config.foregroundFPS = 30;
-		config.backgroundFPS = 10;
+		config.backgroundFPS = 20;
 		config.title = "Mona";
 		config.addIcon("textures/icon32.png", FileType.Internal);
 		config.addIcon("textures/icon128.png", FileType.Internal);
