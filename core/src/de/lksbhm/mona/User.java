@@ -1,10 +1,12 @@
 package de.lksbhm.mona;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.gdx.util.KeyValueStore;
 import de.lksbhm.mona.levels.Level;
+import de.lksbhm.mona.levels.LevelPackage;
 
 public class User extends de.lksbhm.gdx.users.User {
 	private static final String levelIdSeparator = ";";
@@ -14,6 +16,7 @@ public class User extends de.lksbhm.gdx.users.User {
 
 	private final HashSet<String> solvedLevels = new HashSet<String>();
 	private final HashSet<String> solvedPackages = new HashSet<String>();
+	private final HashMap<String, Integer> solvedLevelsInPackage = new HashMap<String, Integer>();
 
 	public int getRewardsCount() {
 		return 0;
@@ -44,19 +47,48 @@ public class User extends de.lksbhm.gdx.users.User {
 	protected void loadAttributes(KeyValueStore<de.lksbhm.gdx.users.User> store) {
 		String solvedLevelIds = store.get(levelIdsKey, this);
 		String solvedPackageIds = store.get(packageIdsKey, this);
-		String[] canonicalLevelIds = solvedLevelIds.split(levelIdSeparator);
-		for (String id : canonicalLevelIds) {
-			solvedLevels.add(id);
-		}
 		String[] packageIds = solvedPackageIds.split(packageIdSeparator);
 		for (String id : packageIds) {
 			solvedPackages.add(id);
 		}
+		String[] canonicalLevelIds = solvedLevelIds.split(levelIdSeparator);
+		String packageId;
+		Integer solvedCount;
+		for (String id : canonicalLevelIds) {
+			packageId = Level.getPackageIdfromCanonicalId(id);
+			if (!solvedPackages.contains(packageId)) {
+				solvedLevels.add(id);
+				solvedCount = solvedLevelsInPackage.get(packageId);
+				if (solvedCount == null) {
+					solvedCount = 1;
+				} else {
+					solvedCount++;
+				}
+				solvedLevelsInPackage.put(packageId, solvedCount);
+			}
+		}
 	}
 
 	public void setLevelSolved(Level l) {
-		solvedLevels.add(l.getCanonicalId());
-		LksBhmGame.getGame(Mona.class).getUserManager().updateUser(this);
+		if (solvedLevels.contains(l)) {
+			return;
+		} else {
+			String packId = l.getPackage().getPackageId();
+			Integer solvedCount = solvedLevelsInPackage.get(packId);
+			if (solvedCount == null) {
+				solvedCount = 0;
+			}
+			if (solvedCount == l.getPackage().getSize() - 1) {
+				// whole package solved
+				solvedPackages.add(packId);
+				solvedLevelsInPackage.remove(packId);
+			} else {
+				// another single level solved
+				solvedLevels.add(l.getCanonicalId());
+				solvedLevelsInPackage.put(packId, solvedCount + 1);
+			}
+			LksBhmGame.getGame(Mona.class).getUserManager().updateUser(this);
+		}
 	}
 
 	public int getRewardCount() {
@@ -70,5 +102,9 @@ public class User extends de.lksbhm.gdx.users.User {
 	public boolean isLevelSolved(Level l) {
 		return solvedPackages.contains(l.getPackage().getPackageId())
 				|| solvedLevels.contains(l.getCanonicalId());
+	}
+
+	public boolean isPackageSolved(LevelPackage pack) {
+		return solvedPackages.contains(pack.getPackageId());
 	}
 }

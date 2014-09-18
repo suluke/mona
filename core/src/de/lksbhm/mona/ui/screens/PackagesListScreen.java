@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
@@ -37,6 +38,8 @@ public class PackagesListScreen extends AbstractScreen {
 	private final ScrollPane listScroll = new ScrollPane(packagesList);
 	@SuppressWarnings("rawtypes")
 	private Container[] packageButtons;
+	private TextButtonStyle unsolvedButtonStyle;
+	private TextButtonStyle solvedButtonStyle;
 
 	public PackagesListScreen() {
 		state = new PackagesListScreenState();
@@ -51,6 +54,10 @@ public class PackagesListScreen extends AbstractScreen {
 
 	@Override
 	public void onResourcesLoaded(AssetManager manager) {
+		unsolvedButtonStyle = LksBhmGame.getGame().getDefaultSkin()
+				.get("unsolved", TextButtonStyle.class);
+		solvedButtonStyle = LksBhmGame.getGame().getDefaultSkin()
+				.get("solved", TextButtonStyle.class);
 		setupStandardWidgets();
 	}
 
@@ -65,8 +72,13 @@ public class PackagesListScreen extends AbstractScreen {
 		packageButtons = new Container[state.levelPackages.size()];
 		for (int i = 0; i < state.levelPackages.size(); i++) {
 			final LevelPackage pack = state.levelPackages.getPackage(i);
-			packageButton = new TextButton(pack.getPackageId(), LksBhmGame
-					.getGame().getDefaultSkin(), "play");
+			if (pack.isSolved()) {
+				packageButton = new TextButton(pack.getPackageId(),
+						solvedButtonStyle);
+			} else {
+				packageButton = new TextButton(pack.getPackageId(),
+						unsolvedButtonStyle);
+			}
 			packageButton.addListener(new ClickListener() {
 				@Override
 				public void clicked(InputEvent event, float x, float y) {

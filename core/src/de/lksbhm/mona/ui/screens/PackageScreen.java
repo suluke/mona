@@ -46,9 +46,9 @@ public class PackageScreen extends AbstractScreen {
 	@Override
 	public void onResourcesLoaded(AssetManager manager) {
 		buttonStyleUnsolved = LksBhmGame.getGame().getDefaultSkin()
-				.get("levelUnsolved", TextButtonStyle.class);
+				.get("unsolved", TextButtonStyle.class);
 		buttonStyleSolved = LksBhmGame.getGame().getDefaultSkin()
-				.get("levelSolved", TextButtonStyle.class);
+				.get("solved", TextButtonStyle.class);
 		setupStandardWidgets();
 	}
 

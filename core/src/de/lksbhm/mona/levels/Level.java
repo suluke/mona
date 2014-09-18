@@ -130,4 +130,13 @@ public abstract class Level extends ContextImplementation implements Disposable 
 	public String getCanonicalId() {
 		return canonicalId;
 	}
+
+	public static String getPackageIdfromCanonicalId(String canonical) {
+		int separatorIndex = canonical.indexOf(idSeparator);
+		if (separatorIndex == -1) {
+			throw new RuntimeException(canonical);
+		} else {
+			return canonical.substring(0, separatorIndex);
+		}
+	}
 }

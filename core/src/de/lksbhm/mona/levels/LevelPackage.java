@@ -3,6 +3,9 @@ package de.lksbhm.mona.levels;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import de.lksbhm.gdx.LksBhmGame;
+import de.lksbhm.mona.Mona;
+
 public abstract class LevelPackage implements Iterable<Level> {
 	private final int size;
 	private final Difficulty difficulty;
@@ -74,5 +77,11 @@ public abstract class LevelPackage implements Iterable<Level> {
 	public Level getLevel(int index) {
 		assertLevelsLoaded();
 		return levels.get(index);
+	}
+
+	public boolean isSolved() {
+		boolean solved = LksBhmGame.getGame(Mona.class).getUserManager()
+				.getCurrentUser().isPackageSolved(this);
+		return solved;
 	}
 }
