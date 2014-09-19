@@ -9,10 +9,10 @@ public class TransitionBuilder {
 	private float duration = -1;
 	private static final TransitionBuilder instance = new TransitionBuilder();
 	private AbstractTransition transition = null;
-	private final Pool<ExtraDistanceSlideInLeft> extraDistanceSlideInLeftPool = new Pool<ExtraDistanceSlideInLeft>() {
+	private final Pool<SlideInLeftExtraDistance> slideInLeftExtraDistancePool = new Pool<SlideInLeftExtraDistance>() {
 		@Override
-		public ExtraDistanceSlideInLeft newObject() {
-			ExtraDistanceSlideInLeft transition = new ExtraDistanceSlideInLeft();
+		public SlideInLeftExtraDistance newObject() {
+			SlideInLeftExtraDistance transition = new SlideInLeftExtraDistance();
 			transition.setPool(this);
 			transition.setDisposeOnFinish(true);
 			return transition;
@@ -69,8 +69,8 @@ public class TransitionBuilder {
 		return instance;
 	}
 
-	public TransitionBuilder extraDistanceSlideInRight() {
-		ExtraDistanceSlideInLeft transition = extraDistanceSlideInLeftPool
+	public TransitionBuilder slideInLeftExtraDistance() {
+		SlideInLeftExtraDistance transition = slideInLeftExtraDistancePool
 				.obtain();
 		set(transition);
 		return this;
@@ -82,7 +82,7 @@ public class TransitionBuilder {
 		return this;
 	}
 
-	public TransitionBuilder interpolateClearColor() {
+	public TransitionBuilder fadeClearColors() {
 		InterpolateClearColor transition = interpolateClearColorPool.obtain();
 		set(transition);
 		return this;

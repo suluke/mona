@@ -27,7 +27,7 @@ public class PackageScreen extends AbstractScreen {
 		@Override
 		protected void onBackButtonPressed() {
 			Transition transition = TransitionBuilder.buildNew().slideInLeft()
-					.interpolateClearColor().duration(.6f).get();
+					.fadeClearColors().duration(.6f).get();
 			LevelPackageCollection collection = state.pack
 					.getLevelPackageCollection();
 			PackagesListScreen.showAsCurrentScreen(collection, transition);
@@ -107,7 +107,7 @@ public class PackageScreen extends AbstractScreen {
 									levelScreen.setLevel(level);
 									Transition transition = TransitionBuilder
 											.buildNew().slideInRight()
-											.interpolateClearColor()
+											.fadeClearColors()
 											.duration(.6f).get();
 									router.changeScreen(levelScreen, transition);
 								}

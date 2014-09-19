@@ -3,9 +3,9 @@ package de.lksbhm.gdx.ui.screens.transitions;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Pool;
 
-public class ExtraDistanceSlideInLeft extends AbstractTransition {
+public class SlideInLeftExtraDistance extends AbstractTransition {
 
-	private Pool<ExtraDistanceSlideInLeft> pool;
+	private Pool<SlideInLeftExtraDistance> pool;
 
 	@Override
 	protected void update(TransitionScreen ts, float progress) {
@@ -22,7 +22,7 @@ public class ExtraDistanceSlideInLeft extends AbstractTransition {
 		return -2 * width;
 	}
 
-	public void setPool(Pool<ExtraDistanceSlideInLeft> pool) {
+	public void setPool(Pool<SlideInLeftExtraDistance> pool) {
 		this.pool = pool;
 	}
 

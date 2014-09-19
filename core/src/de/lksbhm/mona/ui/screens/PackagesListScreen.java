@@ -29,7 +29,7 @@ public class PackagesListScreen extends AbstractScreen {
 		@Override
 		protected void onBackButtonPressed() {
 			Transition transition = TransitionBuilder.buildNew().slideInLeft()
-					.interpolateClearColor().duration(.6f).get();
+					.fadeClearColors().duration(.6f).get();
 			LksBhmGame.getGame().getRouter()
 					.changeScreen(MainMenuScreen.class, null, transition);
 		}
@@ -83,7 +83,7 @@ public class PackagesListScreen extends AbstractScreen {
 				@Override
 				public void clicked(InputEvent event, float x, float y) {
 					Transition transition = TransitionBuilder.buildNew()
-							.slideInRight().interpolateClearColor().get();
+							.slideInRight().fadeClearColors().get();
 					PackageScreen.showAsCurrentScreen(pack, transition);
 				}
 			});

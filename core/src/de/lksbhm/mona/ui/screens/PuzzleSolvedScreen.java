@@ -1,8 +1,6 @@
 package de.lksbhm.mona.ui.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -18,23 +16,22 @@ import de.lksbhm.gdx.Router;
 import de.lksbhm.gdx.ui.screens.transitions.Transition;
 import de.lksbhm.gdx.ui.screens.transitions.TransitionBuilder;
 
-public class GameWonScreen extends AbstractScreen {
+public class PuzzleSolvedScreen extends AbstractScreen {
 
 	private Label youWonLabel;
 	private TextButton nextButton;
-	private final InputAdapter backButtonHandler = new InputAdapter() {
+	private final AbstractBackButtonHandler backButtonHandler = new AbstractBackButtonHandler() {
 		@Override
-		public boolean keyUp(int keycode) {
-			if (keycode == Keys.BACK) {
-				LksBhmGame.getGame().getRouter()
-						.changeScreen(MainMenuScreen.class, null);
-				return true;
-			}
-			return false;
+		protected void onBackButtonPressed() {
+			Transition transition = TransitionBuilder.buildNew()
+					.slideInLeftExtraDistance().fadeClearColors()
+					.duration(.6f).get();
+			LksBhmGame.getGame().getRouter()
+					.changeScreen(MainMenuScreen.class, null, transition);
 		}
 	};
 
-	public GameWonScreen() {
+	public PuzzleSolvedScreen() {
 		setClearColor(.422f, .816f, .147f, 1);
 	}
 
@@ -49,7 +46,7 @@ public class GameWonScreen extends AbstractScreen {
 			public void clicked(InputEvent event, float x, float y) {
 				Router router = LksBhmGame.getGame().getRouter();
 				Transition transition = TransitionBuilder.buildNew()
-						.slideInRight().interpolateClearColor().duration(.6f)
+						.slideInRight().fadeClearColors().duration(.6f)
 						.get();
 				router.changeScreen(MainMenuScreen.class, null, transition);
 			}

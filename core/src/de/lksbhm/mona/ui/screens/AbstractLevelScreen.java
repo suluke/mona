@@ -19,7 +19,7 @@ abstract class AbstractLevelScreen extends AbstractPuzzleScreen {
 		@Override
 		protected void onBackButtonPressed() {
 			Transition transition = TransitionBuilder.buildNew().slideInLeft()
-					.interpolateClearColor().duration(.6f).get();
+					.fadeClearColors().duration(.6f).get();
 			PackageScreen.showAsCurrentScreen(l.getPackage(), transition);
 		}
 	};
@@ -81,8 +81,8 @@ abstract class AbstractLevelScreen extends AbstractPuzzleScreen {
 						public void onObtained(PackageScreen packageScreen) {
 							packageScreen.setLevelPackage(l.getPackage());
 							Transition transition = TransitionBuilder
-									.buildNew().extraDistanceSlideInRight()
-									.interpolateClearColor().duration(.6f)
+									.buildNew().slideInLeftExtraDistance()
+									.fadeClearColors().duration(.6f)
 									.get();
 							router.changeScreen(packageScreen, transition);
 						}
@@ -96,7 +96,7 @@ abstract class AbstractLevelScreen extends AbstractPuzzleScreen {
 			Level next, Router router) {
 		screen.setLevel(next);
 		Transition transition = TransitionBuilder.buildNew().slideInRight()
-				.interpolateClearColor().duration(.6f).get();
+				.fadeClearColors().duration(.6f).get();
 		router.changeScreen(screen, transition);
 	}
 }

@@ -1,7 +1,6 @@
 package de.lksbhm.mona.ui.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -17,7 +16,16 @@ public class RandomPuzzleScreen extends AbstractPuzzleScreen {
 	private final PuzzleScreenState state = new PuzzleScreenState();
 	private Label seedLabel;
 	private long seed;
-	private final InputAdapter backButtonHandler = new BackButtonToMainMenuHandler();
+	private final AbstractBackButtonHandler backButtonHandler = new AbstractBackButtonHandler() {
+		@Override
+		protected void onBackButtonPressed() {
+			Transition transition = TransitionBuilder.buildNew().slideInLeft()
+					.fadeClearColors().duration(.6f).get();
+			LksBhmGame.getGame().getRouter()
+					.changeScreen(MainMenuScreen.class, null, transition);
+		}
+
+	};
 	private boolean disposePuzzle = false;
 
 	public RandomPuzzleScreen() {
@@ -39,8 +47,8 @@ public class RandomPuzzleScreen extends AbstractPuzzleScreen {
 		disposePuzzle = true;
 		Router router = LksBhmGame.getGame().getRouter();
 		Transition transition = TransitionBuilder.buildNew().slideInRight()
-				.interpolateClearColor().duration(.6f).get();
-		router.changeScreen(GameWonScreen.class, null, transition);
+				.fadeClearColors().duration(.6f).get();
+		router.changeScreen(PuzzleSolvedScreen.class, null, transition);
 	}
 
 	@Override
