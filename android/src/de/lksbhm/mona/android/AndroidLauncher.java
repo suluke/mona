@@ -14,6 +14,8 @@ public class AndroidLauncher extends AndroidApplication {
 		new AndroidPlatform().register();
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
+		config.useAccelerometer = false;
+		config.useCompass = false;
 		initialize(new Mona(), config);
 	}
 }
