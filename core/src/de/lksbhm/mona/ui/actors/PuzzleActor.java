@@ -195,9 +195,14 @@ public class PuzzleActor extends Widget {
 				if (inAdj != null) {
 					if (inAdj.getInAdjacent() == tile
 							|| inAdj.getOutAdjacent() == tile) {
-						// draw continuous line
-						// TODO prevent double draw
-						drawConnector(batch, tile, tile.getInDirection(), true);
+						// We're iterating from top-left to bottom-right, so
+						// this would be an overdraw
+						if (tile.getInDirection() != Direction.UP
+								&& tile.getInDirection() != Direction.LEFT) {
+							// draw continuous line
+							drawConnector(batch, tile, tile.getInDirection(),
+									true);
+						}
 					} else {
 						// only draw up to some point in between
 						drawConnector(batch, tile, tile.getInDirection(), false);
@@ -206,9 +211,14 @@ public class PuzzleActor extends Widget {
 				if (outAdj != null) {
 					if (outAdj.getInAdjacent() == tile
 							|| outAdj.getOutAdjacent() == tile) {
-						// draw continuous line
-						// TODO prevent double draw
-						drawConnector(batch, tile, tile.getOutDirection(), true);
+						// We're iterating from top-left to bottom-right, so
+						// this would be an overdraw
+						if (tile.getOutDirection() != Direction.UP
+								&& tile.getOutDirection() != Direction.LEFT) {
+							// draw continuous line
+							drawConnector(batch, tile, tile.getOutDirection(),
+									true);
+						}
 					} else {
 						// only draw up to some point in between
 						drawConnector(batch, tile, tile.getOutDirection(),
