@@ -152,8 +152,9 @@ public class PuzzleActor extends Widget {
 			return;
 		}
 		batchColor.set(batch.getColor());
-		batch.setColor(batchColor.r, batchColor.g, batchColor.g, batchColor.a
-				* parentAlpha);
+		Color color = getColor();
+		batch.setColor(batchColor.r * color.r, batchColor.g * color.g,
+				batchColor.b * color.b, batchColor.a * color.a * parentAlpha);
 		ShaderProgram brightnessShader = PuzzleActorStyle.getBrightnessShader();
 		if (brightnessIncrease != 0 && brightnessShader != null) {
 			if (brightnessShader.isCompiled()) {
