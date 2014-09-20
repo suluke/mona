@@ -1,6 +1,5 @@
 package de.lksbhm.mona.ui.screens;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -24,6 +23,13 @@ abstract class AbstractLevelScreen extends AbstractPuzzleScreen {
 		}
 	};
 
+	public AbstractLevelScreen() {
+		InputMultiplexer mux = new InputMultiplexer();
+		mux.addProcessor(getStage());
+		mux.addProcessor(backButtonHandler);
+		setInputProcessor(mux);
+	}
+
 	public void setLevel(Level l) {
 		this.l = l;
 		l.reset();
@@ -35,11 +41,6 @@ abstract class AbstractLevelScreen extends AbstractPuzzleScreen {
 	protected void onShow() {
 		super.onShow();
 		l.enterContext();
-		InputMultiplexer mux = new InputMultiplexer();
-		mux.addProcessor(Gdx.input.getInputProcessor());
-		mux.addProcessor(backButtonHandler);
-		Gdx.input.setInputProcessor(mux);
-
 	}
 
 	@Override
@@ -82,8 +83,7 @@ abstract class AbstractLevelScreen extends AbstractPuzzleScreen {
 							packageScreen.setLevelPackage(l.getPackage());
 							Transition transition = TransitionBuilder
 									.buildNew().slideInLeftExtraDistance()
-									.fadeClearColors().duration(.6f)
-									.get();
+									.fadeClearColors().duration(.6f).get();
 							router.changeScreen(packageScreen, transition);
 						}
 					});

@@ -1,11 +1,14 @@
 package de.lksbhm.gdx.ui.screens.transitions;
 
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public interface TransitionableScreen extends Screen {
 	Stage getStage();
+
+	InputProcessor getInputProcessor();
 
 	void render(float delta, boolean clear);
 

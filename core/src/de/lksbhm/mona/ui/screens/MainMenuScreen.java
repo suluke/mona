@@ -41,6 +41,10 @@ public class MainMenuScreen extends AbstractScreen {
 
 	public MainMenuScreen() {
 		setClearColor(0.518f, 0.863f, 0.796f, 1f);
+		InputMultiplexer mux = new InputMultiplexer();
+		mux.addProcessor(getStage());
+		mux.addProcessor(backButtonHandler);
+		setInputProcessor(mux);
 	}
 
 	private void setupWidgets() {
@@ -53,8 +57,7 @@ public class MainMenuScreen extends AbstractScreen {
 			public void clicked(InputEvent event, float x, float y) {
 				Mona mona = LksBhmGame.getGame(Mona.class);
 				Transition transition = TransitionBuilder.buildNew()
-						.slideInRight().fadeClearColors().duration(.6f)
-						.get();
+						.slideInRight().fadeClearColors().duration(.6f).get();
 				LevelPackageManager pacman = mona.getLevelPackageManager();
 				PackagesListScreen.showAsCurrentScreen(
 						pacman.getInternalPackages(), transition);
@@ -67,8 +70,7 @@ public class MainMenuScreen extends AbstractScreen {
 			public void clicked(InputEvent event, float x, float y) {
 				Mona mona = LksBhmGame.getGame(Mona.class);
 				Transition transition = TransitionBuilder.buildNew()
-						.slideInRight().fadeClearColors().duration(.6f)
-						.get();
+						.slideInRight().fadeClearColors().duration(.6f).get();
 				LevelPackageManager pacman = mona.getLevelPackageManager();
 				PackagesListScreen.showAsCurrentScreen(
 						pacman.getDailyPackages(), transition);
@@ -91,8 +93,7 @@ public class MainMenuScreen extends AbstractScreen {
 								ps.setSeed(generated.getFirst());
 								Transition transition = TransitionBuilder
 										.buildNew().slideInRight()
-										.fadeClearColors().duration(.6f)
-										.get();
+										.fadeClearColors().duration(.6f).get();
 								router.changeScreen(ps, transition);
 							}
 						});
@@ -117,10 +118,6 @@ public class MainMenuScreen extends AbstractScreen {
 
 	@Override
 	public void onShow() {
-		InputMultiplexer mux = new InputMultiplexer();
-		mux.addProcessor(Gdx.input.getInputProcessor());
-		mux.addProcessor(backButtonHandler);
-		Gdx.input.setInputProcessor(mux);
 		getBaseTable().clear();
 		layoutWidgets();
 	}

@@ -1,6 +1,5 @@
 package de.lksbhm.mona.ui.screens;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -30,15 +29,15 @@ public class RandomPuzzleScreen extends AbstractPuzzleScreen {
 
 	public RandomPuzzleScreen() {
 		setClearColor(0.1f, 0.1f, 0.1f, 1f);
+		InputMultiplexer mux = new InputMultiplexer();
+		mux.addProcessor(getStage());
+		mux.addProcessor(backButtonHandler);
+		setInputProcessor(mux);
 	}
 
 	@Override
 	protected void onShow() {
 		super.onShow();
-		InputMultiplexer mux = new InputMultiplexer();
-		mux.addProcessor(Gdx.input.getInputProcessor());
-		mux.addProcessor(backButtonHandler);
-		Gdx.input.setInputProcessor(mux);
 	}
 
 	@Override

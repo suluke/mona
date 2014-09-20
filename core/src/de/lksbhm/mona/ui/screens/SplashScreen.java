@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
@@ -34,19 +33,16 @@ public class SplashScreen extends AbstractScreen implements Context, Callback {
 	private Label moLabel;
 	private Label naLabel;
 	private HorizontalGroup foregroundGroup;
-	private Cell<?> foregroundCell;
 	private boolean movedToNextScreen = false;
 	private final ShapeRenderer shapeRenderer = new ShapeRenderer(8);
 	private final Action moveToNextScreenAction = new Action() {
 		@Override
 		public boolean act(float delta) {
-			if (movedToNextScreen) {
-				return true;
-			} else {
+			if (!movedToNextScreen) {
 				moveTotNextScreen();
 				movedToNextScreen = true;
-				return true;
 			}
+			return true;
 		}
 	};
 
@@ -59,7 +55,7 @@ public class SplashScreen extends AbstractScreen implements Context, Callback {
 		naLabel = new Label("NA", LksBhmGame.getGame().getDefaultSkin());
 		foregroundGroup.addActor(moLabel);
 		foregroundGroup.addActor(naLabel);
-		foregroundCell = getBaseTable().add(foregroundGroup);
+		getBaseTable().add(foregroundGroup);
 	}
 
 	@Override
@@ -117,7 +113,8 @@ public class SplashScreen extends AbstractScreen implements Context, Callback {
 
 	public void moveTotNextScreen() {
 		Transition transition = TransitionBuilder.buildNew()
-				.callbackBasedTransition(SplashScreen.this).duration(2f).get();
+				.callbackBasedTransition(SplashScreen.this).cancelOnTap()
+				.duration(2f).get();
 		Router router = LksBhmGame.getGame().getRouter();
 		if (nextScreen != null) {
 			router.changeScreen(nextScreen, transition);

@@ -19,26 +19,31 @@ abstract class AbstractTransition implements Transition {
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public void apply(LksBhmGame<?, ?> game, TransitionableScreen fromScreen,
-			TransitionableScreen toScreen) {
+	public final void apply(LksBhmGame<?, ?> game,
+			TransitionableScreen fromScreen, TransitionableScreen toScreen) {
 		setup(game, fromScreen, toScreen);
 
 		Color fromClearColor = fromScreen.getClearColor();
 		if (ts.getTransition() != null) {
 			ts.getTransition().abort();
 		}
+		// In the beginning, we have the current clear color
 		ts.setClearColor(fromClearColor.r, fromClearColor.g, fromClearColor.b,
 				fromClearColor.a);
 		ts.setup(this, this.fromScreen, getInitialFromScreenX(),
 				getInitialFromScreenY(), this.toScreen, getInitialToScreenX(),
 				getInitialToScreenY());
-		initialize();
 		this.fromScreen.disableHide();
 		this.game.setScreen(ts);
 		this.toScreen.show();
+		start();
 	}
 
-	protected void initialize() {
+	private void start() {
+		if (decorated != null) {
+			decorated.start();
+		}
+		onStart();
 	}
 
 	private void setup(LksBhmGame<?, ?> game, TransitionableScreen fromScreen,
@@ -60,6 +65,95 @@ abstract class AbstractTransition implements Transition {
 		if (decorated != null) {
 			decorated.setDuration(duration);
 		}
+	}
+
+	/**
+	 * 
+	 * @param delta
+	 * @return true if the transition has ended
+	 */
+	final void beforeRender(float delta) {
+		if (finished) {
+			return;
+		}
+		if (timePassed >= duration) {
+			timePassed = duration;
+			finished = true;
+		}
+		float progress = timePassed / duration;
+		if (decorated != null) {
+			decorated.update(ts, progress);
+		}
+		update(ts, progress);
+
+		timePassed += delta;
+	}
+
+	final void afterRender() {
+		if (finished) {
+			tearDown();
+		}
+	}
+
+	private void tearDownAsDecorated() {
+		if (decorated != null) {
+			decorated.tearDownAsDecorated();
+		}
+		finished = true;
+		onEnd();
+		fromScreen = null;
+		toScreen = null;
+		game = null;
+		if (disposeOnFinish) {
+			dispose();
+		}
+	}
+
+	@SuppressWarnings("deprecation")
+	private void tearDown() {
+		Color clearColor = toScreen.getClearColor();
+		Gdx.gl.glClearColor(clearColor.r, clearColor.g, clearColor.b,
+				clearColor.a);
+
+		toScreen.disableShow();
+		game.setScreen(toScreen);
+		toScreen.enableShow();
+
+		ts.finish();
+		fromScreen.enableHide();
+		fromScreen.hide();
+		fromScreen.getStage().getRoot().setX(0);
+		fromScreen.getStage().getRoot().setY(0);
+		tearDownAsDecorated();
+	}
+
+	@Override
+	public void abort() {
+		tearDown();
+	}
+
+	protected void onStart() {
+	}
+
+	protected void onEnd() {
+	}
+
+	/**
+	 * 
+	 * @param ts
+	 * @param progress
+	 *            value between 0 and 1 indicating how much of the transition
+	 *            has passed
+	 */
+	protected abstract void update(TransitionScreen ts, float progress);
+
+	public void runParallel(AbstractTransition transition) {
+		this.decorated = transition;
+	}
+
+	@Override
+	public void setDisposeOnFinish(boolean b) {
+		disposeOnFinish = b;
 	}
 
 	@Override
@@ -97,88 +191,5 @@ abstract class AbstractTransition implements Transition {
 
 	protected TransitionableScreen getToScreen() {
 		return toScreen;
-	}
-
-	/**
-	 * 
-	 * @param delta
-	 * @return true if the transition has ended
-	 */
-	void beforeRender(float delta) {
-		if (finished) {
-			return;
-		}
-		if (timePassed >= duration) {
-			timePassed = duration;
-			finished = true;
-		}
-		float progress = timePassed / duration;
-		if (decorated != null) {
-			decorated.update(ts, progress);
-		}
-		update(ts, progress);
-
-		timePassed += delta;
-	}
-
-	void afterRender() {
-		if (finished) {
-			tearDown();
-			if (decorated != null) {
-				decorated.tearDownAsDecorated();
-			}
-		}
-	}
-
-	private void tearDownAsDecorated() {
-		finished = true;
-		fromScreen = null;
-		toScreen = null;
-		game = null;
-		if (disposeOnFinish) {
-			dispose();
-		}
-	}
-
-	@SuppressWarnings("deprecation")
-	private void tearDown() {
-		Color clearColor = toScreen.getClearColor();
-		Gdx.gl.glClearColor(clearColor.r, clearColor.g, clearColor.b,
-				clearColor.a);
-		toScreen.disableShow();
-		game.setScreen(toScreen);
-		toScreen.enableShow();
-		Color toClearColor = toScreen.getClearColor();
-		ts.setClearColor(toClearColor.r, toClearColor.g, toClearColor.b,
-				toClearColor.a);
-		ts.finish();
-		fromScreen.enableHide();
-		fromScreen.hide();
-		fromScreen.getStage().getRoot().setX(0);
-		fromScreen.getStage().getRoot().setY(0);
-		tearDownAsDecorated();
-	}
-
-	@Override
-	public void abort() {
-		tearDown();
-	}
-
-	/**
-	 * 
-	 * @param ts
-	 * @param progress
-	 *            value between 0 and 1 indicating how much of the transition
-	 *            has passed
-	 */
-	protected abstract void update(TransitionScreen ts, float progress);
-
-	public void runParallel(AbstractTransition transition) {
-		this.decorated = transition;
-	}
-
-	@Override
-	public void setDisposeOnFinish(boolean b) {
-		disposeOnFinish = b;
 	}
 }

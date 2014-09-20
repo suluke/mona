@@ -39,6 +39,11 @@ public class CallbackBasedTransition extends AbstractTransition {
 	}
 
 	@Override
+	protected void onEnd() {
+		callback.update(1);
+	}
+
+	@Override
 	protected TransitionableScreen getScreenRenderedBelow() {
 		// We assume that the current screen does something to make the
 		// UNDERLYING toScreen visible.
@@ -55,7 +60,7 @@ public class CallbackBasedTransition extends AbstractTransition {
 	}
 
 	@Override
-	protected void initialize() {
+	protected void onStart() {
 		Color toClearColor = getToScreen().getClearColor();
 		TransitionScreen.getInstance().setClearColor(toClearColor.r,
 				toClearColor.g, toClearColor.b, toClearColor.a);

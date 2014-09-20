@@ -80,6 +80,14 @@ public class ResourceConsumerManager {
 		}
 	}
 
+	/**
+	 * Will instantiate the resource consumer and have it register the resources
+	 * it depends on with the {@link LksBhmGame#getGame() game's} assetManager,
+	 * but without loading them.
+	 * 
+	 * @param consumer
+	 * @return
+	 */
 	public <T extends ResourceConsumer> T obtainConsumerInstanceWithoutLoadingResources(
 			Class<T> consumer) {
 		@SuppressWarnings("unchecked")

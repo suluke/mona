@@ -1,6 +1,5 @@
 package de.lksbhm.mona.ui.screens;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
@@ -45,6 +44,10 @@ public class PackagesListScreen extends AbstractScreen {
 		state = new PackagesListScreenState();
 		setClearColor(.6f, .6f, .6f, 1);
 		packagesList.setWidth(getDefaultViewportWidth() * .7f);
+		InputMultiplexer mux = new InputMultiplexer();
+		mux.addProcessor(getStage());
+		mux.addProcessor(backButtonHandler);
+		setInputProcessor(mux);
 	}
 
 	public void setLevelPackageCollection(LevelPackageCollection levelPackages) {
@@ -139,10 +142,6 @@ public class PackagesListScreen extends AbstractScreen {
 
 	@Override
 	protected void onShow() {
-		InputMultiplexer mux = new InputMultiplexer();
-		mux.addProcessor(Gdx.input.getInputProcessor());
-		mux.addProcessor(backButtonHandler);
-		Gdx.input.setInputProcessor(mux);
 		layoutWidgets();
 	}
 

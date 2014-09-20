@@ -1,6 +1,5 @@
 package de.lksbhm.mona.ui.screens;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -24,8 +23,8 @@ public class PuzzleSolvedScreen extends AbstractScreen {
 		@Override
 		protected void onBackButtonPressed() {
 			Transition transition = TransitionBuilder.buildNew()
-					.slideInLeftExtraDistance().fadeClearColors()
-					.duration(.6f).get();
+					.slideInLeftExtraDistance().fadeClearColors().duration(.6f)
+					.get();
 			LksBhmGame.getGame().getRouter()
 					.changeScreen(MainMenuScreen.class, null, transition);
 		}
@@ -33,6 +32,10 @@ public class PuzzleSolvedScreen extends AbstractScreen {
 
 	public PuzzleSolvedScreen() {
 		setClearColor(.422f, .816f, .147f, 1);
+		InputMultiplexer mux = new InputMultiplexer();
+		mux.addProcessor(getStage());
+		mux.addProcessor(backButtonHandler);
+		setInputProcessor(mux);
 	}
 
 	private void setupWidgets() {
@@ -46,8 +49,7 @@ public class PuzzleSolvedScreen extends AbstractScreen {
 			public void clicked(InputEvent event, float x, float y) {
 				Router router = LksBhmGame.getGame().getRouter();
 				Transition transition = TransitionBuilder.buildNew()
-						.slideInRight().fadeClearColors().duration(.6f)
-						.get();
+						.slideInRight().fadeClearColors().duration(.6f).get();
 				router.changeScreen(MainMenuScreen.class, null, transition);
 			}
 		});
@@ -55,10 +57,6 @@ public class PuzzleSolvedScreen extends AbstractScreen {
 
 	@Override
 	public void onShow() {
-		InputMultiplexer mux = new InputMultiplexer();
-		mux.addProcessor(Gdx.input.getInputProcessor());
-		mux.addProcessor(backButtonHandler);
-		Gdx.input.setInputProcessor(mux);
 		getBaseTable().clear();
 		layoutWidgets();
 	}

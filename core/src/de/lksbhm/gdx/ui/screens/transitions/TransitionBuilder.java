@@ -55,6 +55,15 @@ public class TransitionBuilder {
 			return transition;
 		};
 	};
+	private final Pool<CancelOnTap> cancelOnTapPool = new Pool<CancelOnTap>() {
+		@Override
+		public CancelOnTap newObject() {
+			CancelOnTap transition = new CancelOnTap();
+			transition.setPool(this);
+			transition.setDisposeOnFinish(true);
+			return transition;
+		};
+	};
 
 	private TransitionBuilder() {
 
@@ -120,6 +129,12 @@ public class TransitionBuilder {
 		CallbackBasedTransition transition = callbackBasedTransitionPool
 				.obtain();
 		transition.setCallback(callback);
+		set(transition);
+		return this;
+	}
+
+	public TransitionBuilder cancelOnTap() {
+		CancelOnTap transition = cancelOnTapPool.obtain();
 		set(transition);
 		return this;
 	}

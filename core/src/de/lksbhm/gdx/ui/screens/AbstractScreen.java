@@ -1,6 +1,7 @@
 package de.lksbhm.gdx.ui.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -25,6 +26,7 @@ public abstract class AbstractScreen implements
 	private boolean show;
 	private boolean showDisabled = false;
 	private boolean hideDisabled = false;
+	private InputProcessor inputProcessor;
 
 	public AbstractScreen() {
 		this(1024, 600);
@@ -34,6 +36,7 @@ public abstract class AbstractScreen implements
 		game = LksBhmGame.getGame();
 		viewport = new ScalingViewport(Scaling.fit, defaultWidth, defaultHeight);
 		stage = new Stage(viewport);
+		inputProcessor = stage;
 		if (game.isDebug()) {
 			stage.setDebugAll(true);
 		}
@@ -118,7 +121,7 @@ public abstract class AbstractScreen implements
 			return;
 		}
 		show = true;
-		Gdx.input.setInputProcessor(stage);
+		Gdx.input.setInputProcessor(inputProcessor);
 		onShow();
 		Gdx.gl.glClearColor(clearColor.r, clearColor.g, clearColor.b,
 				clearColor.a);
@@ -175,5 +178,14 @@ public abstract class AbstractScreen implements
 	@Override
 	public void disableShow() {
 		showDisabled = true;
+	}
+
+	protected void setInputProcessor(InputProcessor inputProcessor) {
+		this.inputProcessor = inputProcessor;
+	}
+
+	@Override
+	public InputProcessor getInputProcessor() {
+		return inputProcessor;
 	}
 }
