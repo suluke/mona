@@ -7,7 +7,7 @@ import de.lksbhm.gdx.LksBhmGame;
 
 abstract class AbstractTransition implements Transition {
 
-	private final SharedTransitionProperties commonProperties = new SharedTransitionProperties();
+	private final SharedTransitionProperties sharedProperties = new SharedTransitionProperties();
 
 	private AbstractTransition decorated = null;
 	private AbstractTransition decorator = null;
@@ -18,7 +18,7 @@ abstract class AbstractTransition implements Transition {
 	public final void apply(LksBhmGame<?, ?> game,
 			TransitionableScreen fromScreen, TransitionableScreen toScreen) {
 		SharedTransitionProperties sharedProperties = getSharedProperties();
-		sharedProperties.reset();
+		sharedProperties.resetBeforeApply();
 		sharedProperties.setGame(game);
 		sharedProperties.setFromScreen(fromScreen);
 		sharedProperties.setToScreen(toScreen);
@@ -36,10 +36,10 @@ abstract class AbstractTransition implements Transition {
 		Color fromClearColor = fromScreen.getClearColor();
 		ts.setClearColor(fromClearColor.r, fromClearColor.g, fromClearColor.b,
 				fromClearColor.a);
-		ts.setup(this, fromScreen, commonProperties.initialFromScreenX,
-				commonProperties.initialFromScreenY, toScreen,
-				commonProperties.initialToScreenX,
-				commonProperties.initialToScreenY);
+		ts.setup(this, fromScreen, sharedProperties.initialFromScreenX,
+				sharedProperties.initialFromScreenY, toScreen,
+				sharedProperties.initialToScreenX,
+				sharedProperties.initialToScreenY);
 		fromScreen.disableHide();
 		game.setScreen(ts);
 		toScreen.show();
@@ -74,19 +74,19 @@ abstract class AbstractTransition implements Transition {
 		if (isFinished()) {
 			return;
 		}
-		if (commonProperties.timePassed >= getDuration()) {
-			commonProperties.timePassed = getDuration();
-			commonProperties.finished = true;
+		if (sharedProperties.timePassed >= getDuration()) {
+			sharedProperties.timePassed = getDuration();
+			sharedProperties.finished = true;
 		}
 		TransitionScreen transitionScreen = getTransitionScreen();
-		float progress = commonProperties.timePassed
-				/ commonProperties.duration;
+		float progress = sharedProperties.timePassed
+				/ sharedProperties.duration;
 		if (decorated != null) {
 			decorated.update(transitionScreen, progress);
 		}
 		update(transitionScreen, progress);
 
-		commonProperties.timePassed += delta;
+		sharedProperties.timePassed += delta;
 	}
 
 	final void afterRender() {
@@ -136,7 +136,7 @@ abstract class AbstractTransition implements Transition {
 		if (decorator != null) {
 			return decorator.getSharedProperties();
 		} else {
-			return commonProperties;
+			return sharedProperties;
 		}
 	}
 
@@ -171,9 +171,9 @@ abstract class AbstractTransition implements Transition {
 	}
 
 	public void runParallel(AbstractTransition transition) {
+		getSharedProperties().mergeProperties(transition.getSharedProperties());
 		this.decorated = transition;
 		transition.decorator = this;
-		getSharedProperties().mergeProperties(transition.getSharedProperties());
 	}
 
 	@Override
@@ -226,6 +226,7 @@ abstract class AbstractTransition implements Transition {
 
 	@Override
 	public void dispose() {
+		sharedProperties.resetOnDispose();
 		decorated = null;
 		decorator = null;
 	}

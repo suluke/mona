@@ -6,9 +6,18 @@ import com.badlogic.gdx.utils.Pool;
 import de.lksbhm.gdx.ui.screens.transitions.CallbackBasedTransition.Callback;
 
 public class TransitionBuilder {
-	private float duration = -1;
 	private static final TransitionBuilder instance = new TransitionBuilder();
 	private AbstractTransition transition = null;
+	private final Pool<BaseTransition> baseTransitionPool = new Pool<BaseTransition>() {
+		@Override
+		public BaseTransition newObject() {
+			BaseTransition transition = new BaseTransition();
+			transition.setPool(this);
+			transition.setDisposeOnFinish(true);
+			return transition;
+		};
+	};
+
 	private final Pool<SlideInLeftExtraDistance> slideInLeftExtraDistancePool = new Pool<SlideInLeftExtraDistance>() {
 		@Override
 		public SlideInLeftExtraDistance newObject() {
@@ -83,9 +92,29 @@ public class TransitionBuilder {
 			Gdx.app.error("TransitionBuilder",
 					"Starting a new transition before old one is retrieved");
 		}
-		instance.transition = null;
+		instance.transition = instance.baseTransitionPool.obtain();
 		return instance;
 	}
+
+	private void set(AbstractTransition t) {
+		t.runParallel(transition);
+		transition = t;
+	}
+
+	public Transition get() {
+		Transition result = transition;
+		transition = null;
+		return result;
+	}
+
+	public TransitionBuilder duration(float duration) {
+		transition.setDuration(duration);
+		return this;
+	}
+
+	/*
+	 * Start transition methods
+	 */
 
 	public TransitionBuilder slideInLeftExtraDistance() {
 		SlideInLeftExtraDistance transition = slideInLeftExtraDistancePool
@@ -109,28 +138,6 @@ public class TransitionBuilder {
 	public TransitionBuilder slideInLeft() {
 		SlideInLeft transition = slideInLeftPool.obtain();
 		set(transition);
-		return this;
-	}
-
-	private void set(AbstractTransition t) {
-		if (transition != null) {
-			t.runParallel(transition);
-		}
-		transition = t;
-	}
-
-	public Transition get() {
-		Transition result = transition;
-		if (duration >= 0) {
-			result.setDuration(duration);
-		}
-		duration = -1;
-		transition = null;
-		return result;
-	}
-
-	public TransitionBuilder duration(float duration) {
-		this.duration = duration;
 		return this;
 	}
 

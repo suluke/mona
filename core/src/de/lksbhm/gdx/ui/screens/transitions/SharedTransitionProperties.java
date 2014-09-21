@@ -23,6 +23,7 @@ class SharedTransitionProperties {
 
 	private boolean initialScreenPositionsDetermined = false;
 	private boolean drawOrderDetermined = false;
+	private boolean durationDetermined = false;
 
 	public float getDuration() {
 		return duration;
@@ -74,6 +75,7 @@ class SharedTransitionProperties {
 
 	public void setDuration(float duration) {
 		this.duration = duration;
+		durationDetermined = true;
 	}
 
 	public void setDrawOrderInverted(boolean inverted) {
@@ -113,11 +115,22 @@ class SharedTransitionProperties {
 					properties.initialFromScreenY, properties.initialToScreenX,
 					properties.initialToScreenY);
 		}
+		if (properties.durationDetermined) {
+			if (durationDetermined) {
+				if (properties.duration != duration) {
+					throw new RuntimeException(
+							"You already set a duration for the cascaded transitions");
+				}
+			} else {
+				duration = properties.duration;
+			}
+			durationDetermined = true;
+			System.out.println("Merge duration: " + duration);
+		}
 	}
 
-	public void reset() {
+	public void resetBeforeApply() {
 		timePassed = 0;
-		// duration = 0;
 		finished = false;
 		ts = null;
 		fromScreen = null;
@@ -128,7 +141,13 @@ class SharedTransitionProperties {
 		initialFromScreenY = 0;
 		initialToScreenX = 0;
 		initialToScreenY = 0;
+
 		initialScreenPositionsDetermined = false;
 		drawOrderDetermined = false;
+	}
+
+	public void resetOnDispose() {
+		duration = 0;
+		durationDetermined = false;
 	}
 }

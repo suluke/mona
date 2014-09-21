@@ -86,7 +86,8 @@ public class PackagesListScreen extends AbstractScreen {
 				@Override
 				public void clicked(InputEvent event, float x, float y) {
 					Transition transition = TransitionBuilder.buildNew()
-							.slideInRight().fadeClearColors().get();
+							.duration(.6f).slideInRight().fadeClearColors()
+							.get();
 					PackageScreen.showAsCurrentScreen(pack, transition);
 				}
 			});
