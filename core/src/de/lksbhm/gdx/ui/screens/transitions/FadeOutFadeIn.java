@@ -31,6 +31,7 @@ public class FadeOutFadeIn extends AbstractTransition {
 		toRoot = getToScreen().getStage().getRoot();
 		colorFrom.set(fromRoot.getColor());
 		colorTo.set(toRoot.getColor());
+		toRoot.setColor(colorTo.r, colorTo.g, colorTo.b, 0);
 	}
 
 	@Override
