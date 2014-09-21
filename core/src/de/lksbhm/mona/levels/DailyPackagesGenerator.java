@@ -1,9 +1,7 @@
 package de.lksbhm.mona.levels;
 
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
 
@@ -66,16 +64,16 @@ class DailyPackagesGenerator {
 				difficulties.length);
 		long seed;
 		long millis = date.getTimeInMillis();
-		Date d = new Date(millis);
 		String dayName;
 		LevelPackage newPack;
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+		String dailyPackageIdPrefix = LksBhmGame.getGame(Mona.class)
+				.getSettings().statics.getDailyPackageIdPrefix();
 		for (int i = 0; i < difficulties.length; i++) {
 			random.setSeed(millis + i);
 			seed = random.nextLong();
 			dayName = date.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT,
 					Locale.getDefault());
-			newPack = new DailyPackage(formatter.format(d) + "-" + i,
+			newPack = new DailyPackage(dailyPackageIdPrefix + "-" + i,
 					difficulties[i], collection, seed, random);
 			newPack.setDisplayName(dayName + Integer.toString(i + 1));
 			collection.setPackage(i, newPack);

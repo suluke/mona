@@ -1,8 +1,13 @@
 package de.lksbhm.mona;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import de.lksbhm.mona.levels.Difficulty;
 
 public final class StaticSettings {
+	private String idPrefix;
+
 	StaticSettings() {
 
 	}
@@ -89,5 +94,13 @@ public final class StaticSettings {
 
 	public int getMaximumNumberOfDailyPackages() {
 		return 4;
+	}
+
+	public String getDailyPackageIdPrefix() {
+		if (idPrefix == null) {
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+			idPrefix = formatter.format(new Date());
+		}
+		return idPrefix;
 	}
 }

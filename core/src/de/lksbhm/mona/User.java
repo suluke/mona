@@ -2,6 +2,7 @@ package de.lksbhm.mona;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 
 import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.gdx.users.UserManager;
@@ -59,7 +60,7 @@ public class User extends de.lksbhm.gdx.users.User {
 		Integer solvedCount;
 		for (String id : canonicalLevelIds) {
 			packageId = Level.getPackageIdfromCanonicalId(id);
-			if (!solvedPackages.contains(packageId)) {
+			if (isLevelRelevantForPersisting(packageId)) {
 				solvedLevels.add(id);
 				solvedCount = solvedLevelsInPackage.get(packageId);
 				if (solvedCount == null) {
@@ -72,6 +73,16 @@ public class User extends de.lksbhm.gdx.users.User {
 		}
 	}
 
+	private boolean isLevelRelevantForPersisting(String packageId) {
+		boolean result = !solvedPackages.contains(packageId);
+		if (!packageId
+				.startsWith(LksBhmGame.getGame(Mona.class).getSettings().statics
+						.getDailyPackageIdPrefix())) {
+			result = false;
+		}
+		return result;
+	}
+
 	public void setLevelSolved(Level l) {
 		if (solvedLevels.contains(l)) {
 			return;
@@ -82,6 +93,16 @@ public class User extends de.lksbhm.gdx.users.User {
 				solvedCount = 0;
 			}
 			if (solvedCount == l.getPackage().getSize() - 1) {
+				String packageId = l.getPackage().getPackageId()
+						+ Level.packageIdSeparator;
+				Iterator<String> it = solvedLevels.iterator();
+				String id;
+				while (it.hasNext()) {
+					id = it.next();
+					if (!id.startsWith(packageId)) {
+						it.remove();
+					}
+				}
 				setPackageSolved(l.getPackage());
 			} else {
 				// another single level solved

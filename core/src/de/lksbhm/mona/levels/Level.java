@@ -35,12 +35,12 @@ public abstract class Level extends ContextImplementation implements Disposable 
 	};
 	private final String canonicalId;
 
-	private static final String idSeparator = "/";
+	public static final String packageIdSeparator = "/";
 
 	public Level(LevelPackage pack, String id) {
 		this.pack = pack;
 		this.id = id;
-		this.canonicalId = pack.getPackageId() + idSeparator + id;
+		this.canonicalId = pack.getPackageId() + packageIdSeparator + id;
 	}
 
 	public boolean isSolved() {
@@ -132,7 +132,7 @@ public abstract class Level extends ContextImplementation implements Disposable 
 	}
 
 	public static String getPackageIdfromCanonicalId(String canonical) {
-		int separatorIndex = canonical.indexOf(idSeparator);
+		int separatorIndex = canonical.indexOf(packageIdSeparator);
 		if (separatorIndex == -1) {
 			throw new RuntimeException(canonical);
 		} else {
