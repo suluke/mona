@@ -102,10 +102,15 @@ public class Puzzle extends Board<Piece> implements Disposable {
 		}
 		isSolved = isAllConnectedInOneCircle();
 		if (isSolved) {
+			onSolved();
 			for (PuzzleWonListener listener : winListeners) {
 				listener.onWin();
 			}
+			winListeners.clear();
 		}
+	}
+
+	protected void onSolved() {
 	}
 
 	private boolean isAllConnectedInOneCircle() {

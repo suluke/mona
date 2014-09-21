@@ -73,7 +73,7 @@ public class Generator {
 		return result;
 	}
 
-	private static void placeStones(Puzzle puzzle, Random random,
+	public static void placeStones(Puzzle puzzle, Random random,
 			float straightStoneProbability, float edgeStoneProbability) {
 		GroupedTileBoard groupedBoard = puzzle.getSolution()
 				.toGroupedTileBoard();

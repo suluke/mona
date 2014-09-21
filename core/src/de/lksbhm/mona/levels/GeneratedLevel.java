@@ -2,9 +2,6 @@ package de.lksbhm.mona.levels;
 
 import java.util.Random;
 
-import de.lksbhm.mona.puzzle.Generator;
-import de.lksbhm.mona.puzzle.Puzzle;
-
 public class GeneratedLevel extends Level {
 
 	private final long seed;
@@ -17,9 +14,9 @@ public class GeneratedLevel extends Level {
 	}
 
 	@Override
-	protected Puzzle instantiatePuzzle() {
+	protected LevelPuzzle instantiatePuzzle() {
 		random.setSeed(seed);
-		return Generator.generate(random, 1.f, 1.f);
+		return LevelPuzzleGenerator.generate(this, random, 1.f, 1.f);
 	}
 
 	protected long getSeed() {

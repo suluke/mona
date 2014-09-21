@@ -2,9 +2,6 @@ package de.lksbhm.mona.levels;
 
 import java.util.Random;
 
-import de.lksbhm.mona.puzzle.Generator;
-import de.lksbhm.mona.puzzle.Puzzle;
-
 public class DailyLevel extends GeneratedLevel {
 
 	public DailyLevel(long seed, Random random, LevelPackage pack, String id) {
@@ -12,10 +9,10 @@ public class DailyLevel extends GeneratedLevel {
 	}
 
 	@Override
-	protected Puzzle instantiatePuzzle() {
+	protected LevelPuzzle instantiatePuzzle() {
 		Random random = getRandom();
 		random.setSeed(getSeed());
-		return Generator.generate(getPackage().getDifficulty(), random, 1.f,
-				1.f);
+		return LevelPuzzleGenerator.generate(this,
+				getPackage().getDifficulty(), random, 1.f, 1.f);
 	}
 }
