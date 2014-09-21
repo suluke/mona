@@ -12,9 +12,11 @@ import de.lksbhm.gdx.ui.screens.transitions.TransitionBuilder;
 import de.lksbhm.mona.levels.Level;
 import de.lksbhm.mona.levels.LevelPackage;
 
-abstract class AbstractLevelScreen extends AbstractPuzzleScreen {
+abstract class AbstractLevelScreen<NextLevelScreenType extends AbstractLevelScreen<?>>
+		extends AbstractPuzzleScreen {
 	private Level l;
 	private Label idLabel;
+	private boolean packageAlreadySolved = false;
 	private final AbstractBackButtonHandler backButtonHandler = new AbstractBackButtonHandler() {
 		@Override
 		protected void onBackButtonPressed() {
@@ -33,6 +35,7 @@ abstract class AbstractLevelScreen extends AbstractPuzzleScreen {
 
 	public void setLevel(Level l) {
 		this.l = l;
+		packageAlreadySolved = l.getPackage().isSolved();
 		l.reset();
 		idLabel.setText(l.getPackage().getDisplayName() + "/" + l.getLevelId());
 		setPuzzle(l.getPuzzle());
@@ -74,44 +77,82 @@ abstract class AbstractLevelScreen extends AbstractPuzzleScreen {
 		super.onWin();
 		Level next = l.getNextLevel();
 		final Router router = LksBhmGame.getGame().getRouter();
-		if (next != null) {
-			goToNextLevel(next, router);
+		if (!packageAlreadySolved && l.getPackage().isSolved()) {
+			switchToRewardScreen(next, router);
+			packageAlreadySolved = true;
 		} else {
-			router.obtainScreen(PackageScreen.class,
-					new ResourceConsumerObtainedCallback<PackageScreen>() {
-						@Override
-						public void onObtained(final PackageScreen packageScreen) {
-							router.obtainScreen(
-									RewardScreen.class,
-									new ResourceConsumerObtainedCallback<RewardScreen>() {
-										@Override
-										public void onObtained(
-												RewardScreen rewardScreen) {
-											LevelPackage pack = l.getPackage();
-											packageScreen.setLevelPackage(pack);
-											rewardScreen.setup(
-													pack.getReward(),
-													packageScreen);
-											Transition transition = TransitionBuilder
-													.buildNew().slideInRight()
-													.fadeClearColors()
-													.duration(.6f).get();
-											router.changeScreen(rewardScreen,
-													transition);
-										}
-									});
-						}
-					});
+			if (next != null) {
+				switchToNextLevelScreen(next, router);
+			} else {
+				switchToPackageScreen(router);
+			}
 		}
 	}
 
-	protected abstract void goToNextLevel(final Level next, final Router router);
+	protected abstract Class<NextLevelScreenType> getNextLevelScreenTypeClass();
 
-	protected void switchToNextLevelScreen(AbstractLevelScreen screen,
-			Level next, Router router) {
-		screen.setLevel(next);
-		Transition transition = TransitionBuilder.buildNew().slideInRight()
-				.fadeClearColors().duration(.6f).get();
-		router.changeScreen(screen, transition);
+	private void switchToRewardScreen(final Level next, final Router router) {
+		final int reward = l.getPackage().getReward();
+		final Transition transition = TransitionBuilder.buildNew()
+				.fadeClearColors().slideInRight().duration(.6f).get();
+		// TODO which is the better behavior? Currently solved like in lyne
+		// if (next != null) {
+		// router.obtainScreen(RewardScreen.class,
+		// new ResourceConsumerObtainedCallback<RewardScreen>() {
+		// @Override
+		// public void onObtained(RewardScreen rewardScreen) {
+		// rewardScreen.setup(reward, new Runnable() {
+		// @Override
+		// public void run() {
+		// switchToNextLevelScreen(next, router);
+		// }
+		// });
+		// router.changeScreen(rewardScreen, transition);
+		// }
+		// });
+		// } else {
+		router.obtainScreen(RewardScreen.class,
+				new ResourceConsumerObtainedCallback<RewardScreen>() {
+					@Override
+					public void onObtained(RewardScreen rewardScreen) {
+						rewardScreen.setup(reward, new Runnable() {
+							@Override
+							public void run() {
+								switchToPackageScreen(router);
+							}
+						});
+						router.changeScreen(rewardScreen, transition);
+					}
+				});
+		// }
+	}
+
+	private void switchToNextLevelScreen(final Level next, final Router router) {
+		router.obtainScreen(getNextLevelScreenTypeClass(),
+				new ResourceConsumerObtainedCallback<NextLevelScreenType>() {
+					@Override
+					public void onObtained(NextLevelScreenType screen) {
+						screen.setLevel(next);
+						Transition transition = TransitionBuilder.buildNew()
+								.slideInRight().fadeClearColors().duration(.6f)
+								.get();
+						router.changeScreen(screen, transition);
+					}
+				});
+	}
+
+	private void switchToPackageScreen(final Router router) {
+		router.obtainScreen(PackageScreen.class,
+				new ResourceConsumerObtainedCallback<PackageScreen>() {
+					@Override
+					public void onObtained(PackageScreen packageScreen) {
+						LevelPackage pack = l.getPackage();
+						packageScreen.setLevelPackage(pack);
+						Transition transition = TransitionBuilder.buildNew()
+								.slideInLeftExtraDistance().fadeClearColors()
+								.duration(.6f).get();
+						router.changeScreen(packageScreen, transition);
+					}
+				});
 	}
 }

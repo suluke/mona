@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 
 class PuzzleActorStyle {
-	private static String brightnessUniformName = "u_brightness";
+	static String brightnessUniformName = "u_brightness";
 
 	public Drawable edge;
 	public Drawable straight;
@@ -38,13 +38,13 @@ class PuzzleActorStyle {
 	public boolean forceCenter = true; // if set, marginRight and
 										// marginBottom will be ignored
 	private static ShaderProgram brightnessShader;
-	int brightnessShaderUniformLocation;
 
 	static ShaderProgram getBrightnessShader() {
 		if (brightnessShader == null) {
 			brightnessShader = new ShaderProgram(
 					Gdx.files.internal("shaders/brightness/shader.vert"),
 					Gdx.files.internal("shaders/brightness/shader.frag"));
+			System.out.println(ShaderProgram.getManagedStatus());
 		}
 		return brightnessShader;
 	}
@@ -139,10 +139,6 @@ class PuzzleActorStyle {
 		}
 		if (bottomRightTile == null) {
 			bottomRightTile = innerTile;
-		}
-		if (brightnessShader != null) {
-			brightnessShaderUniformLocation = brightnessShader
-					.getUniformLocation(brightnessUniformName);
 		}
 	}
 }

@@ -8,9 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import de.lksbhm.gdx.LksBhmGame;
-import de.lksbhm.gdx.ui.screens.transitions.Transition;
-import de.lksbhm.gdx.ui.screens.transitions.TransitionBuilder;
-import de.lksbhm.mona.Mona;
 
 public class RewardScreen extends AbstractScreen {
 
@@ -58,11 +55,7 @@ public class RewardScreen extends AbstractScreen {
 	}
 
 	private void moveToNextScreen() {
-		Transition transition = TransitionBuilder.buildNew()
-				.slideInLeftExtraDistance().fadeClearColors().duration(.6f)
-				.get();
-		LksBhmGame.getGame(Mona.class).getRouter()
-				.changeScreen(state.nextScreen, transition);
+		state.leaveScreenRunnable.run();
 	}
 
 	@Override
@@ -70,9 +63,9 @@ public class RewardScreen extends AbstractScreen {
 		return false;
 	}
 
-	public void setup(int reward, AbstractScreen nextScreen) {
+	public void setup(int reward, Runnable leaveScreenRunnable) {
 		state.reward = reward;
-		state.nextScreen = nextScreen;
+		state.leaveScreenRunnable = leaveScreenRunnable;
 		applyState();
 	}
 
@@ -95,11 +88,12 @@ public class RewardScreen extends AbstractScreen {
 	}
 
 	private static class RewardScreenState {
-		public AbstractScreen nextScreen;
+		public Runnable leaveScreenRunnable;
 		public int reward;
 
 		public RewardScreenState set(RewardScreenState state) {
 			reward = state.reward;
+			leaveScreenRunnable = state.leaveScreenRunnable;
 			return this;
 		}
 	}

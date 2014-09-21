@@ -160,7 +160,7 @@ public class PuzzleActor extends Widget {
 			if (brightnessShader.isCompiled()) {
 				batch.setShader(brightnessShader);
 				brightnessShader.setUniformf(
-						style.brightnessShaderUniformLocation,
+						PuzzleActorStyle.brightnessUniformName,
 						brightnessIncrease);
 			} else {
 				System.out.println(brightnessShader.getLog());
