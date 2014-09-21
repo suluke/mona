@@ -18,7 +18,7 @@ public class SlideInLeftExtraDistance extends AbstractTransition {
 
 	@Override
 	protected void setup() {
-		getCommonProperties().setInitialScreenPositions(0, 0,
+		getSharedProperties().setInitialScreenPositions(0, 0,
 				-2 * getToScreen().getStage().getWidth(), 0);
 	}
 

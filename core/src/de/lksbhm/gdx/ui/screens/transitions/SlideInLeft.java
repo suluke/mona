@@ -31,7 +31,7 @@ class SlideInLeft extends AbstractTransition {
 
 	@Override
 	protected void setup() {
-		getCommonProperties().setInitialScreenPositions(0, 0,
+		getSharedProperties().setInitialScreenPositions(0, 0,
 				-getToScreen().getStage().getWidth(), 0);
 	}
 }

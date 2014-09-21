@@ -14,7 +14,7 @@ class SharedTransitionProperties {
 	TransitionScreen ts;
 	TransitionableScreen fromScreen;
 	TransitionableScreen toScreen;
-	boolean invertedDrawOrder = false;
+	boolean drawOrderInverted = false;
 	LksBhmGame<?, ?> game;
 	float initialFromScreenX = 0;
 	float initialFromScreenY = 0;
@@ -77,11 +77,11 @@ class SharedTransitionProperties {
 	}
 
 	public void setDrawOrderInverted(boolean inverted) {
-		if (invertedDrawOrder != inverted) {
+		if (drawOrderInverted != inverted) {
 			if (drawOrderDetermined) {
 				throw new RuntimeException("Mixing incompatible Transitions");
 			}
-			invertedDrawOrder = inverted;
+			drawOrderInverted = inverted;
 		}
 		drawOrderDetermined = true;
 	}
@@ -106,7 +106,7 @@ class SharedTransitionProperties {
 
 	public void mergeProperties(SharedTransitionProperties properties) {
 		if (properties.drawOrderDetermined) {
-			setDrawOrderInverted(properties.invertedDrawOrder);
+			setDrawOrderInverted(properties.drawOrderInverted);
 		}
 		if (properties.initialScreenPositionsDetermined) {
 			setInitialScreenPositions(properties.initialFromScreenX,
@@ -122,7 +122,7 @@ class SharedTransitionProperties {
 		ts = null;
 		fromScreen = null;
 		toScreen = null;
-		invertedDrawOrder = false;
+		drawOrderInverted = false;
 		game = null;
 		initialFromScreenX = 0;
 		initialFromScreenY = 0;

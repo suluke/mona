@@ -59,6 +59,6 @@ public class CallbackBasedTransition extends AbstractTransition {
 	protected void setup() {
 		// We assume that the current screen does something to make the
 		// UNDERLYING toScreen visible.
-		getCommonProperties().setDrawOrderInverted(true);
+		getSharedProperties().setDrawOrderInverted(true);
 	}
 }

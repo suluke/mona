@@ -17,7 +17,7 @@ abstract class AbstractTransition implements Transition {
 	@Override
 	public final void apply(LksBhmGame<?, ?> game,
 			TransitionableScreen fromScreen, TransitionableScreen toScreen) {
-		SharedTransitionProperties sharedProperties = getCommonProperties();
+		SharedTransitionProperties sharedProperties = getSharedProperties();
 		sharedProperties.reset();
 		sharedProperties.setGame(game);
 		sharedProperties.setFromScreen(fromScreen);
@@ -119,7 +119,7 @@ abstract class AbstractTransition implements Transition {
 		fromScreen.hide();
 		fromScreen.getStage().getRoot().setX(0);
 		fromScreen.getStage().getRoot().setY(0);
-		SharedTransitionProperties commonProperties = getCommonProperties();
+		SharedTransitionProperties commonProperties = getSharedProperties();
 		commonProperties.setFinished(true);
 		tearDownAsDecorated();
 		commonProperties.setFromScreen(null);
@@ -128,48 +128,48 @@ abstract class AbstractTransition implements Transition {
 
 	}
 
-	protected SharedTransitionProperties getCommonProperties() {
+	protected SharedTransitionProperties getSharedProperties() {
 		if (decorator != null) {
-			return decorator.getCommonProperties();
+			return decorator.getSharedProperties();
 		} else {
 			return commonProperties;
 		}
 	}
 
 	private LksBhmGame<?, ?> getGame() {
-		return getCommonProperties().getGame();
+		return getSharedProperties().getGame();
 	}
 
 	private TransitionScreen getTransitionScreen() {
-		return getCommonProperties().getTransitionScreen();
+		return getSharedProperties().getTransitionScreen();
 	}
 
 	private boolean isFinished() {
-		return getCommonProperties().isFinished();
+		return getSharedProperties().isFinished();
 	}
 
 	protected TransitionableScreen getFromScreen() {
-		return getCommonProperties().getFromScreen();
+		return getSharedProperties().getFromScreen();
 	}
 
 	protected TransitionableScreen getToScreen() {
-		return getCommonProperties().getToScreen();
+		return getSharedProperties().getToScreen();
 	}
 
 	@Override
 	public void setDuration(float duration) {
-		getCommonProperties().setDuration(duration);
+		getSharedProperties().setDuration(duration);
 	}
 
 	@Override
 	public float getDuration() {
-		return getCommonProperties().getDuration();
+		return getSharedProperties().getDuration();
 	}
 
 	public void runParallel(AbstractTransition transition) {
 		this.decorated = transition;
 		transition.decorator = this;
-		getCommonProperties().mergeProperties(transition.getCommonProperties());
+		getSharedProperties().mergeProperties(transition.getSharedProperties());
 	}
 
 	@Override
@@ -178,18 +178,18 @@ abstract class AbstractTransition implements Transition {
 	}
 
 	protected final TransitionableScreen getScreenRenderedBelow() {
-		if (getCommonProperties().invertedDrawOrder) {
-			return getFromScreen();
-		} else {
+		if (getSharedProperties().drawOrderInverted) {
 			return getToScreen();
+		} else {
+			return getFromScreen();
 		}
 	}
 
 	protected final TransitionableScreen getScreenRenderedAbove() {
-		if (getCommonProperties().invertedDrawOrder) {
-			return getToScreen();
-		} else {
+		if (getSharedProperties().drawOrderInverted) {
 			return getFromScreen();
+		} else {
+			return getToScreen();
 		}
 	}
 

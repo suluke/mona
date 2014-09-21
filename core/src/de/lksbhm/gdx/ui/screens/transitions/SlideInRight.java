@@ -17,7 +17,7 @@ class SlideInRight extends AbstractTransition {
 
 	@Override
 	protected void setup() {
-		getCommonProperties().setInitialScreenPositions(0, 0,
+		getSharedProperties().setInitialScreenPositions(0, 0,
 				getFromScreen().getStage().getWidth(), 0);
 	}
 
