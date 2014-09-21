@@ -29,11 +29,11 @@ abstract class AbstractTransition implements Transition {
 
 		setupAll();
 
-		Color fromClearColor = fromScreen.getClearColor();
 		if (ts.getTransition() != null) {
 			ts.getTransition().abort();
 		}
 		// In the beginning, we have the current clear color
+		Color fromClearColor = fromScreen.getClearColor();
 		ts.setClearColor(fromClearColor.r, fromClearColor.g, fromClearColor.b,
 				fromClearColor.a);
 		ts.setup(this, fromScreen, commonProperties.initialFromScreenX,
@@ -43,6 +43,10 @@ abstract class AbstractTransition implements Transition {
 		fromScreen.disableHide();
 		game.setScreen(ts);
 		toScreen.show();
+		// There will be one more frame, so this is necessary, since .show()
+		// sets the clear color differently
+		Gdx.gl.glClearColor(fromClearColor.r, fromClearColor.g,
+				fromClearColor.b, fromClearColor.a);
 		start();
 	}
 
