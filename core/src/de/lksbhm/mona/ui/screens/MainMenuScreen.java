@@ -31,6 +31,7 @@ public class MainMenuScreen extends AbstractScreen {
 	private TextButton playButton;
 	private TextButton dailiesButton;
 	private TextButton randomLevelButton;
+	private TextButton infoButton;
 	private Label title;
 	private final AbstractBackButtonHandler backButtonHandler = new AbstractBackButtonHandler() {
 		@Override
@@ -99,21 +100,37 @@ public class MainMenuScreen extends AbstractScreen {
 						});
 			}
 		});
+
+		infoButton = new TextButton("?", skin, "play");
+		infoButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				Router router = LksBhmGame.getGame().getRouter();
+				Transition transition = TransitionBuilder.buildNew()
+						.fadeClearColors().fadeOutFadeIn().duration(.6f).get();
+				router.changeScreen(InfoScreen.class, null, transition);
+			}
+		});
 	}
 
 	private void layoutWidgets() {
 		Table base = getBaseTable();
 		Viewport vp = getViewport();
-
+		float worldWidth = vp.getWorldWidth();
+		float worldHeight = vp.getWorldHeight();
 		float w, h;
-		w = vp.getWorldWidth() * 0.6f;
-		h = vp.getWorldHeight() * 0.15f;
+		w = worldWidth * 0.6f;
+		h = worldHeight * 0.15f;
 		title.setAlignment(Align.center);
 		title.setFontScale(2);
 		base.add(title).size(w, h).top().spaceBottom(50).row();
 		base.add(playButton).size(w, h).center().spaceBottom(10).row();
 		base.add(dailiesButton).size(w, h).center().spaceBottom(10).row();
-		base.add(randomLevelButton).size(w, h).center().row();
+		base.add(randomLevelButton).size(w, h).center().spaceBottom(10).row();
+		infoButton.getLabel().setFontScale(.7f);
+		w = worldWidth * .2f;
+		h = worldHeight * .05f;
+		base.add(infoButton).size(w, h);
 	}
 
 	@Override

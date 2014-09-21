@@ -64,6 +64,15 @@ public class TransitionBuilder {
 			return transition;
 		};
 	};
+	private final Pool<FadeOutFadeIn> fadeOutFadeInPool = new Pool<FadeOutFadeIn>() {
+		@Override
+		public FadeOutFadeIn newObject() {
+			FadeOutFadeIn transition = new FadeOutFadeIn();
+			transition.setPool(this);
+			transition.setDisposeOnFinish(true);
+			return transition;
+		};
+	};
 
 	private TransitionBuilder() {
 
@@ -135,6 +144,12 @@ public class TransitionBuilder {
 
 	public TransitionBuilder cancelOnTap() {
 		CancelOnTap transition = cancelOnTapPool.obtain();
+		set(transition);
+		return this;
+	}
+
+	public TransitionBuilder fadeOutFadeIn() {
+		FadeOutFadeIn transition = fadeOutFadeInPool.obtain();
 		set(transition);
 		return this;
 	}

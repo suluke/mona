@@ -26,6 +26,7 @@ public class CallbackBasedTransition extends AbstractTransition {
 
 	@Override
 	public void dispose() {
+		super.dispose();
 		if (pool != null) {
 			pool.free(this);
 		} else {

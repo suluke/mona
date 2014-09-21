@@ -192,4 +192,12 @@ abstract class AbstractTransition implements Transition {
 	protected TransitionableScreen getToScreen() {
 		return toScreen;
 	}
+
+	@Override
+	public void dispose() {
+		if (decorated != null) {
+			decorated.dispose();
+		}
+		decorated = null;
+	}
 }
