@@ -45,8 +45,9 @@ public class RewardScreen extends AbstractScreen {
 		Table base = getBaseTable();
 		base.setColor(1, 1, 1, 0);
 		movedToNextScreen = false;
-		Action sequence = Actions.sequence(Actions.alpha(1, 1),
-				Actions.delay(1), changeScreenAction);
+		Action sequence = Actions.sequence(Actions.delay(.6f),
+				Actions.alpha(1, 1), Actions.delay(1), Actions.alpha(0, 1),
+				changeScreenAction);
 		base.addAction(sequence);
 	}
 
