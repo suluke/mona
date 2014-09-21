@@ -26,11 +26,6 @@ public class User extends de.lksbhm.gdx.users.User {
 		return 0;
 	}
 
-	public Level getTutorialLevelToPlay() {
-		return LksBhmGame.getGame(Mona.class).getLevelPackageManager()
-				.getInternalPackages().getPackage(0).getLevel(0);
-	}
-
 	@Override
 	protected void storeAttributes(KeyValueStore<de.lksbhm.gdx.users.User> store) {
 		store.put(rewardCountKey, rewardCount, this);

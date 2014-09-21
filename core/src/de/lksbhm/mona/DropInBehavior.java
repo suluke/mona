@@ -31,10 +31,11 @@ class DropInBehavior {
 									final SplashScreen screen) {
 								final Mona mona = LksBhmGame
 										.getGame(Mona.class);
-								final Level tutorialLevel = mona
-										.getUserManager().getCurrentUser()
-										.getTutorialLevelToPlay();
-								if (tutorialLevel != null) {
+								final Level firstLevel = mona
+										.getLevelPackageManager()
+										.getInternalPackages().getPackage(0)
+										.getLevel(0);
+								if (!firstLevel.isSolved()) {
 									System.out.println("Play tutorial!");
 									LevelScreenOne levelScreen = mona
 											.getResourceConsumerManager()
@@ -43,7 +44,7 @@ class DropInBehavior {
 									mona.getAssetManager().finishLoading();
 									levelScreen.onResourcesLoaded(mona
 											.getAssetManager());
-									levelScreen.setLevel(tutorialLevel);
+									levelScreen.setLevel(firstLevel);
 									screen.setNextScreen(levelScreen);
 								}
 							}
