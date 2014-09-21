@@ -109,7 +109,7 @@ public class ResourceConsumerManager {
 			T newInstance = (T) c.newInstance();
 			consumer = newInstance;
 		} catch (ReflectionException e) {
-			throw new RuntimeException();
+			throw new RuntimeException(e);
 		}
 		lruCache.put(type, consumer);
 		return consumer;

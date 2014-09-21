@@ -17,9 +17,9 @@ public class SlideInLeftExtraDistance extends AbstractTransition {
 	}
 
 	@Override
-	protected float getInitialToScreenX() {
-		float width = getToScreen().getStage().getWidth();
-		return -2 * width;
+	protected void setup() {
+		getCommonProperties().setInitialScreenPositions(0, 0,
+				-2 * getToScreen().getStage().getWidth(), 0);
 	}
 
 	public void setPool(Pool<SlideInLeftExtraDistance> pool) {

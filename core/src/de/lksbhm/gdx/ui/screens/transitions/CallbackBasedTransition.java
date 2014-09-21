@@ -44,18 +44,6 @@ public class CallbackBasedTransition extends AbstractTransition {
 		callback.update(1);
 	}
 
-	@Override
-	protected TransitionableScreen getScreenRenderedBelow() {
-		// We assume that the current screen does something to make the
-		// UNDERLYING toScreen visible.
-		return getToScreen();
-	}
-
-	@Override
-	protected TransitionableScreen getScreenRenderedAbove() {
-		return getFromScreen();
-	}
-
 	public void setPool(Pool<CallbackBasedTransition> pool) {
 		this.pool = pool;
 	}
@@ -65,5 +53,12 @@ public class CallbackBasedTransition extends AbstractTransition {
 		Color toClearColor = getToScreen().getClearColor();
 		TransitionScreen.getInstance().setClearColor(toClearColor.r,
 				toClearColor.g, toClearColor.b, toClearColor.a);
+	}
+
+	@Override
+	protected void setup() {
+		// We assume that the current screen does something to make the
+		// UNDERLYING toScreen visible.
+		getCommonProperties().setDrawOrderInverted(true);
 	}
 }

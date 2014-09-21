@@ -16,8 +16,9 @@ class SlideInRight extends AbstractTransition {
 	}
 
 	@Override
-	protected float getInitialToScreenX() {
-		return getFromScreen().getStage().getWidth();
+	protected void setup() {
+		getCommonProperties().setInitialScreenPositions(0, 0,
+				getFromScreen().getStage().getWidth(), 0);
 	}
 
 	public void setPool(Pool<SlideInRight> pool) {

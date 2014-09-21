@@ -3,7 +3,7 @@ package de.lksbhm.gdx.ui.screens.transitions;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Pool;
 
-public class SlideInLeft extends AbstractTransition {
+class SlideInLeft extends AbstractTransition {
 
 	private Pool<SlideInLeft> pool = null;
 
@@ -30,7 +30,8 @@ public class SlideInLeft extends AbstractTransition {
 	}
 
 	@Override
-	protected float getInitialToScreenX() {
-		return -getToScreen().getStage().getWidth();
+	protected void setup() {
+		getCommonProperties().setInitialScreenPositions(0, 0,
+				-getToScreen().getStage().getWidth(), 0);
 	}
 }
