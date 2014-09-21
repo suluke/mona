@@ -1,8 +1,5 @@
 package de.lksbhm.mona.levels;
 
-import java.io.File;
-import java.io.FileFilter;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.JsonReader;
@@ -13,39 +10,21 @@ class InternalPackageLoadHelper {
 
 	}
 
+	private final static String packagesDirPath = "json/levelpackages";
 	private final static String nameSpace = "de.lksbhm.mona";
+	private final static JsonReader jsonReader = new JsonReader();
 
 	public static FileHandle[] getInternalPackageDirs() {
-		FileHandle packagesDir = Gdx.files.internal("json/levelpackages");
-		if (!packagesDir.isDirectory() || !packagesDir.exists()) {
-			// TODO stupid workaround. At least make globally accessible
-			packagesDir = Gdx.files
-					.internal("../android/assets/json/levelpackages");
+		FileHandle packagesDir = Gdx.files.internal(packagesDirPath);
+		FileHandle packagesJsonFile = packagesDir.child("packages.json");
+		JsonValue packagesJson = jsonReader.parse(packagesJsonFile);
+		int numberOfPackages = packagesJson.get(nameSpace).getInt(
+				"numberOfInternalPackages");
+		FileHandle[] packageDirs = new FileHandle[numberOfPackages];
+		for (int i = 0; i < packageDirs.length; i++) {
+			packageDirs[i] = packagesDir.child(String.format("%1$02d", i));
+			// TODO fileHandle verification
 		}
-
-		if (!packagesDir.exists()) {
-			throw new RuntimeException();
-		}
-		if (!packagesDir.isDirectory()) {
-			throw new RuntimeException();
-		}
-		FileHandle[] packageDirs = packagesDir.list(new FileFilter() {
-			@Override
-			public boolean accept(File pathname) {
-				if (pathname.isFile()) {
-					return false;
-				}
-				String name = pathname.getName();
-				if (name.length() != 2) {
-					return false;
-				}
-				if (Character.isDigit(name.charAt(0))
-						&& Character.isDigit(name.charAt(1))) {
-					return true;
-				}
-				return false;
-			}
-		});
 		return packageDirs;
 	}
 
@@ -61,8 +40,7 @@ class InternalPackageLoadHelper {
 	}
 
 	public static JsonValue readPackageJson(FileHandle packFile) {
-		JsonReader reader = new JsonReader();
-		return reader.parse(packFile);
+		return jsonReader.parse(packFile);
 	}
 
 	public static JsonValue[] removePackageJsonContainers(JsonValue[] jsons) {
