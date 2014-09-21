@@ -23,10 +23,6 @@ public class User extends de.lksbhm.gdx.users.User {
 
 	private int rewardCount;
 
-	public int getRewardsCount() {
-		return 0;
-	}
-
 	@Override
 	protected void storeAttributes(KeyValueStore<de.lksbhm.gdx.users.User> store) {
 		store.put(rewardCountKey, rewardCount, this);

@@ -27,10 +27,10 @@ public class TransitionBuilder {
 			return transition;
 		};
 	};
-	private final Pool<InterpolateClearColor> interpolateClearColorPool = new Pool<InterpolateClearColor>() {
+	private final Pool<FadeClearColor> fadeClearColorPool = new Pool<FadeClearColor>() {
 		@Override
-		public InterpolateClearColor newObject() {
-			InterpolateClearColor transition = new InterpolateClearColor();
+		public FadeClearColor newObject() {
+			FadeClearColor transition = new FadeClearColor();
 			transition.setPool(this);
 			transition.setDisposeOnFinish(true);
 			return transition;
@@ -101,7 +101,7 @@ public class TransitionBuilder {
 	}
 
 	public TransitionBuilder fadeClearColors() {
-		InterpolateClearColor transition = interpolateClearColorPool.obtain();
+		FadeClearColor transition = fadeClearColorPool.obtain();
 		set(transition);
 		return this;
 	}
