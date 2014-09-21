@@ -10,6 +10,7 @@ import de.lksbhm.gdx.resources.ResourceConsumerObtainedCallback;
 import de.lksbhm.gdx.ui.screens.transitions.Transition;
 import de.lksbhm.gdx.ui.screens.transitions.TransitionBuilder;
 import de.lksbhm.mona.levels.Level;
+import de.lksbhm.mona.levels.LevelPackage;
 
 abstract class AbstractLevelScreen extends AbstractPuzzleScreen {
 	private Level l;
@@ -79,12 +80,26 @@ abstract class AbstractLevelScreen extends AbstractPuzzleScreen {
 			router.obtainScreen(PackageScreen.class,
 					new ResourceConsumerObtainedCallback<PackageScreen>() {
 						@Override
-						public void onObtained(PackageScreen packageScreen) {
-							packageScreen.setLevelPackage(l.getPackage());
-							Transition transition = TransitionBuilder
-									.buildNew().slideInLeftExtraDistance()
-									.fadeClearColors().duration(.6f).get();
-							router.changeScreen(packageScreen, transition);
+						public void onObtained(final PackageScreen packageScreen) {
+							router.obtainScreen(
+									RewardScreen.class,
+									new ResourceConsumerObtainedCallback<RewardScreen>() {
+										@Override
+										public void onObtained(
+												RewardScreen rewardScreen) {
+											LevelPackage pack = l.getPackage();
+											packageScreen.setLevelPackage(pack);
+											rewardScreen.setup(
+													pack.getReward(),
+													packageScreen);
+											Transition transition = TransitionBuilder
+													.buildNew().slideInRight()
+													.fadeClearColors()
+													.duration(.6f).get();
+											router.changeScreen(rewardScreen,
+													transition);
+										}
+									});
 						}
 					});
 		}

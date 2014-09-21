@@ -93,25 +93,7 @@ public abstract class LevelPackage implements Iterable<Level> {
 		UserManager<User> userManager = LksBhmGame.getGame(Mona.class)
 				.getUserManager();
 		User user = userManager.getCurrentUser();
-		switch (difficulty) {
-		case VERY_EASY:
-			user.addReward(1);
-			break;
-		case EASY:
-			user.addReward(2);
-			break;
-		case MEDIUM:
-			user.addReward(3);
-			break;
-		case HARD:
-			user.addReward(4);
-			break;
-		case VERY_HARD:
-			user.addReward(5);
-			break;
-		default:
-			break;
-		}
+		user.addReward(getReward());
 	}
 
 	public String getDisplayName() {
@@ -120,5 +102,22 @@ public abstract class LevelPackage implements Iterable<Level> {
 
 	public void setDisplayName(String displayName) {
 		this.displayName = displayName;
+	}
+
+	public int getReward() {
+		switch (difficulty) {
+		case VERY_EASY:
+			return 1;
+		case EASY:
+			return 2;
+		case MEDIUM:
+			return 3;
+		case HARD:
+			return 4;
+		case VERY_HARD:
+			return 5;
+		default:
+			return 0;
+		}
 	}
 }
