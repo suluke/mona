@@ -45,12 +45,12 @@ public class User extends de.lksbhm.gdx.users.User {
 	protected void loadAttributes(KeyValueStore<de.lksbhm.gdx.users.User> store) {
 		rewardCount = store.getInt(rewardCountKey, this);
 
-		String solvedLevelIds = store.get(levelIdsKey, this);
 		String solvedPackageIds = store.get(packageIdsKey, this);
 		String[] packageIds = solvedPackageIds.split(packageIdSeparator);
 		for (String id : packageIds) {
 			solvedPackages.add(id);
 		}
+		String solvedLevelIds = store.get(levelIdsKey, this);
 		if (solvedLevelIds.length() != 0) {
 			String[] canonicalLevelIds = solvedLevelIds.split(levelIdSeparator);
 			String packageId;
@@ -73,12 +73,18 @@ public class User extends de.lksbhm.gdx.users.User {
 
 	private boolean isLevelRelevantForPersisting(String packageId) {
 		boolean result = !solvedPackages.contains(packageId);
-		if (!packageId
-				.startsWith(LksBhmGame.getGame(Mona.class).getSettings().statics
-						.getDailyPackageIdPrefix())) {
-			result = false;
+		String dailyPrefix = LksBhmGame.getGame(Mona.class).getSettings().statics
+				.getDailyPackageIdPrefix();
+		if (isDailyPackageId(packageId)) {
+			if (!packageId.startsWith(dailyPrefix)) {
+				result = false;
+			}
 		}
 		return result;
+	}
+
+	private boolean isDailyPackageId(String packageId) {
+		return packageId.length() == 8;
 	}
 
 	public void setLevelSolved(Level l) {
