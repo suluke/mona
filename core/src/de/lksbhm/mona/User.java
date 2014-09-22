@@ -51,20 +51,22 @@ public class User extends de.lksbhm.gdx.users.User {
 		for (String id : packageIds) {
 			solvedPackages.add(id);
 		}
-		String[] canonicalLevelIds = solvedLevelIds.split(levelIdSeparator);
-		String packageId;
-		Integer solvedCount;
-		for (String id : canonicalLevelIds) {
-			packageId = Level.getPackageIdfromCanonicalId(id);
-			if (isLevelRelevantForPersisting(packageId)) {
-				solvedLevels.add(id);
-				solvedCount = solvedLevelsInPackage.get(packageId);
-				if (solvedCount == null) {
-					solvedCount = 1;
-				} else {
-					solvedCount++;
+		if (solvedLevelIds.length() != 0) {
+			String[] canonicalLevelIds = solvedLevelIds.split(levelIdSeparator);
+			String packageId;
+			Integer solvedCount;
+			for (String id : canonicalLevelIds) {
+				packageId = Level.getPackageIdfromCanonicalId(id);
+				if (isLevelRelevantForPersisting(packageId)) {
+					solvedLevels.add(id);
+					solvedCount = solvedLevelsInPackage.get(packageId);
+					if (solvedCount == null) {
+						solvedCount = 1;
+					} else {
+						solvedCount++;
+					}
+					solvedLevelsInPackage.put(packageId, solvedCount);
 				}
-				solvedLevelsInPackage.put(packageId, solvedCount);
 			}
 		}
 	}
