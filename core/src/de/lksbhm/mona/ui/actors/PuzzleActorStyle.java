@@ -44,7 +44,6 @@ class PuzzleActorStyle {
 			brightnessShader = new ShaderProgram(
 					Gdx.files.internal("shaders/brightness/shader.vert"),
 					Gdx.files.internal("shaders/brightness/shader.frag"));
-			System.out.println(ShaderProgram.getManagedStatus());
 		}
 		return brightnessShader;
 	}

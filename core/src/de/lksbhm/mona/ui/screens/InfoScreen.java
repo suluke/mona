@@ -2,6 +2,7 @@ package de.lksbhm.mona.ui.screens;
 
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
 import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.gdx.Router;
@@ -24,6 +25,11 @@ public class InfoScreen extends AbstractScreen {
 		InputMultiplexer mux = new InputMultiplexer(getStage(),
 				backButtonHandler);
 		setInputProcessor(mux);
+	}
+
+	@Override
+	protected void onShow() {
+		System.out.println(ShaderProgram.getManagedStatus());
 	}
 
 	@Override

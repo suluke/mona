@@ -125,7 +125,6 @@ class SharedTransitionProperties {
 				duration = properties.duration;
 			}
 			durationDetermined = true;
-			System.out.println("Merge duration: " + duration);
 		}
 	}
 
@@ -147,6 +146,7 @@ class SharedTransitionProperties {
 	}
 
 	public void resetOnDispose() {
+		resetBeforeApply();
 		duration = 0;
 		durationDetermined = false;
 	}
