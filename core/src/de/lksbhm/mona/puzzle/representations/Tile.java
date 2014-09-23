@@ -1,8 +1,7 @@
 package de.lksbhm.mona.puzzle.representations;
 
-import java.lang.reflect.Array;
-
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.reflect.ArrayReflection;
 
 public abstract class Tile<TileBaseType extends Tile<TileBaseType>> implements
 		Disposable {
@@ -51,8 +50,8 @@ public abstract class Tile<TileBaseType extends Tile<TileBaseType>> implements
 			right = b.getTile(x + 1, y);
 		}
 		@SuppressWarnings("unchecked")
-		TileBaseType[] neighbors = (TileBaseType[]) Array.newInstance(
-				nodeBaseType, neighborCount);
+		TileBaseType[] neighbors = (TileBaseType[]) ArrayReflection
+				.newInstance(nodeBaseType, neighborCount);
 		int pos = 0;
 		if (top != null) {
 			neighbors[pos++] = top;
@@ -95,32 +94,31 @@ public abstract class Tile<TileBaseType extends Tile<TileBaseType>> implements
 	}
 
 	public TileBaseType getNeighbor(Direction d) {
-		TileBaseType[][] fields = b.getTiles();
 		int x = getX();
 		int y = getY();
-		int w = fields.length;
-		int h = fields[0].length;
+		int w = b.getWidth();
+		int h = b.getHeight();
 		switch (d) {
 		case NONE:
 			return null;
 		case UP:
 			if (y > 0) {
-				return fields[x][y - 1];
+				return b.getTile(x, y - 1);
 			}
 			break;
 		case LEFT:
 			if (x > 0) {
-				return fields[x - 1][y];
+				return b.getTile(x - 1, y);
 			}
 			break;
 		case DOWN:
 			if (y < h - 1) {
-				return fields[x][y + 1];
+				return b.getTile(x, y + 1);
 			}
 			break;
 		case RIGHT:
 			if (x < w - 1) {
-				return fields[x + 1][y];
+				return b.getTile(x + 1, y);
 			}
 			break;
 		default:

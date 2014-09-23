@@ -185,65 +185,53 @@ public class PuzzleActor extends Widget {
 	}
 
 	private void drawTileConnectors(Batch batch) {
-		Piece[][] tiles = puzzle.getTiles();
 		Piece inAdj;
 		Piece outAdj;
-		for (Piece[] array : tiles) {
-			for (Piece tile : array) {
-				inAdj = tile.getInAdjacent();
-				outAdj = tile.getOutAdjacent();
-				if (inAdj != null) {
-					if (inAdj.getInAdjacent() == tile
-							|| inAdj.getOutAdjacent() == tile) {
-						// We're iterating from top-left to bottom-right, so
-						// this would be an overdraw
-						if (tile.getInDirection() != Direction.UP
-								&& tile.getInDirection() != Direction.LEFT) {
-							// draw continuous line
-							drawConnector(batch, tile, tile.getInDirection(),
-									true);
-						}
-					} else {
-						// only draw up to some point in between
-						drawConnector(batch, tile, tile.getInDirection(), false);
+		for (Piece tile : puzzle) {
+			inAdj = tile.getInAdjacent();
+			outAdj = tile.getOutAdjacent();
+			if (inAdj != null) {
+				if (inAdj.getInAdjacent() == tile
+						|| inAdj.getOutAdjacent() == tile) {
+					// We're iterating from top-left to bottom-right, so
+					// this would be an overdraw
+					if (tile.getInDirection() != Direction.UP
+							&& tile.getInDirection() != Direction.LEFT) {
+						// draw continuous line
+						drawConnector(batch, tile, tile.getInDirection(), true);
 					}
+				} else {
+					// only draw up to some point in between
+					drawConnector(batch, tile, tile.getInDirection(), false);
 				}
-				if (outAdj != null) {
-					if (outAdj.getInAdjacent() == tile
-							|| outAdj.getOutAdjacent() == tile) {
-						// We're iterating from top-left to bottom-right, so
-						// this would be an overdraw
-						if (tile.getOutDirection() != Direction.UP
-								&& tile.getOutDirection() != Direction.LEFT) {
-							// draw continuous line
-							drawConnector(batch, tile, tile.getOutDirection(),
-									true);
-						}
-					} else {
-						// only draw up to some point in between
-						drawConnector(batch, tile, tile.getOutDirection(),
-								false);
+			}
+			if (outAdj != null) {
+				if (outAdj.getInAdjacent() == tile
+						|| outAdj.getOutAdjacent() == tile) {
+					// We're iterating from top-left to bottom-right, so
+					// this would be an overdraw
+					if (tile.getOutDirection() != Direction.UP
+							&& tile.getOutDirection() != Direction.LEFT) {
+						// draw continuous line
+						drawConnector(batch, tile, tile.getOutDirection(), true);
 					}
+				} else {
+					// only draw up to some point in between
+					drawConnector(batch, tile, tile.getOutDirection(), false);
 				}
 			}
 		}
 	}
 
 	private void drawTileTypes(Batch batch) {
-		Piece[][] tiles = puzzle.getTiles();
-		for (Piece[] array : tiles) {
-			for (Piece tile : array) {
-				drawType(batch, tile);
-			}
+		for (Piece tile : puzzle) {
+			drawType(batch, tile);
 		}
 	}
 
 	private void drawTileBackgrounds(Batch batch) {
-		Piece[][] tiles = puzzle.getTiles();
-		for (Piece[] array : tiles) {
-			for (Piece tile : array) {
-				drawBackground(batch, tile);
-			}
+		for (Piece tile : puzzle) {
+			drawBackground(batch, tile);
 		}
 	}
 

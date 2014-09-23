@@ -7,20 +7,20 @@ import com.badlogic.gdx.utils.Disposable;
 
 public abstract class Board<TileBaseType extends Tile<TileBaseType>> implements
 		Iterable<TileBaseType>, Disposable {
-	private final TileBaseType[][] nodes;
+	private final TileBaseType[] nodes;
 	private final int width;
 	private final int height;
 
 	@SuppressWarnings("unchecked")
 	public Board(int width, int height,
 			Class<? extends TileBaseType> nodeBaseType) {
-		nodes = (TileBaseType[][]) Array.newInstance(nodeBaseType, width,
-				height);
 		if (width == 0 || height == 0) {
 			throw new RuntimeException();
 		}
 		this.width = width;
 		this.height = height;
+		nodes = (TileBaseType[]) Array
+				.newInstance(nodeBaseType, width * height);
 	}
 
 	public TileBaseType getTile(int x, int y) {
@@ -32,15 +32,15 @@ public abstract class Board<TileBaseType extends Tile<TileBaseType>> implements
 		return n;
 	}
 
+	public void setTile(TileBaseType tile, int x, int y) {
+		nodes[y * width + x] = tile;
+	}
+
 	public TileBaseType getTileOrNull(int x, int y) {
 		if (!isInBounds(x, y)) {
 			return null;
 		}
-		return nodes[x][y];
-	}
-
-	public TileBaseType[][] getTiles() {
-		return nodes;
+		return nodes[y * width + x];
 	}
 
 	public int getWidth() {
@@ -75,15 +75,14 @@ public abstract class Board<TileBaseType extends Tile<TileBaseType>> implements
 	 */
 	public Board<TileBaseType> shallowCopy() {
 		Board<TileBaseType> copy = instantiate(width, height);
-		TileBaseType[][] tiles = copy.nodes;
 		TileBaseType previousTile;
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
-				previousTile = tiles[x][y];
+				previousTile = copy.getTileOrNull(x, y);
 				if (previousTile != null) {
 					previousTile.dispose();
 				}
-				tiles[x][y] = this.nodes[x][y].copy();
+				copy.setTile(getTile(x, y).copy(), x, y);
 			}
 		}
 		return copy;
@@ -91,13 +90,12 @@ public abstract class Board<TileBaseType extends Tile<TileBaseType>> implements
 
 	public Board<TileBaseType> shallowCopyHorizontalFlipped() {
 		Board<TileBaseType> copy = shallowCopy();
-		TileBaseType[][] tiles = copy.getTiles();
 		TileBaseType swap;
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height / 2; y++) {
-				swap = tiles[x][y];
-				tiles[x][y] = tiles[x][height - y - 1];
-				tiles[x][height - y - 1] = swap;
+				swap = copy.getTile(x, y);
+				copy.setTile(copy.getTile(x, height - y - 1), x, y);
+				copy.setTile(swap, x, height - y - 1);
 			}
 		}
 		return copy;
@@ -105,13 +103,12 @@ public abstract class Board<TileBaseType extends Tile<TileBaseType>> implements
 
 	public Board<TileBaseType> shallowCopyVerticalFlipped() {
 		Board<TileBaseType> copy = shallowCopy();
-		TileBaseType[][] tiles = copy.getTiles();
 		TileBaseType swap;
 		for (int x = 0; x < width / 2; x++) {
 			for (int y = 0; y < height; y++) {
-				swap = tiles[x][y];
-				tiles[x][y] = tiles[width - x - 1][y];
-				tiles[width - x - 1][y] = swap;
+				swap = copy.getTile(x, y);
+				copy.setTile(copy.getTile(width - x - 1, y), x, y);
+				copy.setTile(swap, width - x - 1, y);
 			}
 		}
 		return copy;
@@ -140,7 +137,7 @@ public abstract class Board<TileBaseType extends Tile<TileBaseType>> implements
 				if (!hasNext()) {
 					throw new IndexOutOfBoundsException();
 				}
-				TileBaseType tile = nodes[x][y];
+				TileBaseType tile = getTile(x, y);
 				x++;
 				if (x == width) {
 					y++;

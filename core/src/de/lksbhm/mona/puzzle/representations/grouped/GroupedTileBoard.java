@@ -18,10 +18,9 @@ public class GroupedTileBoard extends Board<GroupedTile> implements Disposable {
 	private GroupedTileBoard(int width, int height, boolean initializeTiles) {
 		super(width, height, GroupedTile.class);
 		if (initializeTiles) {
-			GroupedTile[][] tiles = getTiles();
-			for (GroupedTile[] array : tiles) {
+			for (int x = 0; x < width; x++) {
 				for (int y = 0; y < height; y++) {
-					array[y] = nodePool.obtain();
+					setTile(nodePool.obtain(), x, y);
 				}
 			}
 		}
@@ -29,11 +28,8 @@ public class GroupedTileBoard extends Board<GroupedTile> implements Disposable {
 
 	@Override
 	public void dispose() {
-		GroupedTile[][] tiles = getTiles();
-		for (GroupedTile[] array : tiles) {
-			for (GroupedTile tile : array) {
-				nodePool.free(tile);
-			}
+		for (GroupedTile tile : this) {
+			nodePool.free(tile);
 		}
 	}
 

@@ -5,7 +5,6 @@ import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.ReflectionPool;
 
 import de.lksbhm.mona.puzzle.representations.Board;
-import de.lksbhm.mona.puzzle.representations.grouped.GroupedTile;
 import de.lksbhm.mona.puzzle.representations.grouped.GroupedTileBoard;
 import de.lksbhm.mona.puzzle.representations.grouped.TileGroupType;
 
@@ -34,24 +33,23 @@ public class DirectionalTileBoard extends Board<DirectionalTile> implements
 	public final void toRect() {
 		int width = getWidth();
 		int height = getHeight();
-		DirectionalTile[][] nodes = getTiles();
 		for (int x = 1; x < width - 1; x++) {
 			for (int y = 1; y < height - 1; y++) {
-				nodes[x][y] = obtainNoDirection(x, y);
+				setTile(obtainNoDirection(x, y), x, y);
 			}
 		}
 		for (int x = 1; x < width - 1; x++) {
-			nodes[x][0] = obtainLR(x, 0);
-			nodes[x][height - 1] = obtainLR(x, height - 1);
+			setTile(obtainLR(x, 0), x, 0);
+			setTile(obtainLR(x, height - 1), x, height - 1);
 		}
 		for (int y = 1; y < height - 1; y++) {
-			nodes[0][y] = obtainTB(0, y);
-			nodes[width - 1][y] = obtainTB(width - 1, y);
+			setTile(obtainTB(0, y), 0, y);
+			setTile(obtainTB(width - 1, y), width - 1, y);
 		}
-		nodes[0][0] = obtainBR(0, 0);
-		nodes[width - 1][height - 1] = obtainTL(width - 1, height - 1);
-		nodes[width - 1][0] = obtainBL(width - 1, 0);
-		nodes[0][height - 1] = obtainTR(0, height - 1);
+		setTile(obtainBR(0, 0), 0, 0);
+		setTile(obtainTL(width - 1, height - 1), width - 1, height - 1);
+		setTile(obtainBL(width - 1, 0), width - 1, 0);
+		setTile(obtainTR(0, height - 1), 0, height - 1);
 	}
 
 	private NoDirectionTile obtainNoDirection(int x, int y) {
@@ -128,12 +126,11 @@ public class DirectionalTileBoard extends Board<DirectionalTile> implements
 		if (!isInBounds(x, y)) {
 			throw new RuntimeException();
 		}
-		DirectionalTile[][] tiles = getTiles();
-		DirectionalTile previous = tiles[x][y];
+		DirectionalTile previous = getTileOrNull(x, y);
 		if (previous != null) {
 			previous.dispose();
 		}
-		tiles[x][y] = tile;
+		setTile(tile, x, y);
 	}
 
 	@Override
@@ -175,34 +172,19 @@ public class DirectionalTileBoard extends Board<DirectionalTile> implements
 				blPool.free(bottomLeft);
 			}
 		};
-		DirectionalTile[][] nodes = getTiles();
-		for (DirectionalTile[] arr : nodes) {
-			for (DirectionalTile node : arr) {
-				if (node != null) {
-					node.acceptVisitor(freer);
-				}
+		for (DirectionalTile node : this) {
+			if (node != null) {
+				node.acceptVisitor(freer);
 			}
 		}
 	}
 
-	@Override
-	public DirectionalTile getTile(int x, int y) {
-		return super.getTile(x, y);
-	}
-
-	@Override
-	public DirectionalTile getTileOrNull(int x, int y) {
-		return super.getTileOrNull(x, y);
-	}
-
 	public GroupedTileBoard toGroupedTileBoard() {
-		DirectionalTile[][] nodes = getTiles();
 		GroupedTileBoard result = new GroupedTileBoard(getWidth(), getHeight());
-		GroupedTile[][] groupNodes = result.getTiles();
 		for (int x = 0; x < getWidth(); x++) {
 			for (int y = 0; y < getHeight(); y++) {
-				groupNodes[x][y].setType(TileGroupType
-						.fromUndirectedNode(nodes[x][y]));
+				result.getTile(x, y).setType(
+						TileGroupType.fromUndirectedNode(getTile(x, y)));
 			}
 		}
 		return result;
@@ -224,12 +206,11 @@ public class DirectionalTileBoard extends Board<DirectionalTile> implements
 				.shallowCopyHorizontalFlipped();
 		int width = getWidth();
 		int height = getHeight();
-		DirectionalTile[][] tiles = copy.getTiles();
 		DirectionalTile current;
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
-				current = tiles[x][y];
-				tiles[x][y] = current.getHorizontalInverted();
+				current = copy.getTile(x, y);
+				copy.setTile(current.getHorizontalInverted(), x, y);
 				current.dispose();
 			}
 		}
@@ -242,12 +223,11 @@ public class DirectionalTileBoard extends Board<DirectionalTile> implements
 				.shallowCopyHorizontalFlipped();
 		int width = getWidth();
 		int height = getHeight();
-		DirectionalTile[][] tiles = copy.getTiles();
 		DirectionalTile current;
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
-				current = tiles[x][y];
-				tiles[x][y] = current.getVerticalInverted();
+				current = copy.getTile(x, y);
+				copy.setTile(current.getVerticalInverted(), x, y);
 				current.dispose();
 			}
 		}
@@ -295,12 +275,11 @@ public class DirectionalTileBoard extends Board<DirectionalTile> implements
 				character[0] = '┐';
 			}
 		};
-		DirectionalTile[][] nodes = getTiles();
 		int width = getWidth();
 		int height = getHeight();
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
-				nodes[x][y].acceptVisitor(visitor);
+				getTile(x, y).acceptVisitor(visitor);
 				sb.append(character[0]);
 			}
 			if (y != height - 1) {

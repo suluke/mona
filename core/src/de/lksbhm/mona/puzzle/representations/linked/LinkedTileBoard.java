@@ -27,34 +27,20 @@ public class LinkedTileBoard extends Board<LinkedTile> implements Disposable {
 	private LinkedTileBoard(int width, int height, boolean initializeTiles) {
 		super(width, height, LinkedTile.class);
 		if (initializeTiles) {
-			LinkedTile[][] nodes = getTiles();
 			for (int x = 0; x < width; x++) {
 				for (int y = 0; y < height; y++) {
-					nodes[x][y] = obtainNode(x, y);
+					setTile(obtainNode(x, y), x, y);
 				}
 			}
 		}
 	}
 
-	@Override
-	public LinkedTile getTile(int x, int y) {
-		return super.getTile(x, y);
-	}
-
-	@Override
-	public LinkedTile getTileOrNull(int x, int y) {
-		return super.getTileOrNull(x, y);
-	}
-
 	public DirectionalTileBoard toUndirected() {
 		DirectionalTileBoard result = new DirectionalTileBoard(getWidth(),
 				getHeight());
-		LinkedTile[][] directedNodes = getTiles();
 
-		for (LinkedTile[] array : directedNodes) {
-			for (LinkedTile linked : array) {
-				linkedToDirectionalNode(linked, result);
-			}
+		for (LinkedTile linked : this) {
+			linkedToDirectionalNode(linked, result);
 		}
 		return result;
 	}
@@ -128,29 +114,26 @@ public class LinkedTileBoard extends Board<LinkedTile> implements Disposable {
 
 	@Override
 	public void dispose() {
-		LinkedTile[][] nodes = getTiles();
-		for (LinkedTile[] array : nodes) {
-			for (LinkedTile node : array) {
-				directedNodePool.free(node);
-			}
+		for (LinkedTile node : this) {
+			directedNodePool.free(node);
 		}
 	}
 
 	@Override
 	public LinkedTileBoard shallowCopy() {
 		LinkedTileBoard copy = (LinkedTileBoard) super.shallowCopy();
-		LinkedTile[][] tiles = getTiles();
-		LinkedTile[][] copyTiles = copy.getTiles();
 		int width = getWidth();
 		int height = getHeight();
 		LinkedTile currentTile;
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
-				currentTile = tiles[x][y];
-				copyTiles[x][y].setChild(copy.getTile(currentTile.getChild()
-						.getX(), currentTile.getChild().getY()));
-				copyTiles[x][y].setParent(copy.getTile(currentTile.getParent()
-						.getX(), currentTile.getParent().getY()));
+				currentTile = getTile(x, y);
+				copy.getTile(x, y).setChild(
+						copy.getTile(currentTile.getChild().getX(), currentTile
+								.getChild().getY()));
+				copy.getTile(x, y).setParent(
+						copy.getTile(currentTile.getParent().getX(),
+								currentTile.getParent().getY()));
 			}
 		}
 		return copy;
@@ -164,11 +147,11 @@ public class LinkedTileBoard extends Board<LinkedTile> implements Disposable {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		LinkedTile[][] nodes = getTiles();
-		int height = nodes[0].length;
+		int height = getHeight();
+		int width = getWidth();
 		for (int y = 0; y < height; y++) {
-			for (int x = 0; x < nodes.length; x++) {
-				LinkedTile node = nodes[x][y];
+			for (int x = 0; x < width; x++) {
+				LinkedTile node = getTile(x, y);
 				if (node.getParent() == null) {
 					builder.append(' ');
 				} else {

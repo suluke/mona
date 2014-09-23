@@ -8,6 +8,8 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.ReflectionPool;
 
+import de.lksbhm.gdx.LksBhmGame;
+import de.lksbhm.mona.Mona;
 import de.lksbhm.mona.puzzle.Piece.Type;
 import de.lksbhm.mona.puzzle.representations.Board;
 import de.lksbhm.mona.puzzle.representations.Direction;
@@ -33,11 +35,10 @@ public class Puzzle extends Board<Piece> implements Disposable {
 		this.solution = solution;
 		if (initializeTiles) {
 			Piece f;
-			Piece[][] nodes = getTiles();
 			for (int x = 0; x < width; x++) {
 				for (int y = 0; y < height; y++) {
 					f = fieldPool.obtain();
-					nodes[x][y] = f;
+					setTile(f, x, y);
 					f.setup(this, x, y, Type.EMPTY, Direction.NONE,
 							Direction.NONE);
 				}
@@ -47,12 +48,9 @@ public class Puzzle extends Board<Piece> implements Disposable {
 
 	@Override
 	public void dispose() {
-		Piece[][] nodes = getTiles();
 		solution.dispose();
-		for (Piece[] fieldArray : nodes) {
-			for (Piece f : fieldArray) {
-				fieldPool.free(f);
-			}
+		for (Piece f : this) {
+			fieldPool.free(f);
 		}
 	}
 
@@ -69,14 +67,12 @@ public class Puzzle extends Board<Piece> implements Disposable {
 		if (other.getWidth() != width || other.getHeight() != height) {
 			return false;
 		}
-		Piece[][] tiles = getTiles();
-		Piece[][] otherTiles = other.getTiles();
 		Piece current;
 		Piece otherCurrent;
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
-				current = tiles[x][y];
-				otherCurrent = otherTiles[x][y];
+				current = getTile(x, y);
+				otherCurrent = other.getTile(x, y);
 				if (current.getType() != otherCurrent.getType()) {
 					return false;
 				}
@@ -89,15 +85,10 @@ public class Puzzle extends Board<Piece> implements Disposable {
 		if (isSolved) {
 			return;
 		}
-		Piece[][] tiles = getTiles();
-		int width = getWidth();
-		int height = getHeight();
-		for (int x = 0; x < width; x++) {
-			for (int y = 0; y < height; y++) {
-				if (!tiles[x][y].isValid()) {
-					isSolved = false;
-					return;
-				}
+		for (Piece tile : this) {
+			if (!tile.isValid()) {
+				isSolved = false;
+				return;
 			}
 		}
 		isSolved = isAllConnectedInOneCircle();
@@ -204,32 +195,27 @@ public class Puzzle extends Board<Piece> implements Disposable {
 				isInvalid[current.getX()][current.getY()] = true;
 			}
 		}
-		Piece[][] tiles = getTiles();
-		for (Piece[] array : tiles) {
-			for (Piece tile : array) {
-				if (!tile.isValid()) {
-					if (!isInvalid[tile.getX()][tile.getY()]) {
-						list.add(tile);
-					}
+		for (Piece tile : this) {
+			if (!tile.isValid()) {
+				if (!isInvalid[tile.getX()][tile.getY()]) {
+					list.add(tile);
 				}
 			}
 		}
 		circleRoots.clear();
 		boolean isNewCircle;
 		Piece firstCircle = null; // stupid compiler needs initialization...
-		for (Piece[] array : tiles) {
-			for (Piece tile : array) {
-				if (tile.isValid() && tile.getType() != Type.EMPTY) {
-					isNewCircle = isNewCircle(tile);
-					if (isNewCircle) {
-						if (circleRoots.size() == 1) {
-							firstCircle = tile;
-						} else {
-							if (circleRoots.size() == 2) {
-								addInvalidCircleToList(firstCircle, list);
-							}
-							addInvalidCircleToList(tile, list);
+		for (Piece tile : this) {
+			if (tile.isValid() && tile.getType() != Type.EMPTY) {
+				isNewCircle = isNewCircle(tile);
+				if (isNewCircle) {
+					if (circleRoots.size() == 1) {
+						firstCircle = tile;
+					} else {
+						if (circleRoots.size() == 2) {
+							addInvalidCircleToList(firstCircle, list);
 						}
+						addInvalidCircleToList(tile, list);
 					}
 				}
 			}
@@ -317,13 +303,14 @@ public class Puzzle extends Board<Piece> implements Disposable {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		Piece[][] pieces = getTiles();
 		int width = getWidth();
 		int height = getHeight();
 		Piece p;
+		String lineSeparator = LksBhmGame.getGame(Mona.class)
+				.getPlatformManager().getPlatform().getLineSeparator();
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
-				p = pieces[x][y];
+				p = getTile(x, y);
 				switch (p.getType()) {
 				case EDGE:
 					sb.append('#');
@@ -339,7 +326,7 @@ public class Puzzle extends Board<Piece> implements Disposable {
 				}
 			}
 			if (y != height - 1) {
-				sb.append(System.lineSeparator());
+				sb.append(lineSeparator);
 			}
 		}
 		return sb.toString();
@@ -353,7 +340,6 @@ public class Puzzle extends Board<Piece> implements Disposable {
 	@Override
 	public Puzzle shallowCopyHorizontalFlipped() {
 		Puzzle copy = (Puzzle) super.shallowCopyHorizontalFlipped();
-		Piece[][] tiles = copy.getTiles();
 		int width = getWidth();
 		int height = getHeight();
 		Piece current;
@@ -361,7 +347,7 @@ public class Puzzle extends Board<Piece> implements Disposable {
 		Direction newOut;
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
-				current = tiles[x][y];
+				current = copy.getTile(x, y);
 				newIn = current.getInDirection();
 				newOut = current.getOutDirection();
 				if (newIn == Direction.LEFT || newIn == Direction.RIGHT) {
@@ -379,7 +365,6 @@ public class Puzzle extends Board<Piece> implements Disposable {
 	@Override
 	public Puzzle shallowCopyVerticalFlipped() {
 		Puzzle copy = (Puzzle) super.shallowCopyHorizontalFlipped();
-		Piece[][] tiles = copy.getTiles();
 		int width = getWidth();
 		int height = getHeight();
 		Piece current;
@@ -387,7 +372,7 @@ public class Puzzle extends Board<Piece> implements Disposable {
 		Direction newOut;
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
-				current = tiles[x][y];
+				current = copy.getTile(x, y);
 				newIn = current.getInDirection();
 				newOut = current.getOutDirection();
 				if (newIn == Direction.UP || newIn == Direction.DOWN) {
