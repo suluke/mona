@@ -1,9 +1,8 @@
 package de.lksbhm.gdx.users;
 
-import java.lang.reflect.Array;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.utils.reflect.ArrayReflection;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.reflect.Constructor;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
@@ -80,7 +79,7 @@ public class UserManager<UserImplementation extends User> {
 
 	@SuppressWarnings("unchecked")
 	private UserImplementation[] makeUserImplementationArray(int size) {
-		return (UserImplementation[]) Array.newInstance(
+		return (UserImplementation[]) ArrayReflection.newInstance(
 				userImplementationClass, size);
 	}
 

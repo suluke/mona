@@ -12,7 +12,7 @@ import de.lksbhm.mona.levels.LevelPackageManager;
 import de.lksbhm.mona.ui.screens.LoadingScreen;
 import de.lksbhm.mona.ui.screens.SplashScreen;
 
-public class Mona extends LksBhmGame<Mona, User> {
+public class Mona extends LksBhmGame<Mona, User, MonaPlatform> {
 
 	private LoadingScreen loadingScreen;
 	private final Settings settings = new Settings();

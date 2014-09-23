@@ -1,8 +1,6 @@
 package de.lksbhm.mona;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
+import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.mona.levels.Difficulty;
 
 public final class StaticSettings {
@@ -98,8 +96,9 @@ public final class StaticSettings {
 
 	public String getDailyPackageIdPrefix() {
 		if (idPrefix == null) {
-			SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
-			idPrefix = formatter.format(new Date());
+			MonaPlatform platform = LksBhmGame.getGame(Mona.class)
+					.getPlatformManager().getPlatform();
+			idPrefix = platform.formatCalendarLocalized(platform.getToday(), "yyyyMMdd");
 		}
 		return idPrefix;
 	}

@@ -85,7 +85,7 @@ public abstract class Level extends ContextImplementation implements Disposable 
 			throw new RuntimeException("It seems no tutorial exists with name "
 					+ name);
 		}
-		if (!Tutorial.class.isAssignableFrom(classWithName)) {
+		if (!ClassReflection.isAssignableFrom(Tutorial.class, classWithName)) {
 			throw new RuntimeException();
 		}
 		@SuppressWarnings("unchecked")

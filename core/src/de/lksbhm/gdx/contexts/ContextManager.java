@@ -3,6 +3,9 @@ package de.lksbhm.gdx.contexts;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.badlogic.gdx.utils.reflect.ClassReflection;
+import com.badlogic.gdx.utils.reflect.ReflectionException;
+
 public class ContextManager {
 	private final HashMap<Class<?>, ArrayList<ContextListener>> listeners = new HashMap<Class<?>, ArrayList<ContextListener>>();
 
@@ -25,11 +28,11 @@ public class ContextManager {
 	private Class<?> getContextClass(String name) {
 		Class<?> contextClass;
 		try {
-			contextClass = Class.forName(name);
-		} catch (ClassNotFoundException e) {
+			contextClass = ClassReflection.forName(name);
+		} catch (ReflectionException e) {
 			throw new RuntimeException("No context found for name " + name);
 		}
-		if (!Context.class.isAssignableFrom(contextClass)) {
+		if (!ClassReflection.isAssignableFrom(Context.class, contextClass)) {
 			throw new RuntimeException("No context found for name " + name);
 		}
 		return contextClass;

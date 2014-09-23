@@ -15,7 +15,7 @@ class SharedTransitionProperties {
 	TransitionableScreen fromScreen;
 	TransitionableScreen toScreen;
 	boolean drawOrderInverted = false;
-	LksBhmGame<?, ?> game;
+	LksBhmGame<?, ?, ?> game;
 	float initialFromScreenX = 0;
 	float initialFromScreenY = 0;
 	float initialToScreenX = 0;
@@ -29,7 +29,7 @@ class SharedTransitionProperties {
 		return duration;
 	}
 
-	public LksBhmGame<?, ?> getGame() {
+	public LksBhmGame<?, ?, ?> getGame() {
 		return game;
 	}
 
@@ -53,7 +53,7 @@ class SharedTransitionProperties {
 		return toScreen;
 	}
 
-	public void setGame(LksBhmGame<?, ?> game) {
+	public void setGame(LksBhmGame<?, ?, ?> game) {
 		this.game = game;
 	}
 

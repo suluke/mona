@@ -1,9 +1,9 @@
 package de.lksbhm.mona.puzzle.representations;
 
-import java.lang.reflect.Array;
 import java.util.Iterator;
 
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.reflect.ArrayReflection;
 
 public abstract class Board<TileBaseType extends Tile<TileBaseType>> implements
 		Iterable<TileBaseType>, Disposable {
@@ -19,8 +19,8 @@ public abstract class Board<TileBaseType extends Tile<TileBaseType>> implements
 		}
 		this.width = width;
 		this.height = height;
-		nodes = (TileBaseType[]) Array
-				.newInstance(nodeBaseType, width * height);
+		nodes = (TileBaseType[]) ArrayReflection.newInstance(nodeBaseType,
+				width * height);
 	}
 
 	public TileBaseType getTile(int x, int y) {

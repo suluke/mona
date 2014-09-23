@@ -11,11 +11,12 @@ import de.lksbhm.mona.Mona;
 public class AndroidLauncher extends AndroidApplication {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		new AndroidPlatform().register();
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		config.useAccelerometer = false;
 		config.useCompass = false;
-		initialize(new Mona(), config);
+		Mona mona = new Mona();
+		new AndroidPlatform().register();
+		initialize(mona, config);
 	}
 }

@@ -5,6 +5,10 @@ import java.io.FileFilter;
 
 import com.badlogic.gdx.files.FileHandle;
 
+import de.lksbhm.gdx.LksBhmGame;
+import de.lksbhm.mona.Mona;
+import de.lksbhm.mona.MonaPlatform;
+
 public class InternalPackage extends LevelPackage {
 	private final FileHandle baseDir;
 
@@ -43,14 +47,19 @@ public class InternalPackage extends LevelPackage {
 	}
 
 	private void loadLevelsAccordingToSize() {
+		MonaPlatform platform = LksBhmGame.getGame(Mona.class)
+				.getPlatformManager().getPlatform();
 		int size = getSize();
 		FileHandle[] levelFiles = new FileHandle[size];
 		FileHandle current;
+		String name;
+		String fullName;
 		for (int i = 0; i < size; i++) {
-			String name = String.format("%1$02d.json", i);
-			current = baseDir.child(name);
+			name = platform.formatInt2Digits(i);
+			fullName = name + ".json";
+			current = baseDir.child(fullName);
 			if (!current.exists()) {
-				throw new RuntimeException("Missing level: " + name);
+				throw new RuntimeException("Missing level: " + fullName);
 			}
 			if (current.isDirectory()) {
 				throw new RuntimeException();

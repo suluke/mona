@@ -5,6 +5,10 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 
+import de.lksbhm.gdx.LksBhmGame;
+import de.lksbhm.mona.Mona;
+import de.lksbhm.mona.MonaPlatform;
+
 class InternalPackageLoadHelper {
 	private InternalPackageLoadHelper() {
 
@@ -15,14 +19,19 @@ class InternalPackageLoadHelper {
 	private final static JsonReader jsonReader = new JsonReader();
 
 	public static FileHandle[] getInternalPackageDirs() {
+		MonaPlatform platform = LksBhmGame.getGame(Mona.class)
+				.getPlatformManager().getPlatform();
+
 		FileHandle packagesDir = Gdx.files.internal(packagesDirPath);
 		FileHandle packagesJsonFile = packagesDir.child("packages.json");
 		JsonValue packagesJson = jsonReader.parse(packagesJsonFile);
 		int numberOfPackages = packagesJson.get(nameSpace).getInt(
 				"numberOfInternalPackages");
 		FileHandle[] packageDirs = new FileHandle[numberOfPackages];
+		String packageDirName;
 		for (int i = 0; i < packageDirs.length; i++) {
-			packageDirs[i] = packagesDir.child(String.format("%1$02d", i));
+			packageDirName = platform.formatInt2Digits(i);
+			packageDirs[i] = packagesDir.child(packageDirName);
 			// TODO fileHandle verification
 		}
 		return packageDirs;

@@ -10,6 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import de.lksbhm.gdx.contexts.Context;
 import de.lksbhm.gdx.contexts.ContextManager;
+import de.lksbhm.gdx.platforms.AbstractPlatform;
+import de.lksbhm.gdx.platforms.PlatformManager;
 import de.lksbhm.gdx.resources.ResourceConsumer;
 import de.lksbhm.gdx.resources.ResourceConsumerManager;
 import de.lksbhm.gdx.ui.screens.TransitionableResettableConsumerScreen;
@@ -17,7 +19,7 @@ import de.lksbhm.gdx.users.UserManager;
 import de.lksbhm.mona.User;
 
 @SuppressWarnings("rawtypes")
-public abstract class LksBhmGame<GameImplementation extends LksBhmGame, UserImplementation extends User>
+public abstract class LksBhmGame<GameImplementation extends LksBhmGame, UserImplementation extends User, PlatformImplementation extends AbstractPlatform>
 		extends Game implements Context {
 	private static LksBhmGame instance;
 
@@ -33,6 +35,8 @@ public abstract class LksBhmGame<GameImplementation extends LksBhmGame, UserImpl
 	private int routerHistorySize = 0;
 	private final Class<UserImplementation> userImplementationClass;
 	private UserManager<UserImplementation> userManager;
+
+	private final PlatformManager<PlatformImplementation> platformManager = new PlatformManager<PlatformImplementation>();
 
 	public LksBhmGame(Class<GameImplementation> gameImplementation,
 			Class<UserImplementation> userImplementation) {
@@ -170,5 +174,9 @@ public abstract class LksBhmGame<GameImplementation extends LksBhmGame, UserImpl
 	@Override
 	public void leaveContext() {
 		contextManager.leaveContext(this);
+	}
+
+	public PlatformManager<PlatformImplementation> getPlatformManager() {
+		return this.platformManager;
 	}
 }

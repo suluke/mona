@@ -10,7 +10,6 @@ import de.lksbhm.mona.ui.screens.AbstractScreen;
 
 public class DesktopLauncher {
 	public static void main(String[] arg) {
-		(new DesktopPlatform()).register();
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		LwjglApplicationConfiguration.disableAudio = true;
 		config.preferencesDirectory = ".config/lksbhm/mona";
@@ -21,6 +20,8 @@ public class DesktopLauncher {
 		config.addIcon("textures/icon128.png", FileType.Internal);
 		config.width = AbstractScreen.getDefaultViewportWidth();
 		config.height = AbstractScreen.getDefaultViewportHeight();
-		new LwjglApplication(new Mona(), config);
+		Mona mona = new Mona();
+		new DesktopPlatform().register();
+		new LwjglApplication(mona, config);
 	}
 }

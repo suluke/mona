@@ -13,12 +13,12 @@ import de.lksbhm.gdx.util.Pair;
 
 public class Router {
 
-	private final LksBhmGame<?, ?> game;
+	private final LksBhmGame<?, ?, ?> game;
 	private final CircularBuffer<Pair<TransitionableResettableConsumerScreen, Object>> history;
 	@SuppressWarnings("rawtypes")
 	private final Pool<Pair> pairPool;
 
-	public Router(LksBhmGame<?, ?> game) {
+	public Router(LksBhmGame<?, ?, ?> game) {
 		this(game, 0);
 	}
 

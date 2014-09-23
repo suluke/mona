@@ -15,7 +15,7 @@ abstract class AbstractTransition implements Transition {
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public final void apply(LksBhmGame<?, ?> game,
+	public final void apply(LksBhmGame<?, ?, ?> game,
 			TransitionableScreen fromScreen, TransitionableScreen toScreen) {
 		SharedTransitionProperties sharedProperties = getSharedProperties();
 		sharedProperties.resetBeforeApply();
@@ -140,7 +140,7 @@ abstract class AbstractTransition implements Transition {
 		}
 	}
 
-	private LksBhmGame<?, ?> getGame() {
+	private LksBhmGame<?, ?, ?> getGame() {
 		return getSharedProperties().getGame();
 	}
 

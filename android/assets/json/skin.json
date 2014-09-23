@@ -1,39 +1,99 @@
 {
-	com.badlogic.gdx.graphics.g2d.BitmapFont: { default-font: { file: "fonts/droid-sans-reduced46.fnt" } },
-	com.badlogic.gdx.graphics.Color: {
-		green: { a: 1, b: 0, g: 1, r: 0 },
-		white: { a: 1, b: 1, g: 1, r: 1 },
-		red: { a: 1, b: 0, g: 0, r: 1 },
-		black: { a: 1, b: 0.1, g: 0.1, r: 0.1 }
-	},
-	com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
-		default: { font: default-font, fontColor: black }
-	},
-	com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
-		dark: { down: "widgets/button-dark/down", up: "widgets/button-dark/up", disabled: "widgets/button-dark/disabled" },
-	},
-	com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
-		play: { down: "widgets/button-dark/down", up: "widgets/button-dark/up", disabled: "widgets/button-dark/disabled", font: default-font, fontColor: black },
-		solved: { down: "widgets/button-dark/down", up: "widgets/button-dark/up", disabled: "widgets/button-dark/disabled", font: default-font, fontColor: black },
-		unsolved: { down: "widgets/button-dark/up", up: "widgets/button-dark/down", disabled: "widgets/button-dark/disabled", font: default-font, fontColor: black }
-	},
-	com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
-		default: { font: default-font, fontColor: white },
-		title: { font: default-font, fontColor: black },
-		won: { font: default-font, fontColor: black }
-	},
-	de.lksbhm.mona.ui.actors.PuzzleActorStyle: {
-		default: { 
-			tilePaddingX: 0.10, 
-			tilePaddingY: 0.10, 
-			edge: "widgets/puzzle-actor/edge", 
-			straight: "widgets/puzzle-actor/straight", 
-			connectorHorizontal: "colors/palette1/01", 
-			connectorVertical: "colors/palette1/01", 
-			innerTile: "widgets/puzzle-actor/tile"
+	"com.badlogic.gdx.graphics.g2d.BitmapFont": { 
+		"default-font": { 
+			"file": "fonts/droid-sans-reduced46.fnt" 
 		}
 	},
-	de.lksbhm.mona.ui.actors.InvalidMarker$InvalidMarkerStyle: {
-		default: { texture: "colors/palette1/04" }
+	"com.badlogic.gdx.graphics.Color": {
+		"green": {
+			"a": 1,
+			"b": 0,
+			"g": 1,
+			"r": 0
+		},
+		"white": {
+			"a": 1,
+			"b": 1,
+			"g": 1,
+			"r": 1
+		},
+		"red": {
+			"a": 1,
+			"b": 0,
+			"g": 0,
+			"r": 1
+		},
+		"black": {
+			"a": 1,
+			"b": 0.1,
+			"g": 0.1,
+			"r": 0.1
+		}
+	},
+	"com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle": {
+		"default": {
+			"font": "default-font",
+			"fontColor": "black"
+		}
+	},
+	"com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle": {
+		"dark": {
+			"down": "widgets/button-dark/down",
+			"up": "widgets/button-dark/up",
+			"disabled": "widgets/button-dark/disabled"
+		}
+	},
+	"com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle": {
+		"play": {
+			"down": "widgets/button-dark/down",
+			"up": "widgets/button-dark/up",
+			"disabled": "widgets/button-dark/disabled",
+			"font": "default-font",
+			"fontColor": "black"
+		},
+		"solved": {
+			"down": "widgets/button-dark/down",
+			"up": "widgets/button-dark/up",
+			"disabled": "widgets/button-dark/disabled",
+			"font": "default-font",
+			"fontColor": "black"
+		},
+		"unsolved": {
+			"down": "widgets/button-dark/up",
+			"up": "widgets/button-dark/down",
+			"disabled": "widgets/button-dark/disabled",
+			"font": "default-font",
+			"fontColor": "black"
+		}
+	},
+	"com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
+		"default": {
+			"font": "default-font",
+			"fontColor": "white"
+		},
+		"title": {
+			"font": "default-font",
+			"fontColor": "black"
+		},
+		"won": {
+			"font": "default-font",
+			"fontColor": "black"
+		}
+	},
+	"de.lksbhm.mona.ui.actors.PuzzleActorStyle": {
+		"default": { 
+			"tilePaddingX": 0.10, 
+			"tilePaddingY": 0.10, 
+			"edge": "widgets/puzzle-actor/edge", 
+			"straight": "widgets/puzzle-actor/straight", 
+			"connectorHorizontal": "colors/palette1/01", 
+			"connectorVertical": "colors/palette1/01", 
+			"innerTile": "widgets/puzzle-actor/tile"
+		}
+	},
+	"de.lksbhm.mona.ui.actors.InvalidMarker$InvalidMarkerStyle": {
+		"default": {
+			"texture": "colors/palette1/04"
+		}
 	}
 }

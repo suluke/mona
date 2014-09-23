@@ -1,19 +1,18 @@
 package de.lksbhm.mona.levels;
 
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Locale;
 import java.util.Random;
 
 import com.badlogic.gdx.math.RandomXS128;
 
 import de.lksbhm.gdx.LksBhmGame;
+import de.lksbhm.gdx.util.GregorianCalendarInterface;
 import de.lksbhm.mona.Mona;
 
 class DailyPackagesGenerator {
 	private static final Random random = new RandomXS128();
 
-	private static int getNumberOfPackages(Calendar date) {
+	private static int getNumberOfPackages(GregorianCalendarInterface date) {
 		int minPackages = LksBhmGame.getGame(Mona.class).getSettings().statics
 				.getMinimumNumberOfDailyPackages();
 		int maxPackages = LksBhmGame.getGame(Mona.class).getSettings().statics
@@ -29,22 +28,22 @@ class DailyPackagesGenerator {
 		}
 	}
 
-	private static Difficulty[] getDifficulties(Calendar date) {
+	private static Difficulty[] getDifficulties(GregorianCalendarInterface date) {
 		Difficulty[] difficulties = new Difficulty[getNumberOfPackages(date)];
-		switch (date.get(Calendar.DAY_OF_WEEK)) {
-		case Calendar.MONDAY:
+		switch (date.getDayOfWeek()) {
+		case GregorianCalendarInterface.MONDAY:
 			fillWithDifficulty(Difficulty.VERY_EASY, difficulties);
 			break;
-		case Calendar.TUESDAY:
+		case GregorianCalendarInterface.TUESDAY:
 			fillWithDifficulty(Difficulty.EASY, difficulties);
 			break;
-		case Calendar.WEDNESDAY:
+		case GregorianCalendarInterface.WEDNESDAY:
 			fillWithDifficulty(Difficulty.MEDIUM, difficulties);
 			break;
-		case Calendar.THURSDAY:
+		case GregorianCalendarInterface.THURSDAY:
 			fillWithDifficulty(Difficulty.HARD, difficulties);
 			break;
-		case Calendar.FRIDAY:
+		case GregorianCalendarInterface.FRIDAY:
 			fillWithDifficulty(Difficulty.VERY_HARD, difficulties);
 			break;
 		default:
@@ -58,7 +57,8 @@ class DailyPackagesGenerator {
 		return difficulties;
 	}
 
-	public static LevelPackageCollection getDailyPackages(Calendar date) {
+	public static LevelPackageCollection getDailyPackages(
+			GregorianCalendarInterface date) {
 		Difficulty[] difficulties = getDifficulties(date);
 		LevelPackageCollection collection = new LevelPackageCollection(
 				difficulties.length);
@@ -71,13 +71,33 @@ class DailyPackagesGenerator {
 		for (int i = 0; i < difficulties.length; i++) {
 			random.setSeed(millis + i);
 			seed = random.nextLong();
-			dayName = date.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT,
-					Locale.getDefault());
+			dayName = shortDayNameFromIndex(date.getDayOfWeek());
 			newPack = new DailyPackage(dailyPackageIdPrefix + "-" + i,
 					difficulties[i], collection, seed, random);
 			newPack.setDisplayName(dayName + Integer.toString(i + 1));
 			collection.setPackage(i, newPack);
 		}
 		return collection;
+	}
+
+	private static String shortDayNameFromIndex(int weekday) {
+		weekday = (weekday - 1) % 7 + 1;
+		switch (weekday) {
+		case GregorianCalendarInterface.MONDAY:
+			return "MON";
+		case GregorianCalendarInterface.TUESDAY:
+			return "TUE";
+		case GregorianCalendarInterface.WEDNESDAY:
+			return "WED";
+		case GregorianCalendarInterface.THURSDAY:
+			return "THU";
+		case GregorianCalendarInterface.FRIDAY:
+			return "FRI";
+		case GregorianCalendarInterface.SATURDAY:
+			return "SAT";
+		case GregorianCalendarInterface.SUNDAY:
+			return "SUN";
+		}
+		throw new RuntimeException();
 	}
 }

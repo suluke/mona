@@ -19,8 +19,7 @@ public abstract class AbstractScreen extends
 		return 600;
 	}
 
-	protected static abstract class AbstractBackButtonHandler extends
-			InputAdapter {
+	public static abstract class AbstractBackButtonHandler extends InputAdapter {
 		@Override
 		public boolean keyUp(int keycode) {
 			if (keycode == Keys.BACK || keycode == Keys.ESCAPE) {
@@ -33,7 +32,7 @@ public abstract class AbstractScreen extends
 		protected abstract void onBackButtonPressed();
 	}
 
-	protected static class BackButtonToMainMenuHandler extends
+	public static class BackButtonToMainMenuHandler extends
 			AbstractBackButtonHandler {
 		@Override
 		protected void onBackButtonPressed() {
