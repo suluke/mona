@@ -27,5 +27,5 @@
 	<extend-configuration-property name="gdx.reflect.include" value="de.lksbhm.mona.ui.actors.PuzzleActorStyle" />
 	<extend-configuration-property name="gdx.reflect.include" value="de.lksbhm.mona.ui.actors.InvalidMarker" />
 	
-	<set-property name="user.agent" value="safari" />
+	<!-- <set-property name="user.agent" value="safari" /> -->
 </module>
