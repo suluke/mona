@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 
-class PuzzleActorStyle {
+public class PuzzleActorStyle {
 	static String brightnessUniformName = "u_brightness";
 
 	public Drawable edge;

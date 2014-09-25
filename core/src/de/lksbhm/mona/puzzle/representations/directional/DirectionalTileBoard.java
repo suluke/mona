@@ -2,7 +2,6 @@ package de.lksbhm.mona.puzzle.representations.directional;
 
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Pool;
-import com.badlogic.gdx.utils.ReflectionPool;
 
 import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.mona.Mona;
@@ -13,23 +12,51 @@ import de.lksbhm.mona.puzzle.representations.grouped.TileGroupType;
 public class DirectionalTileBoard extends Board<DirectionalTile> implements
 		Disposable {
 
-	static final Pool<NoDirectionTile> emptyPool = new ReflectionPool<NoDirectionTile>(
-			NoDirectionTile.class);
-	static final Pool<TopLeftTile> tlPool = new ReflectionPool<TopLeftTile>(
-			TopLeftTile.class);
-	static final Pool<TopRightTile> trPool = new ReflectionPool<TopRightTile>(
-			TopRightTile.class);
-	static final Pool<BottomLeftTile> blPool = new ReflectionPool<BottomLeftTile>(
-			BottomLeftTile.class);
-	static final Pool<BottomRightTile> brPool = new ReflectionPool<BottomRightTile>(
-			BottomRightTile.class);
-	static final Pool<TopBottomTile> tbPool = new ReflectionPool<TopBottomTile>(
-			TopBottomTile.class);
-	static final Pool<LeftRightTile> lrPool = new ReflectionPool<LeftRightTile>(
-			LeftRightTile.class);
+	static final Pool<NoDirectionTile> emptyPool = new Pool<NoDirectionTile>() {
+		@Override
+		protected NoDirectionTile newObject() {
+			return new NoDirectionTile();
+		}
+	};
+	static final Pool<TopLeftTile> tlPool = new Pool<TopLeftTile>() {
+		@Override
+		protected TopLeftTile newObject() {
+			return new TopLeftTile();
+		}
+	};
+	static final Pool<TopRightTile> trPool = new Pool<TopRightTile>() {
+		@Override
+		protected TopRightTile newObject() {
+			return new TopRightTile();
+		}
+	};
+	static final Pool<BottomLeftTile> blPool = new Pool<BottomLeftTile>() {
+		@Override
+		protected BottomLeftTile newObject() {
+			return new BottomLeftTile();
+		}
+	};
+	static final Pool<BottomRightTile> brPool = new Pool<BottomRightTile>() {
+		@Override
+		protected BottomRightTile newObject() {
+			return new BottomRightTile();
+		}
+	};
+	static final Pool<TopBottomTile> tbPool = new Pool<TopBottomTile>() {
+		@Override
+		protected TopBottomTile newObject() {
+			return new TopBottomTile();
+		}
+	};
+	static final Pool<LeftRightTile> lrPool = new Pool<LeftRightTile>() {
+		@Override
+		protected LeftRightTile newObject() {
+			return new LeftRightTile();
+		}
+	};
 
 	public DirectionalTileBoard(int width, int height) {
-		super(width, height, DirectionalTile.class);
+		super(width, height);
 	}
 
 	public final void toRect() {
@@ -291,5 +318,10 @@ public class DirectionalTileBoard extends Board<DirectionalTile> implements
 			}
 		}
 		return sb.toString();
+	}
+
+	@Override
+	protected DirectionalTile[] createNodeArray(int size) {
+		return new DirectionalTile[size];
 	}
 }

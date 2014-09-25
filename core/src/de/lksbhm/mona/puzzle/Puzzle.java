@@ -6,7 +6,6 @@ import java.util.LinkedList;
 
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Pool;
-import com.badlogic.gdx.utils.ReflectionPool;
 
 import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.mona.Mona;
@@ -16,7 +15,13 @@ import de.lksbhm.mona.puzzle.representations.Direction;
 import de.lksbhm.mona.puzzle.representations.directional.DirectionalTileBoard;
 
 public class Puzzle extends Board<Piece> implements Disposable {
-	static final Pool<Piece> fieldPool = new ReflectionPool<Piece>(Piece.class);
+	static final Pool<Piece> fieldPool = new Pool<Piece>() {
+		@Override
+		protected Piece newObject() {
+			return new Piece();
+		}
+
+	};
 	private final DirectionalTileBoard solution;
 	private final LinkedList<PuzzleChangedListener> changeListeners = new LinkedList<PuzzleChangedListener>();
 	private final LinkedList<PuzzleWonListener> winListeners = new LinkedList<PuzzleWonListener>();
@@ -31,7 +36,7 @@ public class Puzzle extends Board<Piece> implements Disposable {
 
 	private Puzzle(DirectionalTileBoard solution, int width, int height,
 			boolean initializeTiles) {
-		super(width, height, Piece.class);
+		super(width, height);
 		this.solution = solution;
 		if (initializeTiles) {
 			Piece f;
@@ -385,5 +390,10 @@ public class Puzzle extends Board<Piece> implements Disposable {
 			}
 		}
 		return copy;
+	}
+
+	@Override
+	protected Piece[] createNodeArray(int size) {
+		return new Piece[size];
 	}
 }

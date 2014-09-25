@@ -5,10 +5,12 @@ import de.lksbhm.gdx.util.GregorianCalendarInterface;
 
 public abstract class MonaPlatform extends AbstractPlatform {
 	/**
-	 * The following constraints need to be fulfilled:
-	 * {@link GregorianCalendarInterface#getTimeInMillis()} must return the
-	 * timestamp of the current day at 0:00 in GMT. The rest is to be
-	 * implemented as would be expected.
+	 * 
+	 * How to implement: Retrieve the localized year, month and day at the time
+	 * this method is called. Then interpret those as a date in GMT timezone and
+	 * retrieve the milliseconds of that date at 0:00am. Build a
+	 * {@link GregorianCalendarInterface} from the information you just received
+	 * (day, month, year, millis) and set its timezone to "GMT"
 	 * 
 	 * @return
 	 */

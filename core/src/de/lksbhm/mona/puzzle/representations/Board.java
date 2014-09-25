@@ -3,7 +3,6 @@ package de.lksbhm.mona.puzzle.representations;
 import java.util.Iterator;
 
 import com.badlogic.gdx.utils.Disposable;
-import com.badlogic.gdx.utils.reflect.ArrayReflection;
 
 public abstract class Board<TileBaseType extends Tile<TileBaseType>> implements
 		Iterable<TileBaseType>, Disposable {
@@ -11,17 +10,16 @@ public abstract class Board<TileBaseType extends Tile<TileBaseType>> implements
 	private final int width;
 	private final int height;
 
-	@SuppressWarnings("unchecked")
-	public Board(int width, int height,
-			Class<? extends TileBaseType> nodeBaseType) {
+	public Board(int width, int height) {
 		if (width == 0 || height == 0) {
 			throw new RuntimeException();
 		}
 		this.width = width;
 		this.height = height;
-		nodes = (TileBaseType[]) ArrayReflection.newInstance(nodeBaseType,
-				width * height);
+		nodes = createNodeArray(width * height);
 	}
+
+	protected abstract TileBaseType[] createNodeArray(int size);
 
 	public TileBaseType getTile(int x, int y) {
 		TileBaseType n = getTileOrNull(x, y);

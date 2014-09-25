@@ -2,7 +2,6 @@ package de.lksbhm.mona.puzzle.representations.linked;
 
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Pool;
-import com.badlogic.gdx.utils.ReflectionPool;
 
 import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.mona.Mona;
@@ -11,8 +10,13 @@ import de.lksbhm.mona.puzzle.representations.Direction;
 import de.lksbhm.mona.puzzle.representations.directional.DirectionalTileBoard;
 
 public class LinkedTileBoard extends Board<LinkedTile> implements Disposable {
-	static final Pool<LinkedTile> directedNodePool = new ReflectionPool<LinkedTile>(
-			LinkedTile.class);
+	static final Pool<LinkedTile> directedNodePool = new Pool<LinkedTile>() {
+		@Override
+		protected LinkedTile newObject() {
+			return new LinkedTile();
+		}
+
+	};
 
 	private LinkedTile obtainNode(int x, int y) {
 		LinkedTile n = directedNodePool.obtain();
@@ -27,7 +31,7 @@ public class LinkedTileBoard extends Board<LinkedTile> implements Disposable {
 	}
 
 	private LinkedTileBoard(int width, int height, boolean initializeTiles) {
-		super(width, height, LinkedTile.class);
+		super(width, height);
 		if (initializeTiles) {
 			for (int x = 0; x < width; x++) {
 				for (int y = 0; y < height; y++) {
@@ -167,5 +171,10 @@ public class LinkedTileBoard extends Board<LinkedTile> implements Disposable {
 			}
 		}
 		return builder.toString();
+	}
+
+	@Override
+	protected LinkedTile[] createNodeArray(int size) {
+		return new LinkedTile[size];
 	}
 }

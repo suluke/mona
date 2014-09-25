@@ -50,8 +50,19 @@ public class LoadingScreen implements Screen {
 		batch.begin();
 		bar.draw(batch, x, y, width, height);
 		batch.end();
-		if (assetManager.update()) {
-			onDoneCallback.run();
+		// The following code makes it easier to see what's going on in the
+		// skin.json parsing process, especially when in gwt
+		try {
+			if (assetManager.update()) {
+				onDoneCallback.run();
+			}
+		} catch (Exception ex) {
+			Throwable throwable = ex;
+			while (throwable.getCause() != null) {
+				throwable = throwable.getCause();
+			}
+			throw new RuntimeException("Error loading resources: "
+					+ throwable.getMessage(), throwable);
 		}
 	}
 

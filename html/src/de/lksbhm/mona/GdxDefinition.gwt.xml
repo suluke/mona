@@ -4,6 +4,8 @@
 	<inherits name='com.badlogic.gdx.backends.gdx_backends_gwt' />
 
 	<inherits name='Mona' />
+	<inherits name="com.google.gwt.i18n.I18N"/>
+	
 	<entry-point class='de.lksbhm.mona.client.HtmlLauncher' />
 	
 	<set-configuration-property name="gdx.assetpath" value="../android/assets" />
