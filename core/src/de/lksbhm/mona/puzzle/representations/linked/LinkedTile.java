@@ -3,9 +3,6 @@ package de.lksbhm.mona.puzzle.representations.linked;
 import de.lksbhm.mona.puzzle.representations.Tile;
 
 public class LinkedTile extends Tile<LinkedTile> {
-	public LinkedTile() {
-		super(LinkedTile.class);
-	}
 
 	private LinkedTile parent = null;
 	private LinkedTile child = null;
@@ -45,5 +42,10 @@ public class LinkedTile extends Tile<LinkedTile> {
 	@Override
 	public void dispose() {
 		LinkedTileBoard.directedNodePool.free(this);
+	}
+
+	@Override
+	protected LinkedTile[] allocateArray(int size) {
+		return new LinkedTile[size];
 	}
 }

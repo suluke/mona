@@ -4,9 +4,6 @@ import de.lksbhm.gdx.util.Pair;
 import de.lksbhm.mona.puzzle.representations.Tile;
 
 public abstract class DirectionalTile extends Tile<DirectionalTile> {
-	public DirectionalTile() {
-		super(DirectionalTile.class);
-	}
 
 	public abstract void acceptVisitor(DirectionalTileVisitor visitor);
 
@@ -30,5 +27,10 @@ public abstract class DirectionalTile extends Tile<DirectionalTile> {
 	@Override
 	protected DirectionalTileBoard getBoard() {
 		return (DirectionalTileBoard) super.getBoard();
+	}
+
+	@Override
+	protected DirectionalTile[] allocateArray(int size) {
+		return new DirectionalTile[size];
 	}
 }

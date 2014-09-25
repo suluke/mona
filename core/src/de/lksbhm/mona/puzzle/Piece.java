@@ -9,10 +9,6 @@ public class Piece extends Tile<Piece> {
 	private Direction out = Direction.NONE;
 	private Type type = Type.EMPTY;
 
-	Piece() {
-		super(Piece.class);
-	}
-
 	void setup(Board<Piece> b, int x, int y, Type t, Direction in, Direction out) {
 		super.setup(b, x, y);
 		this.type = t;
@@ -230,5 +226,10 @@ public class Piece extends Tile<Piece> {
 
 	protected void notifyOnChange() {
 		getBoard().notifyOnChange();
+	}
+
+	@Override
+	protected Piece[] allocateArray(int size) {
+		return new Piece[size];
 	}
 }

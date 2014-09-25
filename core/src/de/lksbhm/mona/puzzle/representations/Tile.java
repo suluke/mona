@@ -1,17 +1,11 @@
 package de.lksbhm.mona.puzzle.representations;
 
 import com.badlogic.gdx.utils.Disposable;
-import com.badlogic.gdx.utils.reflect.ArrayReflection;
 
 public abstract class Tile<TileBaseType extends Tile<TileBaseType>> implements
 		Disposable {
 	private int x, y;
 	private Board<TileBaseType> b;
-	private final Class<? extends TileBaseType> nodeBaseType;
-
-	public Tile(Class<? extends TileBaseType> nodeBaseType) {
-		this.nodeBaseType = nodeBaseType;
-	}
 
 	public void setup(Board<TileBaseType> b, int x, int y) {
 		if (x < 0 || x >= b.getWidth()) {
@@ -49,9 +43,7 @@ public abstract class Tile<TileBaseType extends Tile<TileBaseType>> implements
 			neighborCount++;
 			right = b.getTile(x + 1, y);
 		}
-		@SuppressWarnings("unchecked")
-		TileBaseType[] neighbors = (TileBaseType[]) ArrayReflection
-				.newInstance(nodeBaseType, neighborCount);
+		TileBaseType[] neighbors = allocateArray(neighborCount);
 		int pos = 0;
 		if (top != null) {
 			neighbors[pos++] = top;
@@ -140,4 +132,6 @@ public abstract class Tile<TileBaseType extends Tile<TileBaseType>> implements
 	}
 
 	public abstract TileBaseType copy();
+
+	protected abstract TileBaseType[] allocateArray(int size);
 }

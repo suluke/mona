@@ -5,10 +5,6 @@ import de.lksbhm.mona.puzzle.representations.Tile;
 
 public class GroupedTile extends Tile<GroupedTile> {
 
-	GroupedTile() {
-		super(GroupedTile.class);
-	}
-
 	private TileGroupType type;
 
 	/**
@@ -51,5 +47,10 @@ public class GroupedTile extends Tile<GroupedTile> {
 	@Override
 	public void dispose() {
 		GroupedTileBoard.nodePool.free(this);
+	}
+
+	@Override
+	protected GroupedTile[] allocateArray(int size) {
+		return new GroupedTile[size];
 	}
 }

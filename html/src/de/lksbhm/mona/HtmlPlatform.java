@@ -22,7 +22,7 @@ public class HtmlPlatform extends MonaPlatform {
 		int month = Integer.parseInt(DateTimeFormat.getFormat("M")
 				.format(today));
 		int day = Integer.parseInt(DateTimeFormat.getFormat("d").format(today));
-		int dayOfWeek = Integer.parseInt(DateTimeFormat.getFormat("E").format(
+		int dayOfWeek = Integer.parseInt(DateTimeFormat.getFormat("c").format(
 				today));
 		cal.setYear(year);
 		cal.setMonth(month);
