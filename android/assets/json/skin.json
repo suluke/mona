@@ -80,6 +80,13 @@
 			"fontColor": "black"
 		}
 	},
+	"com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle": {
+		"default": {
+			"background": "colors/palette1/07",
+			"titleFont": "default-font",
+			"titleFontColor": "white"
+		}
+	},
 	"de.lksbhm.mona.ui.actors.PuzzleActorStyle": {
 		"default": { 
 			"tilePaddingX": 0.10, 

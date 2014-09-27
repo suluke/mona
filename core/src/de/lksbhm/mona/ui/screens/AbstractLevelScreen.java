@@ -12,7 +12,7 @@ import de.lksbhm.gdx.ui.screens.transitions.TransitionBuilder;
 import de.lksbhm.mona.levels.Level;
 import de.lksbhm.mona.levels.LevelPackage;
 
-abstract class AbstractLevelScreen<NextLevelScreenType extends AbstractLevelScreen<?>>
+public abstract class AbstractLevelScreen<NextLevelScreenType extends AbstractLevelScreen<?>>
 		extends AbstractPuzzleScreen {
 	private Level l;
 	private Label idLabel;
@@ -26,7 +26,7 @@ abstract class AbstractLevelScreen<NextLevelScreenType extends AbstractLevelScre
 		}
 	};
 
-	public AbstractLevelScreen() {
+	AbstractLevelScreen() {
 		InputMultiplexer mux = new InputMultiplexer();
 		mux.addProcessor(getStage());
 		mux.addProcessor(backButtonHandler);
@@ -35,14 +35,20 @@ abstract class AbstractLevelScreen<NextLevelScreenType extends AbstractLevelScre
 
 	public void setLevel(Level l) {
 		this.l = l;
-		packageAlreadySolved = l.getPackage().isSolved();
-		l.reset();
-		idLabel.setText(l.getPackage().getDisplayName() + "/" + l.getLevelId());
-		setPuzzle(l.getPuzzle());
+		if (l != null) {
+			packageAlreadySolved = l.getPackage().isSolved();
+			l.reset();
+			idLabel.setText(l.getPackage().getDisplayName() + "/"
+					+ l.getLevelId());
+			setPuzzle(l.getPuzzle());
+		} else {
+			setPuzzle(null);
+		}
 	}
 
 	@Override
 	protected void onShow() {
+		l.setView(this);
 		super.onShow();
 		l.enterContext();
 	}
@@ -65,6 +71,7 @@ abstract class AbstractLevelScreen<NextLevelScreenType extends AbstractLevelScre
 	protected void onHide() {
 		super.onHide();
 		l.leaveContext();
+		l.setView(null);
 	}
 
 	@Override

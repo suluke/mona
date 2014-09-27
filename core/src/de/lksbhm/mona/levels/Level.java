@@ -10,6 +10,7 @@ import de.lksbhm.gdx.contexts.ContextImplementation;
 import de.lksbhm.mona.Mona;
 import de.lksbhm.mona.puzzle.Puzzle;
 import de.lksbhm.mona.tutorials.Tutorial;
+import de.lksbhm.mona.ui.screens.AbstractLevelScreen;
 
 /**
  * Levels always belong to a package, otherwise they would just be mere puzzles.
@@ -17,6 +18,7 @@ import de.lksbhm.mona.tutorials.Tutorial;
  */
 public abstract class Level extends ContextImplementation implements Disposable {
 
+	public static final String packageIdSeparator = "/";
 	private static final String tutorialPackage = "de.lksbhm.mona.tutorials";
 
 	private final String id;
@@ -25,7 +27,7 @@ public abstract class Level extends ContextImplementation implements Disposable 
 	private Tutorial tutorial;
 	private final String canonicalId;
 
-	public static final String packageIdSeparator = "/";
+	private AbstractLevelScreen<?> view;
 
 	public Level(LevelPackage pack, String id) {
 		this.pack = pack;
@@ -133,5 +135,13 @@ public abstract class Level extends ContextImplementation implements Disposable 
 			LksBhmGame.getGame(Mona.class).getUserManager().getCurrentUser()
 					.setLevelSolved(Level.this);
 		}
+	}
+
+	public void setView(AbstractLevelScreen<?> view) {
+		this.view = view;
+	}
+
+	public AbstractLevelScreen<?> getView() {
+		return view;
 	}
 }

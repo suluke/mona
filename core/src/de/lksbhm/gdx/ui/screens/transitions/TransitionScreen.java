@@ -17,7 +17,7 @@ public class TransitionScreen implements Screen {
 	private float x2;
 	private float y2;
 	private AbstractTransition transition;
-	private final Color clearColor = new Color();
+	private final Color clearColor = new Color(0, 0, 0, 1);
 
 	private TransitionScreen() {
 	}

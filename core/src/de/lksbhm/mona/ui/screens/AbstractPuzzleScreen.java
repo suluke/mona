@@ -28,7 +28,6 @@ public abstract class AbstractPuzzleScreen extends AbstractScreen {
 		}
 	};
 	private final TemporalAction increaseBrightness = new TemporalAction(0.6f) {
-
 		@Override
 		protected void update(float percent) {
 			puzzleActor.setBrightnessIncrease(percent);

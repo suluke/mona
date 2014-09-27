@@ -39,12 +39,16 @@ public class ContextManager {
 	}
 
 	public void enterContext(Context context) {
-		ArrayList<ContextListener> list = listeners.get(context.getClass());
-		if (list != null) {
-			for (ContextListener listener : list) {
-				listener.onEnter(context);
+		Class<?> clazz = context.getClass();
+		do {
+			ArrayList<ContextListener> list = listeners.get(clazz);
+			if (list != null) {
+				for (ContextListener listener : list) {
+					listener.onEnter(context);
+				}
 			}
-		}
+			clazz = clazz.getSuperclass();
+		} while (ClassReflection.isAssignableFrom(Context.class, clazz));
 	}
 
 	public void leaveContext(Context context) {
