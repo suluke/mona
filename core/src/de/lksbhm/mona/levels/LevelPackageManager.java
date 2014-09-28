@@ -14,7 +14,7 @@ public class LevelPackageManager {
 					.getPlatformManager().getPlatform().getToday();
 			DailyPackagesGenerator generator = new DailyPackagesGenerator(today);
 			generator.finish();
-			dailyPackages = generator.getPackages();
+			dailyPackages = generator.get();
 		}
 		return dailyPackages;
 	}

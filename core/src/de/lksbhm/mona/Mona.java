@@ -9,6 +9,7 @@ import de.lksbhm.gdx.resources.ResourceConsumer;
 import de.lksbhm.gdx.ui.screens.TransitionableResettableConsumerScreen;
 import de.lksbhm.gdx.users.UserManager;
 import de.lksbhm.gdx.util.GregorianCalendarValue;
+import de.lksbhm.gdx.util.LoadableAssetManager;
 import de.lksbhm.gdx.util.Version;
 import de.lksbhm.gdx.util.Version.Status;
 import de.lksbhm.mona.levels.LevelPackageManager;
@@ -53,7 +54,7 @@ public class Mona extends LksBhmGame<Mona, User, MonaPlatform> {
 		if (requester == null) {
 			Gdx.app.log("Mona", "Showing loading screen");
 			getRouter().saveCurrentScreenInHistory();
-			loadingScreen.setAssetManager(manager);
+			loadingScreen.setLoadableToLoad(new LoadableAssetManager(manager));
 			loadingScreen.setOnDoneCallback(callback);
 			setScreen(loadingScreen);
 		} else {

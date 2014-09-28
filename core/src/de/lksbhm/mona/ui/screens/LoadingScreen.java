@@ -2,7 +2,6 @@ package de.lksbhm.mona.ui.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
@@ -12,13 +11,15 @@ import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import de.lksbhm.gdx.util.Loadable;
+
 public class LoadingScreen implements Screen {
 
 	private static final float barWidth = .8f;
 	private static final float barHeight = .2f;
 	private static final float barVPos = .6f;
 
-	private AssetManager assetManager;
+	private Loadable<?> loadable;
 	private Runnable onDoneCallback;
 	private final NinePatch bar = new NinePatch(new Texture(
 			"textures/loading.9.png"));;
@@ -34,7 +35,7 @@ public class LoadingScreen implements Screen {
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		currentProgress = assetManager.getProgress();
+		currentProgress = loadable.getProgress();
 
 		displayedProgress = Interpolation.linear.apply(displayedProgress,
 				currentProgress, 0.1f);
@@ -53,7 +54,7 @@ public class LoadingScreen implements Screen {
 		// The following code makes it easier to see what's going on in the
 		// skin.json parsing process, especially when in gwt
 		try {
-			if (assetManager.update()) {
+			if (loadable.update()) {
 				onDoneCallback.run();
 			}
 		} catch (Exception ex) {
@@ -94,8 +95,8 @@ public class LoadingScreen implements Screen {
 		bar.getTexture().dispose();
 	}
 
-	public void setAssetManager(AssetManager assetManager) {
-		this.assetManager = assetManager;
+	public void setLoadableToLoad(Loadable<?> assetManager) {
+		this.loadable = assetManager;
 	}
 
 	public void setOnDoneCallback(Runnable callback) {

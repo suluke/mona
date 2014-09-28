@@ -7,9 +7,10 @@ import com.badlogic.gdx.math.RandomXS128;
 
 import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.gdx.util.GregorianCalendarInterface;
+import de.lksbhm.gdx.util.Loadable;
 import de.lksbhm.mona.Mona;
 
-class DailyPackagesGenerator {
+class DailyPackagesGenerator implements Loadable<LevelPackageCollection> {
 	private final Random random = new RandomXS128();
 	private final Difficulty[] difficulties;
 	private final LevelPackageCollection collection;
@@ -26,15 +27,18 @@ class DailyPackagesGenerator {
 		generatorThread.start();
 	}
 
+	@Override
 	public boolean update() {
 		progress = generatorRunnable.getProgress();
 		return progress == 1;
 	}
 
+	@Override
 	public float getProgress() {
 		return progress;
 	}
 
+	@Override
 	public void finish() {
 		try {
 			generatorThread.join();
@@ -44,7 +48,8 @@ class DailyPackagesGenerator {
 		}
 	}
 
-	public LevelPackageCollection getPackages() {
+	@Override
+	public LevelPackageCollection get() {
 		if (getProgress() != 1) {
 			throw new IllegalStateException("Not finished generating");
 		}
