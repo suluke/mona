@@ -178,7 +178,7 @@ public class Tutorial01 extends
 
 		// Setup overlay content
 		Label introText = new Label(
-				"This worked...\nBut it is much more efficient to clear all connections at once by double-tapping one of the tiles.\nLet's try",
+				"This worked...\nBut it is much more efficient to clear all connections at once by double-tapping one of the tiles.\nLet's try.",
 				getSkin());
 		introText.setAlignment(Align.center);
 		introText.setWrap(true);
@@ -188,7 +188,7 @@ public class Tutorial01 extends
 	}
 
 	private void intro4Part() {
-		getOverlay().addListener(clickForRemoveOverlayListener);
+		getOverlay().addListener(clickForNextListener);
 		float width = getLevel().getView().getStage().getWidth();
 
 		// Setup overlay content
@@ -203,11 +203,12 @@ public class Tutorial01 extends
 
 	@Override
 	protected void start() {
-		super.start();
 		String continueHintString = Gdx.app.getType() == ApplicationType.Android ? "(tap to proceed)"
 				: "(click to proceed)";
 		continueHint = new Label(continueHintString, getSkin());
 		continueHint.setFontScale(.5f);
+
+		super.start();
 
 		Puzzle p = getLevel().getPuzzle();
 		p.getTile(0, 0).connectNeighbor(Direction.RIGHT, false);

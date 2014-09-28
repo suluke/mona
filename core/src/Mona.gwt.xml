@@ -20,8 +20,7 @@
 	<extend-configuration-property name="gdx.reflect.include" value="de.lksbhm.mona.levels.Level" />
 	<extend-configuration-property name="gdx.reflect.include" value="de.lksbhm.mona.levels.LiterallyDefinedLevel" />
 	<extend-configuration-property name="gdx.reflect.include" value="de.lksbhm.mona.tutorials.Tutorial" />
-	<extend-configuration-property name="gdx.reflect.include" value="de.lksbhm.mona.tutorials.p00.Tutorial00" />
-	<extend-configuration-property name="gdx.reflect.include" value="de.lksbhm.mona.tutorials.p00.Tutorial03" />
+	<extend-configuration-property name="gdx.reflect.include" value="de.lksbhm.mona.tutorials.p00" />
 	<extend-configuration-property name="gdx.reflect.include" value="com.badlogic.gdx.math.RandomXS128" />
 	<extend-configuration-property name="gdx.reflect.include" value="java.util.Random" />
 	

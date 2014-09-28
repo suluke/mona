@@ -167,11 +167,12 @@ public class Tutorial00 extends
 
 	@Override
 	protected void start() {
-		super.start();
 		String continueHintString = Gdx.app.getType() == ApplicationType.Android ? "(tap to proceed)"
 				: "(click to proceed)";
 		continueHint = new Label(continueHintString, getSkin());
 		continueHint.setFontScale(.5f);
+
+		super.start();
 	}
 
 	@Override
