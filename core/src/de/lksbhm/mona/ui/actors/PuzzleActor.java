@@ -3,6 +3,7 @@ package de.lksbhm.mona.ui.actors;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
@@ -19,8 +20,8 @@ import de.lksbhm.mona.puzzle.representations.Direction;
 import de.lksbhm.mona.ui.actors.InvalidMarker.InvalidMarkerStyle;
 
 public class PuzzleActor extends Widget {
-	private final Color batchColor = new Color();
 	private Puzzle puzzle;
+	private final Color tmpColor = new Color();
 	private final PuzzleActorStyle style = new PuzzleActorStyle();
 	private float marginLeft;
 	private float marginTop;
@@ -151,31 +152,33 @@ public class PuzzleActor extends Widget {
 		if (puzzle == null) {
 			return;
 		}
-		batchColor.set(batch.getColor());
-		Color color = getColor();
-		batch.setColor(batchColor.r * color.r, batchColor.g * color.g,
-				batchColor.b * color.b, batchColor.a * color.a * parentAlpha);
-		ShaderProgram brightnessShader = PuzzleActorStyle.getBrightnessShader();
-		if (brightnessIncrease != 0 && brightnessShader != null) {
-			if (brightnessShader.isCompiled()) {
-				batch.setShader(brightnessShader);
-				brightnessShader.setUniformf(
-						PuzzleActorStyle.brightnessUniformName,
-						brightnessIncrease);
-			} else {
-				System.out.println(brightnessShader.getLog());
+		tmpColor.set(getColor());
+		tmpColor.a *= parentAlpha;
+		batch.setColor(tmpColor);
+		boolean brightnessShaderActive = false;
+		if (brightnessIncrease != 0) {
+			ShaderProgram brightnessShader = PuzzleActorStyle
+					.getBrightnessShader();
+			if (brightnessShader != null) {
+				if (brightnessShader.isCompiled()) {
+					batch.setShader(brightnessShader);
+					brightnessShader.setUniformf(
+							PuzzleActorStyle.brightnessUniformName,
+							brightnessIncrease);
+					brightnessShaderActive = true;
+				} else {
+					Gdx.app.error("PuzzleActor", brightnessShader.getLog());
+				}
 			}
 		}
 		drawTileBackgrounds(batch);
 		drawTileTypes(batch);
 		drawTileConnectors(batch);
 		drawInvalidMarkers(batch);
-		if (brightnessIncrease != 0 && brightnessShader != null
-				&& brightnessShader.isCompiled()) {
+		if (brightnessShaderActive) {
 			// reset shader
 			batch.setShader(null);
 		}
-		batch.setColor(batchColor);
 	}
 
 	private void drawInvalidMarkers(Batch batch) {
