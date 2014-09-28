@@ -32,8 +32,7 @@ abstract class AbstractTutorial<Part extends Iterator<Part>> extends Tutorial {
 		@Override
 		public void clicked(InputEvent event, float x, float y) {
 			overlay.removeListener(this);
-			currentPart = currentPart.next();
-			applyCurrentPart();
+			moveToNextPart();
 		};
 	}
 
@@ -69,11 +68,7 @@ abstract class AbstractTutorial<Part extends Iterator<Part>> extends Tutorial {
 		@Override
 		public void onChange() {
 			getLevel().getPuzzle().removeChangeListener(this);
-			currentPart = currentPart.next();
-			applyCurrentPartAction.restart();
-			dispatchCurrentPart();
-			overlay.addAction(Actions.sequence(Actions.alpha(0),
-					Actions.alpha(1, .6f)));
+			moveToNextPart();
 		}
 	};
 
@@ -89,13 +84,6 @@ abstract class AbstractTutorial<Part extends Iterator<Part>> extends Tutorial {
 	 */
 	Skin getSkin() {
 		return skin;
-	}
-
-	/**
-	 * @return the applyCurrentPartAction
-	 */
-	Action getApplyCurrentPartAction() {
-		return applyCurrentPartAction;
 	}
 
 	/**
@@ -154,21 +142,37 @@ abstract class AbstractTutorial<Part extends Iterator<Part>> extends Tutorial {
 		}
 	}
 
-	private void applyCurrentPart() {
+	protected final void dispatchCurrentPart() {
 		if (currentPart == null) {
 			end();
 			return;
 		}
-		applyCurrentPartAction.restart();
-		content.addAction(Actions.sequence(Actions.alpha(0, .6f),
-				applyCurrentPartAction, Actions.alpha(1, .6f)));
-	}
-
-	private void dispatchCurrentPart() {
 		getContent().clearChildren();
 		setupContentForCurrentPart();
 		if (!overlay.hasParent()) {
 			getLevel().getView().getStage().addActor(overlay);
+		}
+	}
+
+	/**
+	 * 
+	 * 
+	 * Works around issues with concurrent modification exceptions, e.g. when in
+	 * a listener call the next part is to be made visible and making it visible
+	 * registers a new listener
+	 */
+	public void moveToNextPart() {
+		currentPart = currentPart.next();
+		if (overlay.hasParent()) {
+			applyCurrentPartAction.restart();
+			content.addAction(Actions.sequence(Actions.alpha(0, .6f),
+					applyCurrentPartAction, Actions.alpha(1, .6f)));
+		} else {
+			applyCurrentPartAction.restart();
+			overlay.addAction(Actions.sequence(Actions.alpha(0),
+					applyCurrentPartAction, Actions.alpha(1, .6f)));
+			AbstractLevelScreen<?> view = getLevel().getView();
+			view.getStage().addActor(overlay);
 		}
 	}
 

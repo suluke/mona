@@ -43,13 +43,15 @@ public class Piece extends Tile<Piece> {
 	 * 
 	 * @param d
 	 */
-	public void pushInOutDirection(Direction d, boolean notify) {
+	public boolean pushInOutDirection(Direction d, boolean notify) {
 		// don't set d twice
 		if (in == d || out == d) {
-			return;
+			// nothing changed
+			return false;
 		}
-		// if 'out' is continued and 'in' is not, we prefer to keep 'out'
-		if (!(isOutContinued() && !isInContinued())) {
+		// drop previous 'out' in favor of (newer) 'in', except for when 'out'
+		// is continued and 'in' is not
+		if (!isOutContinued() || isInContinued()) {
 			// prevent evicting 'out' with Direction.NONE
 			if (in != Direction.NONE) {
 				out = in;
@@ -59,6 +61,7 @@ public class Piece extends Tile<Piece> {
 		if (notify) {
 			notifyOnChange();
 		}
+		return true;
 	}
 
 	public Piece getInAdjacent() {
@@ -107,7 +110,20 @@ public class Piece extends Tile<Piece> {
 		return false;
 	}
 
-	public void disconnect(Piece other, boolean notify) {
+	public void connectNeighbor(Direction d, boolean notify) {
+		boolean changed = pushInOutDirection(d, false);
+		changed |= getNeighbor(d).pushInOutDirection(d.getOpposite(), false);
+		if (notify && changed) {
+			notifyOnChange();
+		}
+	}
+
+	public void connectNeighbor(Piece neighbor, boolean notify) {
+		Direction dir = getDirectionOfNeighbor(neighbor);
+		connectNeighbor(dir, notify);
+	}
+
+	public void disconnectNeighbor(Piece other, boolean notify) {
 		Direction d = getDirectionOfNeighbor(other);
 		if (d == Direction.NONE) {
 			return;

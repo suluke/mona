@@ -11,6 +11,7 @@ import de.lksbhm.gdx.ui.screens.transitions.Transition;
 import de.lksbhm.gdx.ui.screens.transitions.TransitionBuilder;
 import de.lksbhm.mona.levels.Level;
 import de.lksbhm.mona.levels.LevelPackage;
+import de.lksbhm.mona.ui.actors.PuzzleActor;
 
 public abstract class AbstractLevelScreen<NextLevelScreenType extends AbstractLevelScreen<?>>
 		extends AbstractPuzzleScreen {
@@ -161,5 +162,10 @@ public abstract class AbstractLevelScreen<NextLevelScreenType extends AbstractLe
 						router.changeScreen(packageScreen, transition);
 					}
 				});
+	}
+
+	@Override
+	public PuzzleActor getPuzzleActor() {
+		return super.getPuzzleActor();
 	}
 }

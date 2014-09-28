@@ -1,5 +1,6 @@
 package de.lksbhm.mona.ui.actors;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -31,6 +32,7 @@ public class PuzzleActor extends Widget {
 	private float paddingWidth;
 	private float paddingHeight;
 	private final boolean invertY = false; // false means, origin is down left
+	private final ArrayList<PuzzleModificationListener> modificationListeners = new ArrayList<PuzzleModificationListener>();
 	/*
 	 * alpha will be ignored anyways
 	 */
@@ -555,6 +557,18 @@ public class PuzzleActor extends Widget {
 		brightnessIncrease = increase;
 	}
 
+	public void addModificationListener(PuzzleModificationListener listener) {
+		modificationListeners.add(listener);
+	}
+
+	public void removeModificationListener(PuzzleModificationListener listener) {
+		modificationListeners.remove(listener);
+	}
+
+	public void clearModificationListeners() {
+		modificationListeners.clear();
+	}
+
 	/**
 	 * @return the puzzle
 	 */
@@ -625,4 +639,21 @@ public class PuzzleActor extends Widget {
 		return invertY;
 	}
 
+	void onAddConnection() {
+		for (PuzzleModificationListener listener : modificationListeners) {
+			listener.onAddConnection();
+		}
+	}
+
+	void onClearTileConnections() {
+		for (PuzzleModificationListener listener : modificationListeners) {
+			listener.onClearTileConnections();
+		}
+	}
+
+	void onClearAllTileConnections() {
+		for (PuzzleModificationListener listener : modificationListeners) {
+			listener.onClearAllTileConnections();
+		}
+	}
 }

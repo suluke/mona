@@ -72,7 +72,7 @@ class PuzzleActorInput implements EventListener {
 					 */
 					if (!preventDisconnect
 							&& startPiece.isConnectedWith(currentPiece)) {
-						startPiece.disconnect(currentPiece, true);
+						startPiece.disconnectNeighbor(currentPiece, true);
 					} else {
 						// make connection
 						Direction neighborDir = startPiece
@@ -81,6 +81,7 @@ class PuzzleActorInput implements EventListener {
 						currentPiece.pushInOutDirection(
 								neighborDir.getOpposite(), false);
 						actor.getPuzzle().notifyOnChange();
+						actor.onAddConnection();
 						preventDisconnect = true;
 						lastConnected = startPiece;
 					}
@@ -167,6 +168,7 @@ class PuzzleActorInput implements EventListener {
 						if (lastClickedTileX == clickedX
 								&& lastClickedTileY == clickedY) {
 							actor.getPuzzle().clearInOutDirections(true);
+							actor.onClearAllTileConnections();
 							break;
 						}
 						// continue with 1
@@ -174,6 +176,7 @@ class PuzzleActorInput implements EventListener {
 					case 1: {
 						clicked.setInOutDirection(Direction.NONE,
 								Direction.NONE, true);
+						actor.onClearTileConnections();
 						break;
 					}
 					}
