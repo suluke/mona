@@ -4,6 +4,7 @@
 			{
 				"id": "2",
 				"type": "LiterallyDefined",
+				"tutorial": "p00.Tutorial01",
 				"data": {
 					"tileTypes": [
 						["EMPTY",	"STRAIGHT",	"STRAIGHT",	"EMPTY"],

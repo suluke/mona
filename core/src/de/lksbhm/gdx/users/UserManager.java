@@ -58,14 +58,10 @@ public class UserManager<UserImplementation extends User> {
 		userDataStorage.persist(user);
 	}
 
-	@SuppressWarnings("unchecked")
-	private UserImplementation[] makeUserImplementationArray(int size) {
-		return userInstantiator.allocateArray(size);
-	}
-
 	public UserImplementation[] listUsers() {
 		int usersCount = getUsersCount();
-		UserImplementation[] userList = makeUserImplementationArray(usersCount);
+		UserImplementation[] userList = userInstantiator
+				.allocateArray(usersCount);
 		UserImplementation current;
 		for (int i = 0; i < usersCount; i++) {
 			current = userInstantiator.instantiate();
