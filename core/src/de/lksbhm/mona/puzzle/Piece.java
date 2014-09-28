@@ -20,10 +20,12 @@ public class Piece extends Tile<Piece> {
 			throw new RuntimeException(
 					"In and out directions must not be equal");
 		}
-		this.in = in;
-		this.out = out;
-		if (notify) {
-			notifyOnChange();
+		if (this.in != in || this.out != out) {
+			this.in = in;
+			this.out = out;
+			if (notify) {
+				notifyOnChange();
+			}
 		}
 	}
 
