@@ -20,8 +20,10 @@ import de.lksbhm.gdx.Router;
 import de.lksbhm.gdx.resources.ResourceConsumerObtainedCallback;
 import de.lksbhm.gdx.ui.screens.transitions.Transition;
 import de.lksbhm.gdx.ui.screens.transitions.TransitionBuilder;
+import de.lksbhm.gdx.util.Loadable;
 import de.lksbhm.gdx.util.Pair;
 import de.lksbhm.mona.Mona;
+import de.lksbhm.mona.levels.LevelPackageCollection;
 import de.lksbhm.mona.levels.LevelPackageManager;
 import de.lksbhm.mona.puzzle.Puzzle;
 import de.lksbhm.mona.puzzle.QualityPuzzleGenerator;
@@ -33,6 +35,8 @@ public class MainMenuScreen extends AbstractScreen {
 	private TextButton randomLevelButton;
 	private TextButton infoButton;
 	private Label title;
+	private final ShowDailyPackagesScreen showDailyPackagesScreen = new ShowDailyPackagesScreen();
+	private Loadable<LevelPackageCollection> dailyPackagesLoader;
 	private final AbstractBackButtonHandler backButtonHandler = new AbstractBackButtonHandler() {
 		@Override
 		protected void onBackButtonPressed() {
@@ -69,12 +73,14 @@ public class MainMenuScreen extends AbstractScreen {
 		dailiesButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				Mona mona = LksBhmGame.getGame(Mona.class);
 				Transition transition = TransitionBuilder.buildNew()
 						.slideInRight().fadeClearColors().duration(.6f).get();
+				Mona mona = LksBhmGame.getGame(Mona.class);
 				LevelPackageManager pacman = mona.getLevelPackageManager();
-				PackagesListScreen.showAsCurrentScreen(
-						pacman.getDailyPackages(), transition);
+				dailyPackagesLoader = pacman.getDailyPackagesLoader();
+				LoadingScreen.showAsCurrentScreen(dailyPackagesLoader,
+						showDailyPackagesScreen, getClearColor(), .6f,
+						transition);
 			}
 		});
 
@@ -164,18 +170,22 @@ public class MainMenuScreen extends AbstractScreen {
 
 	@Override
 	public void setState(Object state) {
-		if (state.getClass() != MainMenuState.class) {
-			throw new IllegalArgumentException(
-					"Given state not suitable for MainMenuScreens");
-		}
 	}
 
 	@Override
 	public Object getState() {
-		return new MainMenuState();
+		return null;
 	}
 
-	private static class MainMenuState {
+	private class ShowDailyPackagesScreen implements Runnable {
+
+		@Override
+		public void run() {
+			Transition transition = TransitionBuilder.buildNew().slideInRight()
+					.fadeClearColors().duration(.6f).get();
+			PackagesListScreen.showAsCurrentScreen(dailyPackagesLoader.get(),
+					transition);
+		}
 
 	}
 }

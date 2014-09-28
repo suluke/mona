@@ -17,6 +17,8 @@ import de.lksbhm.gdx.resources.ResourceConsumerManager;
 import de.lksbhm.gdx.ui.screens.TransitionableResettableConsumerScreen;
 import de.lksbhm.gdx.users.UserManager;
 import de.lksbhm.gdx.util.Instantiator;
+import de.lksbhm.gdx.util.Loadable;
+import de.lksbhm.gdx.util.LoadableAssetManager;
 import de.lksbhm.gdx.util.Version;
 import de.lksbhm.mona.User;
 
@@ -82,15 +84,16 @@ public abstract class LksBhmGame<GameImplementation extends LksBhmGame, UserImpl
 		// don't need to have screen request resources as this is done in
 		// obtainConsumerInstanceWithoutLoadingResources
 		requestResources(assetManager);
-		animateAssetManagerLoad(assetManager, null, new Runnable() {
-			@Override
-			public void run() {
-				defaultSkin = assetManager.get(defaultSkinPath);
-				screen.onResourcesLoaded(assetManager);
-				setScreen(screen);
-				enterContext();
-			}
-		});
+		animateLoad(new LoadableAssetManager(assetManager), null,
+				new Runnable() {
+					@Override
+					public void run() {
+						defaultSkin = assetManager.get(defaultSkinPath);
+						screen.onResourcesLoaded(assetManager);
+						setScreen(screen);
+						enterContext();
+					}
+				});
 	}
 
 	protected void initialize() {
@@ -152,7 +155,7 @@ public abstract class LksBhmGame<GameImplementation extends LksBhmGame, UserImpl
 
 	public abstract Settings getSettings();
 
-	public abstract void animateAssetManagerLoad(AssetManager manager,
+	public abstract void animateLoad(Loadable<?> loadable,
 			Class<? extends ResourceConsumer> requester, Runnable callback);
 
 	public ContextManager getContextManager() {

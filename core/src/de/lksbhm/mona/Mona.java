@@ -9,7 +9,7 @@ import de.lksbhm.gdx.resources.ResourceConsumer;
 import de.lksbhm.gdx.ui.screens.TransitionableResettableConsumerScreen;
 import de.lksbhm.gdx.users.UserManager;
 import de.lksbhm.gdx.util.GregorianCalendarValue;
-import de.lksbhm.gdx.util.LoadableAssetManager;
+import de.lksbhm.gdx.util.Loadable;
 import de.lksbhm.gdx.util.Version;
 import de.lksbhm.gdx.util.Version.Status;
 import de.lksbhm.mona.levels.LevelPackageManager;
@@ -49,17 +49,16 @@ public class Mona extends LksBhmGame<Mona, User, MonaPlatform> {
 	}
 
 	@Override
-	public void animateAssetManagerLoad(AssetManager manager,
+	public void animateLoad(Loadable<?> loadable,
 			Class<? extends ResourceConsumer> requester, Runnable callback) {
 		if (requester == null) {
 			Gdx.app.log("Mona", "Showing loading screen");
 			getRouter().saveCurrentScreenInHistory();
-			loadingScreen.setLoadableToLoad(new LoadableAssetManager(manager));
-			loadingScreen.setOnDoneCallback(callback);
+			loadingScreen.setup(loadable, callback, 0);
 			setScreen(loadingScreen);
 		} else {
 			Gdx.app.log("Mona", requester.getSimpleName() + " finishLoading");
-			manager.finishLoading();
+			loadable.finish();
 			callback.run();
 		}
 	}

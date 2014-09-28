@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.reflect.ReflectionException;
 
 import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.gdx.util.LRUCache;
+import de.lksbhm.gdx.util.LoadableAssetManager;
 
 /**
  * Manager to obtain {@link ResourceConsumer ResourceConsumers} from. Handles
@@ -62,7 +63,8 @@ public class ResourceConsumerManager {
 			final AssetManager manager = game.getAssetManager();
 			newInstance.requestResources(manager);
 			if (newInstance.isRequestingLoadingAnimation()) {
-				game.animateAssetManagerLoad(game.getAssetManager(),
+				game.animateLoad(
+						new LoadableAssetManager(game.getAssetManager()),
 						newInstance.getClass(), new Runnable() {
 							@Override
 							public void run() {

@@ -19,7 +19,7 @@ class DailyPackagesGenerator implements Loadable<LevelPackageCollection> {
 	private final Thread generatorThread;
 	private final GregorianCalendarInterface date;
 
-	public DailyPackagesGenerator(GregorianCalendarInterface date) {
+	DailyPackagesGenerator(GregorianCalendarInterface date) {
 		this.date = date;
 		difficulties = getDifficulties(date, random);
 		collection = new LevelPackageCollection(difficulties.length);
