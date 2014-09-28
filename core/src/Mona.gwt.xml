@@ -6,7 +6,6 @@
 	<extend-configuration-property name="gdx.reflect.include" value="de.lksbhm.gdx.contexts.Context" />
 	<extend-configuration-property name="gdx.reflect.include" value="com.badlogic.gdx.Game" />
 	<extend-configuration-property name="gdx.reflect.include" value="de.lksbhm.gdx.LksBhmGame" />
-	<extend-configuration-property name="gdx.reflect.include" value="de.lksbhm.mona.User" />
 	<extend-configuration-property name="gdx.reflect.include" value="de.lksbhm.mona.ui.screens.AbstractScreen" />
 	<extend-configuration-property name="gdx.reflect.include" value="de.lksbhm.mona.ui.screens.InfoScreen" />
 	<extend-configuration-property name="gdx.reflect.include" value="de.lksbhm.mona.ui.screens.LevelScreenOne" />

@@ -11,6 +11,8 @@ import de.lksbhm.mona.levels.Level;
 import de.lksbhm.mona.levels.LevelPackage;
 
 public class User extends de.lksbhm.gdx.users.User {
+	public static final de.lksbhm.gdx.util.Instantiator<User> instantiator = new Instantiator();
+
 	private static final String levelIdSeparator = ";";
 	private static final String packageIdSeparator = ";";
 	private static final String levelIdsKey = "solvedLevels";
@@ -145,5 +147,18 @@ public class User extends de.lksbhm.gdx.users.User {
 
 	public boolean isPackageSolved(LevelPackage pack) {
 		return solvedPackages.contains(pack.getPackageId());
+	}
+
+	private static class Instantiator implements
+			de.lksbhm.gdx.util.Instantiator<User> {
+		@Override
+		public User instantiate() {
+			return new User();
+		}
+
+		@Override
+		public User[] allocateArray(int size) {
+			return new User[size];
+		}
 	}
 }

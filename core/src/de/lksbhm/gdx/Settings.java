@@ -5,7 +5,7 @@ public abstract class Settings {
 		return "user";
 	}
 
-	public boolean isAllowEqualUserNames() {
+	public boolean allowEqualUserNames() {
 		return false;
 	}
 }

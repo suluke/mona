@@ -2,10 +2,8 @@ package de.lksbhm.gdx.users;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.utils.reflect.ArrayReflection;
-import com.badlogic.gdx.utils.reflect.ClassReflection;
-import com.badlogic.gdx.utils.reflect.Constructor;
-import com.badlogic.gdx.utils.reflect.ReflectionException;
+
+import de.lksbhm.gdx.util.Instantiator;
 
 /**
  * Responsible for loading and persisting {@link User}s and their attached data.
@@ -20,17 +18,10 @@ public class UserManager<UserImplementation extends User> {
 	private final UserDataStorage userDataStorage = new UserDataStorage();
 	private final Preferences userPreferences = Gdx.app
 			.getPreferences(userPreferencesName);
-	private final Class<UserImplementation> userImplementationClass;
-	private final Constructor userImplementationConstructor;
+	private final Instantiator<UserImplementation> userInstantiator;
 
-	public UserManager(Class<UserImplementation> userImplementationClass) {
-		this.userImplementationClass = userImplementationClass;
-		try {
-			userImplementationConstructor = ClassReflection.getConstructor(
-					userImplementationClass, new Class<?>[0]);
-		} catch (ReflectionException e) {
-			throw new RuntimeException();
-		}
+	public UserManager(Instantiator<UserImplementation> userInstantiator) {
+		this.userInstantiator = userInstantiator;
 		if (userPreferences.contains(currentUserKey)) {
 			int currentUserId = userPreferences.getInteger(currentUserKey);
 			currentUser = loadUser(currentUserId);
@@ -38,20 +29,10 @@ public class UserManager<UserImplementation extends User> {
 	}
 
 	private UserImplementation loadUser(int id) {
-		UserImplementation user = instantiateUser();
+		UserImplementation user = userInstantiator.instantiate();
 		user.setUserId(id);
 		user.callLoadAttributes(userDataStorage);
 		return user;
-	}
-
-	@SuppressWarnings("unchecked")
-	private UserImplementation instantiateUser() {
-		try {
-			return (UserImplementation) userImplementationConstructor
-					.newInstance(new Object[0]);
-		} catch (ReflectionException e) {
-			throw new RuntimeException();
-		}
 	}
 
 	private int generateNewUserId() {
@@ -60,7 +41,7 @@ public class UserManager<UserImplementation extends User> {
 	}
 
 	public UserImplementation createUser() {
-		UserImplementation user = instantiateUser();
+		UserImplementation user = userInstantiator.instantiate();
 		user.setUserId(generateNewUserId());
 		user.setInitialAttributeValues();
 		user.callStoreAttributes(userDataStorage);
@@ -79,8 +60,7 @@ public class UserManager<UserImplementation extends User> {
 
 	@SuppressWarnings("unchecked")
 	private UserImplementation[] makeUserImplementationArray(int size) {
-		return (UserImplementation[]) ArrayReflection.newInstance(
-				userImplementationClass, size);
+		return userInstantiator.allocateArray(size);
 	}
 
 	public UserImplementation[] listUsers() {
@@ -88,7 +68,7 @@ public class UserManager<UserImplementation extends User> {
 		UserImplementation[] userList = makeUserImplementationArray(usersCount);
 		UserImplementation current;
 		for (int i = 0; i < usersCount; i++) {
-			current = instantiateUser();
+			current = userInstantiator.instantiate();
 			current.setUserId(userPreferences.getInteger("user" + i));
 			userList[i] = current;
 		}

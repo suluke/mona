@@ -1,6 +1,5 @@
 package de.lksbhm.gdx.util;
 
-
 public class GregorianCalendarValue implements GregorianCalendarInterface {
 
 	private int year;
@@ -9,6 +8,17 @@ public class GregorianCalendarValue implements GregorianCalendarInterface {
 	private int dayOfWeek;
 	private long timeInMillis;
 	private String timezone;
+
+	public GregorianCalendarValue() {
+	}
+
+	public GregorianCalendarValue(int year, int month, int dayOfMonth,
+			long millis) {
+		this.year = year;
+		this.month = month;
+		this.dayOfMonth = dayOfMonth;
+		this.timeInMillis = millis;
+	}
 
 	@Override
 	public long getTimeInMillis() {

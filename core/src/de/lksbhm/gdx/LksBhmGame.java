@@ -16,6 +16,8 @@ import de.lksbhm.gdx.resources.ResourceConsumer;
 import de.lksbhm.gdx.resources.ResourceConsumerManager;
 import de.lksbhm.gdx.ui.screens.TransitionableResettableConsumerScreen;
 import de.lksbhm.gdx.users.UserManager;
+import de.lksbhm.gdx.util.Instantiator;
+import de.lksbhm.gdx.util.Version;
 import de.lksbhm.mona.User;
 
 @SuppressWarnings("rawtypes")
@@ -33,33 +35,29 @@ public abstract class LksBhmGame<GameImplementation extends LksBhmGame, UserImpl
 	private Router router;
 	private Skin defaultSkin;
 	private int routerHistorySize = 0;
-	private final Class<UserImplementation> userImplementationClass;
+	private final Instantiator<UserImplementation> userInstantiator;
 	private UserManager<UserImplementation> userManager;
 
 	private final PlatformManager<PlatformImplementation> platformManager = new PlatformManager<PlatformImplementation>();
 
-	public LksBhmGame(Class<GameImplementation> gameImplementation,
-			Class<UserImplementation> userImplementation) {
-		this("json/skin.json", "textures/main.atlas", gameImplementation,
-				userImplementation);
+	public LksBhmGame(Instantiator<UserImplementation> userInstantiator) {
+		this("json/skin.json", "textures/main.atlas", userInstantiator);
 	}
 
 	public LksBhmGame(String defaultSkinPath, String defaultSkinAtlasPath,
-			Class<GameImplementation> gameImplementation,
-			Class<UserImplementation> userImplementation) {
-		this(defaultSkinPath, defaultSkinAtlasPath, 0, gameImplementation,
-				userImplementation);
+
+	Instantiator<UserImplementation> userInstantiator) {
+		this(defaultSkinPath, defaultSkinAtlasPath, 0, userInstantiator);
 	}
 
 	public LksBhmGame(String defaultSkinPath, String defaultSkinAtlasPath,
 			int routerHistorySize,
-			Class<GameImplementation> gameImplementation,
-			Class<UserImplementation> userImplementation) {
+			Instantiator<UserImplementation> userInstantiator) {
 		instance = this;
 		this.defaultSkinPath = defaultSkinPath;
 		this.defaultSkinAtlasPath = defaultSkinAtlasPath;
 		this.routerHistorySize = routerHistorySize;
-		this.userImplementationClass = userImplementation;
+		this.userInstantiator = userInstantiator;
 	}
 
 	@Override
@@ -70,8 +68,7 @@ public abstract class LksBhmGame<GameImplementation extends LksBhmGame, UserImpl
 			Gdx.app.setLogLevel(Application.LOG_NONE);
 		}
 		router = new Router(this, routerHistorySize);
-		userManager = new UserManager<UserImplementation>(
-				userImplementationClass);
+		userManager = new UserManager<UserImplementation>(userInstantiator);
 
 		initialize();
 		loadAndStart();
@@ -179,4 +176,6 @@ public abstract class LksBhmGame<GameImplementation extends LksBhmGame, UserImpl
 	public PlatformManager<PlatformImplementation> getPlatformManager() {
 		return this.platformManager;
 	}
+
+	public abstract Version getVersion();
 }

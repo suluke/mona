@@ -8,6 +8,9 @@ import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.gdx.resources.ResourceConsumer;
 import de.lksbhm.gdx.ui.screens.TransitionableResettableConsumerScreen;
 import de.lksbhm.gdx.users.UserManager;
+import de.lksbhm.gdx.util.GregorianCalendarValue;
+import de.lksbhm.gdx.util.Version;
+import de.lksbhm.gdx.util.Version.Status;
 import de.lksbhm.mona.levels.LevelPackageManager;
 import de.lksbhm.mona.ui.screens.LoadingScreen;
 import de.lksbhm.mona.ui.screens.SplashScreen;
@@ -18,9 +21,11 @@ public class Mona extends LksBhmGame<Mona, User, MonaPlatform> {
 	private final Settings settings = new Settings();
 	private final LevelPackageManager packageManager = new LevelPackageManager();
 	private final DropInBehavior dropinBehavior = new DropInBehavior();
+	private final Version version = new Version("", 0, 0, 1, Status.ALPHA,
+			new GregorianCalendarValue(2014, 9, 29, 1411900442000L));
 
 	public Mona() {
-		super(Mona.class, User.class);
+		super(User.instantiator);
 	}
 
 	@Override
@@ -93,5 +98,10 @@ public class Mona extends LksBhmGame<Mona, User, MonaPlatform> {
 
 	public LevelPackageManager getLevelPackageManager() {
 		return packageManager;
+	}
+
+	@Override
+	public Version getVersion() {
+		return version;
 	}
 }

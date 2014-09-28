@@ -184,7 +184,7 @@ public class Tutorial00 extends Tutorial {
 
 		// Setup overlay content
 		Label introText = new Label(
-				"In the background you can see the playboard which consists of tiles.",
+				"In the background you can see the tiles of the playboard.",
 				skin);
 		introText.setAlignment(Align.center);
 		introText.setWrap(true);
@@ -257,6 +257,9 @@ public class Tutorial00 extends Tutorial {
 	@Override
 	protected void end() {
 		currentPart = null;
+		overlay.removeListener(clickForNextListener);
+		overlay.removeListener(clickForRemoveOverlayListener);
+		getLevel().getPuzzle().removeChangeListener(puzzleChangedListener);
 		if (overlay.hasParent()) {
 			overlay.addAction(Actions.sequence(Actions.alpha(0, .6f),
 					Actions.removeActor(), Actions.alpha(1)));

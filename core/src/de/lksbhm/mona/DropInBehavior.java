@@ -36,7 +36,6 @@ class DropInBehavior {
 										.getInternalPackages().getPackage(0)
 										.getLevel(0);
 								if (!firstLevel.isSolved()) {
-									System.out.println("Play tutorial!");
 									LevelScreenOne levelScreen = mona
 											.getResourceConsumerManager()
 											.obtainConsumerInstanceWithoutLoadingResources(
