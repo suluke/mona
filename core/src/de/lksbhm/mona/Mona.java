@@ -52,14 +52,13 @@ public class Mona extends LksBhmGame<Mona, User, MonaPlatform> {
 	public void animateLoad(Loadable<?> loadable,
 			Class<? extends ResourceConsumer> requester, Runnable callback) {
 		if (requester == null) {
-			Gdx.app.log("Mona", "Showing loading screen");
+			// I decided to show no loading screen on app start
+			loadable.finish();
+			callback.run();
+		} else {
 			getRouter().saveCurrentScreenInHistory();
 			loadingScreen.setup(loadable, callback, 0);
 			setScreen(loadingScreen);
-		} else {
-			Gdx.app.log("Mona", requester.getSimpleName() + " finishLoading");
-			loadable.finish();
-			callback.run();
 		}
 	}
 

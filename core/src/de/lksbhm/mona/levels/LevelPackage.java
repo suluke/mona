@@ -55,8 +55,9 @@ public abstract class LevelPackage implements Iterable<Level> {
 
 	private void assertLevelsLoaded() {
 		if (!loaded) {
-			loadLevels();
+			// set loaded before actual load to prevent endless recursion
 			loaded = true;
+			loadLevels();
 		}
 	}
 
@@ -75,6 +76,7 @@ public abstract class LevelPackage implements Iterable<Level> {
 	}
 
 	public LevelPackageCollection getLevelPackageCollection() {
+		assertLevelsLoaded();
 		return collection;
 	}
 

@@ -58,7 +58,7 @@ public class RandomPuzzleScreen extends AbstractPuzzleScreen {
 
 	@Override
 	public boolean isRequestingLoadingAnimation() {
-		return true;
+		return false;
 	}
 
 	@Override

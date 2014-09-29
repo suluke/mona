@@ -165,7 +165,7 @@ public class MainMenuScreen extends AbstractScreen {
 
 	@Override
 	public boolean isRequestingLoadingAnimation() {
-		return true;
+		return false;
 	}
 
 	@Override
@@ -181,8 +181,8 @@ public class MainMenuScreen extends AbstractScreen {
 
 		@Override
 		public void run() {
-			Transition transition = TransitionBuilder.buildNew().slideInRight()
-					.fadeClearColors().duration(.6f).get();
+			Transition transition = TransitionBuilder.buildNew()
+					.fadeOutFadeIn().fadeClearColors().duration(.6f).get();
 			PackagesListScreen.showAsCurrentScreen(dailyPackagesLoader.get(),
 					transition);
 		}

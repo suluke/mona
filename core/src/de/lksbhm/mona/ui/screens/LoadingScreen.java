@@ -1,13 +1,10 @@
 package de.lksbhm.mona.ui.screens;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.gdx.Router;
@@ -21,13 +18,14 @@ public class LoadingScreen extends AbstractScreen {
 	private static final float EPS = 1e-5f;
 
 	private static final float barWidth = .8f;
-	private static final float barHeight = .2f;
+	private static final float barHeight = .02f;
 	private static final float barVPos = .2f;
 
 	private Loadable<?> loadable;
 	private Runnable onDoneCallback;
 	private final NinePatch bar = new NinePatch(new Texture(
 			"textures/loading.9.png"));
+	private final Image imageActor = new Image(bar);
 	private float displayedProgress;
 	private float currentProgress;
 	private boolean calledBack = false;
@@ -36,14 +34,17 @@ public class LoadingScreen extends AbstractScreen {
 	private final float maxProgressPerFrame = .1f;
 
 	public LoadingScreen() {
+		getStage().addActor(imageActor);
+		float ww = getViewport().getWorldWidth();
+		float wh = getViewport().getWorldHeight();
+		float x = ww * (1 - barWidth) / 2 + getStage().getRoot().getX();
+		float y = wh * barVPos;
+		float height = wh * barHeight + getStage().getRoot().getY();
+		imageActor.setBounds(x, y, 0, height);
 	}
 
 	@Override
 	public void render(float delta, boolean clear) {
-		if (clear) {
-			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-		}
-
 		if (delayed < delayLoading) {
 			delayed += delta;
 			return;
@@ -57,22 +58,11 @@ public class LoadingScreen extends AbstractScreen {
 			displayedProgress = currentProgress;
 		}
 
-		float ww, wh, x, y, width, height;
-		ww = getViewport().getWorldWidth();
-		wh = getViewport().getWorldHeight();
-		x = ww * (1 - barWidth) / 2 + getStage().getRoot().getX();
-		width = ww * barWidth * displayedProgress;
-		y = wh * barVPos;
-		height = wh * barHeight + getStage().getRoot().getY();
+		float width = getViewport().getWorldWidth() * barWidth
+				* displayedProgress;
+		imageActor.setWidth(width);
 
-		Camera camera = getViewport().getCamera();
-		camera.update();
-		Batch batch = getStage().getBatch();
-
-		batch.begin();
-		batch.setProjectionMatrix(camera.combined);
-		bar.draw(batch, x, y, width, height);
-		batch.end();
+		super.render(delta, clear);
 		// The following code makes it easier to see what's going on in the
 		// skin.json parsing process, especially when in gwt
 		try {

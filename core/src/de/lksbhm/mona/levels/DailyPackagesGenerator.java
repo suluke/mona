@@ -150,6 +150,8 @@ class DailyPackagesGenerator implements Loadable<LevelPackageCollection> {
 				newPack = new DailyPackage(dailyPackageIdPrefix + "-" + i,
 						difficulties[i], collection, seed, random);
 				newPack.setDisplayName(dayName + Integer.toString(i + 1));
+				// also trigger generation of levels in packages
+				newPack.getLevel(0);
 				collection.setPackage(i, newPack);
 				progress += progressPerPackage;
 			}

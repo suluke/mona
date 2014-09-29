@@ -120,7 +120,7 @@ public class PackagesListScreen extends AbstractScreen {
 
 	@Override
 	public boolean isRequestingLoadingAnimation() {
-		return true;
+		return false;
 	}
 
 	@Override
