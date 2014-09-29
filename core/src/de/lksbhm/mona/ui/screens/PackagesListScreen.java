@@ -73,14 +73,22 @@ public class PackagesListScreen extends AbstractScreen {
 		TextButton packageButton;
 		Container<TextButton> buttonContainer;
 		packageButtons = new Container[state.levelPackages.size()];
+		StringBuilder sb = new StringBuilder();
+		String lineSeparator = LksBhmGame.getGame(Mona.class)
+				.getPlatformManager().getPlatform().getLineSeparator();
 		for (int i = 0; i < state.levelPackages.size(); i++) {
 			final LevelPackage pack = state.levelPackages.getPackage(i);
+			sb.setLength(0);
+			sb.append(pack.getDisplayName());
+			sb.append(lineSeparator);
+			for (int diffI = 0; diffI <= pack.getDifficulty().ordinal(); diffI++) {
+				sb.append('*');
+			}
+			String buttonText = sb.toString();
 			if (pack.isSolved()) {
-				packageButton = new TextButton(pack.getDisplayName(),
-						solvedButtonStyle);
+				packageButton = new TextButton(buttonText, solvedButtonStyle);
 			} else {
-				packageButton = new TextButton(pack.getDisplayName(),
-						unsolvedButtonStyle);
+				packageButton = new TextButton(buttonText, unsolvedButtonStyle);
 			}
 			packageButton.addListener(new ClickListener() {
 				@Override
