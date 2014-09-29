@@ -20,6 +20,7 @@ processResources.dependsOn copyUnpackedTextures
 import de.lksbhm.gradle.TexturePackerTask
 new File('core/textures/atlasses').eachFile() { file ->
 	if(file.isDirectory()) {
+		System.out.println('texturepack-' + file.name)
 		def task = tasks.create(name: 'texturepack-' + file.name, type: TexturePackerTask) {
 			inputDir = file
 			outputDir = project.file('../android/assets/textures')

@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.RandomXS128;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.ColorAction;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -34,6 +35,7 @@ public class MainMenuScreen extends AbstractScreen {
 	private TextButton dailiesButton;
 	private TextButton randomLevelButton;
 	private TextButton infoButton;
+	private ImageButton userButton;
 	private Label title;
 	private final ShowDailyPackagesScreen showDailyPackagesScreen = new ShowDailyPackagesScreen();
 	private Loadable<LevelPackageCollection> dailyPackagesLoader;
@@ -117,6 +119,8 @@ public class MainMenuScreen extends AbstractScreen {
 				router.changeScreen(InfoScreen.class, null, transition);
 			}
 		});
+
+		userButton = new ImageButton(skin, "user");
 	}
 
 	private void layoutWidgets() {
@@ -129,13 +133,18 @@ public class MainMenuScreen extends AbstractScreen {
 		h = worldHeight * 0.15f;
 		title.setAlignment(Align.center);
 		title.setFontScale(2);
-		base.add(title).size(w, h).top().spaceBottom(50).row();
-		base.add(playButton).size(w, h).center().spaceBottom(10).row();
-		base.add(dailiesButton).size(w, h).center().spaceBottom(10).row();
-		base.add(randomLevelButton).size(w, h).center().spaceBottom(10).row();
-		infoButton.getLabel().setFontScale(.7f);
+		base.add(title).size(w, h).top().spaceBottom(50).colspan(3).row();
+		base.add(playButton).size(w, h).center().spaceBottom(10).colspan(3)
+				.row();
+		base.add(dailiesButton).size(w, h).center().spaceBottom(10).colspan(3)
+				.row();
+		base.add(randomLevelButton).size(w, h).center().spaceBottom(10)
+				.colspan(3).row();
 		w = worldWidth * .2f;
 		h = worldHeight * .05f;
+		userButton.setSize(w, h);
+		base.add(userButton).size(w, h);
+		infoButton.getLabel().setFontScale(.7f);
 		base.add(infoButton).size(w, h);
 	}
 

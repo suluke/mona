@@ -30,6 +30,16 @@
 			"r": 0.1
 		}
 	},
+	"com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable": {
+		"userWhite": {
+			"name": "icons/user",
+			"color": "white"
+		},
+		"userBlack": {
+			"name": "icons/user",
+			"color": "black"
+		}
+	},
 	"com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle": {
 		"default": {
 			"font": "default-font",
@@ -64,6 +74,12 @@
 			"disabled": "widgets/button-dark/disabled",
 			"font": "default-font",
 			"fontColor": "black"
+		}
+	},
+	"com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle": {
+		"user": {
+			"imageUp": "userBlack",
+			"imageDown": "userWhite"
 		}
 	},
 	"com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
