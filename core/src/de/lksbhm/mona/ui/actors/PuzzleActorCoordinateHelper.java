@@ -1,6 +1,7 @@
 package de.lksbhm.mona.ui.actors;
 
 import de.lksbhm.mona.puzzle.Piece;
+import de.lksbhm.mona.puzzle.Piece.Type;
 import de.lksbhm.mona.puzzle.Puzzle;
 
 class PuzzleActorCoordinateHelper {
@@ -30,7 +31,11 @@ class PuzzleActorCoordinateHelper {
 		if (x > cellWidth || y > cellHeight) {
 			return null;
 		}
-		return actor.getPuzzle().getTile(tileX, tileY);
+		Piece tile = actor.getPuzzle().getTile(tileX, tileY);
+		if (tile != null && tile.getType() == Type.INVISIBLE) {
+			return null;
+		}
+		return tile;
 	}
 
 	public static Piece coordsToTileIncludingPadding(PuzzleActor actor,
@@ -61,7 +66,11 @@ class PuzzleActorCoordinateHelper {
 		if (x > cellWidth + paddingWidth || y > cellHeight + paddingHeight) {
 			return null;
 		}
-		return actor.getPuzzle().getTile(tileX, tileY);
+		Piece tile = actor.getPuzzle().getTile(tileX, tileY);
+		if (tile != null && tile.getType() == Type.INVISIBLE) {
+			return null;
+		}
+		return tile;
 	}
 
 	public static float getTileOriginX(PuzzleActor actor, Piece tile) {

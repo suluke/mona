@@ -6,7 +6,10 @@
 				"type": "Generated",
 				"data": {
 					"seed": 8735526820348284681,
-					"generator": "com.badlogic.gdx.math.RandomXS128"
+					"generator": "com.badlogic.gdx.math.RandomXS128",
+					"invisibleTiles": [
+						[0, 3]
+					]
 				}
 			}
 		]

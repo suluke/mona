@@ -5,7 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 
 import de.lksbhm.mona.puzzle.Piece;
-import de.lksbhm.mona.puzzle.Puzzle;
 import de.lksbhm.mona.puzzle.representations.Direction;
 
 class PuzzleActorInput implements EventListener {
@@ -86,46 +85,13 @@ class PuzzleActorInput implements EventListener {
 						lastConnected = startPiece;
 					}
 					startPiece = currentPiece;
-				} else if (currentPiece.getX() == startPiece.getX()) {
-					int tileX = currentPiece.getX();
-					int startY = startPiece.getY();
-					int endY = currentPiece.getY();
-					if (endY < startY) {
-						int swap = endY;
-						endY = startY;
-						startY = swap;
+				} else if (currentPiece.getX() == startPiece.getX()
+						|| currentPiece.getY() == startPiece.getY()) {
+					if (actor.getPuzzle().tryConnectPiecesStraight(startPiece,
+							currentPiece)) {
+						actor.getPuzzle().notifyOnChange();
+						startPiece = currentPiece;
 					}
-					Puzzle p = actor.getPuzzle();
-					Piece tile1;
-					Piece tile2;
-					for (int tileY = startY; tileY < endY; tileY++) {
-						tile1 = p.getTile(tileX, tileY);
-						tile2 = p.getTile(tileX, tileY + 1);
-						tile1.pushInOutDirection(Direction.DOWN, false);
-						tile2.pushInOutDirection(Direction.UP, false);
-					}
-					actor.getPuzzle().notifyOnChange();
-					startPiece = currentPiece;
-				} else if (currentPiece.getY() == startPiece.getY()) {
-					int tileY = currentPiece.getY();
-					int startX = startPiece.getX();
-					int endX = currentPiece.getX();
-					if (endX < startX) {
-						int swap = endX;
-						endX = startX;
-						startX = swap;
-					}
-					Puzzle p = actor.getPuzzle();
-					Piece tile1;
-					Piece tile2;
-					for (int tileX = startX; tileX < endX; tileX++) {
-						tile1 = p.getTile(tileX, tileY);
-						tile2 = p.getTile(tileX + 1, tileY);
-						tile1.pushInOutDirection(Direction.RIGHT, false);
-						tile2.pushInOutDirection(Direction.LEFT, false);
-					}
-					actor.getPuzzle().notifyOnChange();
-					startPiece = currentPiece;
 				}
 			}
 		}

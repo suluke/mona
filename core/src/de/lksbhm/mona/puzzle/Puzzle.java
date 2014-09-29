@@ -396,4 +396,63 @@ public class Puzzle extends Board<Piece> implements Disposable {
 	protected Piece[] createNodeArray(int size) {
 		return new Piece[size];
 	}
+
+	public boolean tryConnectPiecesStraight(Piece startPiece, Piece endPiece) {
+		int startX = startPiece.getX();
+		int endX = endPiece.getX();
+		int startY = startPiece.getY();
+		int endY = endPiece.getY();
+		if (startX == endX) {
+			if (endY < startY) {
+				int swap = endY;
+				endY = startY;
+				startY = swap;
+			}
+			// dry run
+			final int x = startX;
+			Piece currentTile;
+			for (int y = startY; y < endY; y++) {
+				currentTile = getTile(x, y);
+				if (currentTile == null
+						|| currentTile.getType() == Type.INVISIBLE) {
+					return false;
+				}
+			}
+			Piece tile1;
+			Piece tile2;
+			for (int y = startY; y < endY - 1; y++) {
+				tile1 = getTile(x, y);
+				tile2 = getTile(x, y + 1);
+				tile1.pushInOutDirection(Direction.DOWN, false);
+				tile2.pushInOutDirection(Direction.UP, false);
+			}
+		} else if (startY == endY) {
+			if (endX < startX) {
+				int swap = endX;
+				endX = startX;
+				startX = swap;
+			}
+			// dry run
+			final int y = startY;
+			Piece currentTile;
+			for (int x = startX; x < endX; x++) {
+				currentTile = getTile(x, y);
+				if (currentTile == null
+						|| currentTile.getType() == Type.INVISIBLE) {
+					return false;
+				}
+			}
+			Piece tile1;
+			Piece tile2;
+			for (int x = startX; x < endX - 1; x++) {
+				tile1 = getTile(x, y);
+				tile2 = getTile(x + 1, y);
+				tile1.pushInOutDirection(Direction.DOWN, false);
+				tile2.pushInOutDirection(Direction.UP, false);
+			}
+		} else {
+			return false;
+		}
+		return true;
+	}
 }

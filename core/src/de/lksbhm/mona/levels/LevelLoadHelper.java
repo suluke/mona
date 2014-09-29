@@ -77,8 +77,19 @@ class LevelLoadHelper {
 		} else {
 			r = new Random();
 		}
+		int[][] invisibleTiles = null;
+		if (data.has("invisibleTiles")) {
+			JsonValue invisibleTilesJson = data.get("invisibleTiles");
+			invisibleTiles = new int[invisibleTilesJson.size][2];
+			int i = 0;
+			for (JsonValue coord : invisibleTilesJson) {
+				invisibleTiles[i][0] = coord.getInt(0);
+				invisibleTiles[i][1] = coord.getInt(1);
+				i++;
+			}
+		}
 		r.setSeed(seed);
-		return new GeneratedLevel(seed, r, pack, id);
+		return new GeneratedLevel(seed, r, pack, id, invisibleTiles);
 	}
 
 	private static Level getLiterallyDefinedLevelFromJson(JsonValue json,

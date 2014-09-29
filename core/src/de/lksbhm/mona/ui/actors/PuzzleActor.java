@@ -343,8 +343,10 @@ public class PuzzleActor extends Widget {
 	}
 
 	private void drawType(Batch batch, Piece tile) {
-		float tileX = PuzzleActorCoordinateHelper.getTileOriginX(this, tile);
-		float tileY = PuzzleActorCoordinateHelper.getTileOriginY(this, tile);
+		final float tileX = PuzzleActorCoordinateHelper.getTileOriginX(this,
+				tile);
+		final float tileY = PuzzleActorCoordinateHelper.getTileOriginY(this,
+				tile);
 		switch (tile.getType()) {
 		case EDGE: {
 			style.edge.draw(batch, tileX, tileY, cellWidth, cellHeight);
@@ -362,10 +364,10 @@ public class PuzzleActor extends Widget {
 	}
 
 	private void drawBackground(Batch batch, Piece tile) {
-		int x = tile.getX();
-		int y = tile.getY();
-		int width = puzzle.getWidth();
-		int height = puzzle.getHeight();
+		final int x = tile.getX();
+		final int y = tile.getY();
+		final int width = puzzle.getWidth();
+		final int height = puzzle.getHeight();
 		if (x == 0) {
 			if (y == 0) {
 				drawBottomLeft(batch, tile);
@@ -396,7 +398,7 @@ public class PuzzleActor extends Widget {
 		int y = tile.getY();
 		float drawX = marginLeft + x * (cellWidth + paddingWidth);
 		float drawY = marginTop + y * (cellHeight + paddingHeight);
-		if (!invertY) {
+		if (invertY) {
 			drawY = getHeight() - drawY - cellHeight;
 		}
 		drawX += getX();
@@ -409,7 +411,7 @@ public class PuzzleActor extends Widget {
 		float drawX = marginLeft + x * (cellWidth + paddingWidth);
 		float drawY = marginTop + (puzzle.getHeight() - 1)
 				* (cellHeight + paddingHeight);
-		if (!invertY) {
+		if (invertY) {
 			drawY = getHeight() - drawY - cellHeight;
 		}
 		drawX += getX();
@@ -421,7 +423,7 @@ public class PuzzleActor extends Widget {
 		int x = tile.getX();
 		float drawX = marginLeft + x * (cellWidth + paddingWidth);
 		float drawY = marginTop;
-		if (!invertY) {
+		if (invertY) {
 			drawY = getHeight() - drawY - cellHeight;
 		}
 		drawX += getX();
@@ -434,7 +436,7 @@ public class PuzzleActor extends Widget {
 		float drawX = marginLeft + (puzzle.getWidth() - 1)
 				* (cellWidth + paddingWidth);
 		float drawY = marginTop + y * (cellHeight + paddingHeight);
-		if (!invertY) {
+		if (invertY) {
 			drawY = getHeight() - drawY - cellHeight;
 		}
 		drawX += getX();
@@ -447,7 +449,7 @@ public class PuzzleActor extends Widget {
 				* (cellWidth + paddingWidth);
 		float drawY = marginTop + (puzzle.getHeight() - 1)
 				* (cellHeight + paddingHeight);
-		if (!invertY) {
+		if (invertY) {
 			drawY = getHeight() - drawY - cellHeight;
 		}
 		drawX += getX();
@@ -459,7 +461,7 @@ public class PuzzleActor extends Widget {
 		float drawX = marginLeft + (puzzle.getWidth() - 1)
 				* (cellWidth + paddingWidth);
 		float drawY = marginTop;
-		if (!invertY) {
+		if (invertY) {
 			drawY = getHeight() - drawY - cellHeight;
 		}
 		drawX += getX();
@@ -471,7 +473,7 @@ public class PuzzleActor extends Widget {
 		int y = tile.getY();
 		float drawX = marginLeft;
 		float drawY = marginTop + y * (paddingHeight + cellHeight);
-		if (!invertY) {
+		if (invertY) {
 			drawY = getHeight() - drawY - cellHeight;
 		}
 		drawX += getX();
@@ -483,7 +485,7 @@ public class PuzzleActor extends Widget {
 		float drawX = marginLeft;
 		float drawY = marginTop + (puzzle.getHeight() - 1)
 				* (cellHeight + paddingHeight);
-		if (!invertY) {
+		if (invertY) {
 			drawY = getHeight() - drawY - cellHeight;
 		}
 		drawX += getX();
@@ -494,7 +496,7 @@ public class PuzzleActor extends Widget {
 	private void drawTopLeft(Batch batch, Piece tile) {
 		float drawX = marginLeft;
 		float drawY = marginTop;
-		if (!invertY) {
+		if (invertY) {
 			drawY = getHeight() - drawY - cellHeight;
 		}
 		drawX += getX();
