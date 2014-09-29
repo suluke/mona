@@ -34,7 +34,7 @@ public class SplashScreen extends AbstractScreen implements Context, Callback {
 	private Label naLabel;
 	private HorizontalGroup foregroundGroup;
 	private boolean movedToNextScreen = false;
-	private final ShapeRenderer shapeRenderer = new ShapeRenderer(8);
+	private final ShapeRenderer shapeRenderer;
 	private final Action moveToNextScreenAction = new Action() {
 		@Override
 		public boolean act(float delta) {
@@ -47,6 +47,12 @@ public class SplashScreen extends AbstractScreen implements Context, Callback {
 	};
 
 	private float progress;
+
+	public SplashScreen() {
+		// ShapeRenderer assumes 8 vertices for a quad, and even if it didn't it
+		// still needed 6 vertices for the 2 triangles that make up the quad
+		shapeRenderer = new ShapeRenderer(16);
+	}
 
 	@Override
 	public void onResourcesLoaded(AssetManager manager) {
@@ -142,6 +148,7 @@ public class SplashScreen extends AbstractScreen implements Context, Callback {
 
 	@Override
 	protected void onDispose() {
+		super.onDispose();
 		shapeRenderer.dispose();
 	}
 }
