@@ -7,9 +7,9 @@
 				"tutorial": "p00.Tutorial03",
 				"data": {
 					"tileTypes": [
-						["EMPTY",	"EMPTY",	"EDGE"],
-						["EMPTY",	"EMPTY",	"EMPTY"],
-						["EMPTY",	"EMPTY",	"EMPTY"],
+						["EMPTY",	"EMPTY",		"EDGE"],
+						["EMPTY",	"INVISIBLE",	"EMPTY"],
+						["EMPTY",	"EMPTY",		"EMPTY"],
 					],
 					"solution": [
 						["BottomRight",	"TopBottom",	"TopRight"],

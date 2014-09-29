@@ -9,6 +9,46 @@ public class Piece extends Tile<Piece> {
 	private Direction out = Direction.NONE;
 	private Type type = Type.EMPTY;
 
+	public static enum Type {
+		EMPTY, EDGE, STRAIGHT, INVISIBLE;
+
+		public static Type fromString(String string) {
+			if ("EMPTY".equalsIgnoreCase(string)) {
+				return EMPTY;
+			} else if (("EDGE").equalsIgnoreCase(string)) {
+				return EDGE;
+			} else if ("STRAIGHT".equalsIgnoreCase(string)) {
+				return STRAIGHT;
+			} else if ("INVISIBLE".equalsIgnoreCase(string)) {
+				return INVISIBLE;
+			}
+			throw new IllegalArgumentException("No such tile type: " + string);
+		}
+
+		public boolean mustBeInPath() {
+			switch (this) {
+			case EDGE:
+			case STRAIGHT:
+				return true;
+			case EMPTY:
+			case INVISIBLE:
+				return false;
+			default:
+				return false;
+			}
+		}
+	}
+
+	@Override
+	public Piece getNeighbor(Direction d) {
+		Piece neighbor = super.getNeighbor(d);
+		if (neighbor != null && neighbor.getType() == Type.INVISIBLE) {
+			return null;
+		} else {
+			return neighbor;
+		}
+	}
+
 	void setup(Board<Piece> b, int x, int y, Type t, Direction in, Direction out) {
 		super.setup(b, x, y);
 		this.type = t;
@@ -19,6 +59,11 @@ public class Piece extends Tile<Piece> {
 		if (in == out && in != Direction.NONE) {
 			throw new RuntimeException(
 					"In and out directions must not be equal");
+		}
+		if (type == Type.INVISIBLE
+				&& (in != Direction.NONE || out != Direction.NONE)) {
+			throw new RuntimeException(
+					"Try to set in/out connection of invisible tile to something different than NONE");
 		}
 		if (this.in != in || this.out != out) {
 			this.in = in;
@@ -44,6 +89,10 @@ public class Piece extends Tile<Piece> {
 	 * @param d
 	 */
 	public boolean pushInOutDirection(Direction d, boolean notify) {
+		if (type == Type.INVISIBLE && d != Direction.NONE) {
+			throw new RuntimeException(
+					"Try to set in/out connection of invisible tile to something different than NONE");
+		}
 		// don't set d twice
 		if (in == d || out == d) {
 			// nothing changed
@@ -146,21 +195,6 @@ public class Piece extends Tile<Piece> {
 		}
 	}
 
-	public static enum Type {
-		EMPTY, EDGE, STRAIGHT, ;
-
-		public static Type fromString(String string) {
-			if ("EMPTY".equalsIgnoreCase(string)) {
-				return EMPTY;
-			} else if (("EDGE").equalsIgnoreCase(string)) {
-				return EDGE;
-			} else if ("STRAIGHT".equalsIgnoreCase(string)) {
-				return STRAIGHT;
-			}
-			throw new IllegalArgumentException("No such tile type: " + string);
-		}
-	}
-
 	public Type getType() {
 		return type;
 	}
@@ -172,7 +206,7 @@ public class Piece extends Tile<Piece> {
 			return false;
 		}
 		// empties are valid if none of the connectors are set
-		if (type == Type.EMPTY
+		if (!type.mustBeInPath()
 				&& (in == Direction.NONE && out == Direction.NONE)) {
 			return true;
 		}
@@ -198,6 +232,7 @@ public class Piece extends Tile<Piece> {
 		case STRAIGHT:
 			return validateStraight(thisIn, thisOut);
 		case EMPTY:
+		case INVISIBLE:
 			return true;
 		default:
 			throw new RuntimeException();
@@ -240,6 +275,9 @@ public class Piece extends Tile<Piece> {
 	 */
 	public void setType(Type type) {
 		this.type = type;
+		if (type == Type.INVISIBLE) {
+			setInOutDirection(Direction.NONE, Direction.NONE, false);
+		}
 	}
 
 	protected void notifyOnChange() {

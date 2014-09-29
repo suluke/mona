@@ -7,6 +7,13 @@ public abstract class Tile<TileBaseType extends Tile<TileBaseType>> implements
 	private int x, y;
 	private Board<TileBaseType> b;
 
+	/**
+	 * Sets the owning board and the Tile's coordinates
+	 * 
+	 * @param b
+	 * @param x
+	 * @param y
+	 */
 	public void setup(Board<TileBaseType> b, int x, int y) {
 		if (x < 0 || x >= b.getWidth()) {
 			throw new IllegalArgumentException();

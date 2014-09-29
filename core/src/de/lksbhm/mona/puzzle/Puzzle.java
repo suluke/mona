@@ -114,7 +114,7 @@ public class Puzzle extends Board<Piece> implements Disposable {
 		// find a tile that is not empty
 		Piece root = null;
 		for (Piece tile : this) {
-			if (tile.getType() != Type.EMPTY) {
+			if (tile.getType().mustBeInPath()) {
 				root = tile;
 				break;
 			}
@@ -144,7 +144,7 @@ public class Puzzle extends Board<Piece> implements Disposable {
 		} while (current != root);
 		// iterate through all and see if there is a non-empty still not marked
 		for (Piece tile : this) {
-			if (tile.getType() != Type.EMPTY) {
+			if (tile.getType().mustBeInPath()) {
 				if (!isInvalid[tile.getX()][tile.getY()]) {
 					return false;
 				}
@@ -211,7 +211,7 @@ public class Puzzle extends Board<Piece> implements Disposable {
 		boolean isNewCircle;
 		Piece firstCircle = null; // stupid compiler needs initialization...
 		for (Piece tile : this) {
-			if (tile.isValid() && tile.getType() != Type.EMPTY) {
+			if (tile.isValid() && tile.getType().mustBeInPath()) {
 				isNewCircle = isNewCircle(tile);
 				if (isNewCircle) {
 					if (circleRoots.size() == 1) {

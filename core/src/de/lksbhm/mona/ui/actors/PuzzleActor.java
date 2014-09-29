@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 import com.badlogic.gdx.utils.Pool;
 
 import de.lksbhm.mona.puzzle.Piece;
+import de.lksbhm.mona.puzzle.Piece.Type;
 import de.lksbhm.mona.puzzle.Puzzle;
 import de.lksbhm.mona.puzzle.PuzzleChangedListener;
 import de.lksbhm.mona.puzzle.representations.Direction;
@@ -193,6 +194,9 @@ public class PuzzleActor extends Widget {
 		Piece inAdj;
 		Piece outAdj;
 		for (Piece tile : puzzle) {
+			if (tile.getType() == Type.INVISIBLE) {
+				continue;
+			}
 			inAdj = tile.getInAdjacent();
 			outAdj = tile.getOutAdjacent();
 			if (inAdj != null) {
@@ -230,12 +234,18 @@ public class PuzzleActor extends Widget {
 
 	private void drawTileTypes(Batch batch) {
 		for (Piece tile : puzzle) {
+			if (tile.getType() == Type.INVISIBLE) {
+				continue;
+			}
 			drawType(batch, tile);
 		}
 	}
 
 	private void drawTileBackgrounds(Batch batch) {
 		for (Piece tile : puzzle) {
+			if (tile.getType() == Type.INVISIBLE) {
+				continue;
+			}
 			drawBackground(batch, tile);
 		}
 	}
@@ -340,15 +350,13 @@ public class PuzzleActor extends Widget {
 			style.edge.draw(batch, tileX, tileY, cellWidth, cellHeight);
 			break;
 		}
-		case EMPTY: {
-			break;
-		}
 		case STRAIGHT: {
 			style.straight.draw(batch, tileX, tileY, cellWidth, cellHeight);
 			break;
 		}
 		default: {
-			throw new RuntimeException();
+			// don't care for the rest
+			break;
 		}
 		}
 	}

@@ -4,7 +4,6 @@ import java.util.Random;
 
 import de.lksbhm.gdx.util.Pair;
 import de.lksbhm.mona.levels.Difficulty;
-import de.lksbhm.mona.puzzle.Piece.Type;
 
 public class QualityPuzzleGenerator {
 	private QualityPuzzleGenerator() {
@@ -25,16 +24,16 @@ public class QualityPuzzleGenerator {
 	private static boolean isGoodQuality(Puzzle p) {
 		boolean result = true;
 		int tiles = p.getWidth() * p.getHeight();
-		int nonEmpty = getNonEmptyTilesCount(p);
+		int nonEmpty = getPathRelevantTilesCount(p);
 		result &= nonEmpty != 0;
 		result &= (nonEmpty / (float) tiles) > 0.125f;
 		return result;
 	}
 
-	private static int getNonEmptyTilesCount(Puzzle p) {
+	private static int getPathRelevantTilesCount(Puzzle p) {
 		int result = 0;
 		for (Piece tile : p) {
-			if (tile.getType() != Type.EMPTY) {
+			if (tile.getType().mustBeInPath()) {
 				result++;
 			}
 		}
