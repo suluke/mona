@@ -9,27 +9,31 @@ public class GeneratedLevel extends Level {
 	private final long seed;
 	private final Random random;
 	private final int[][] invisibleTiles;
+	private final Difficulty difficulty;
 
 	public GeneratedLevel(long seed, Random random, LevelPackage pack, String id) {
-		super(pack, id);
-		this.random = random;
-		this.seed = seed;
-		invisibleTiles = null;
+		this(seed, random, pack, id, null, null);
 	}
 
 	public GeneratedLevel(long seed, Random random, LevelPackage pack,
-			String id, int[][] invisibleTiles) {
+			String id, Difficulty d, int[][] invisibleTiles) {
 		super(pack, id);
 		this.random = random;
 		this.seed = seed;
+		this.difficulty = d;
 		this.invisibleTiles = invisibleTiles;
 	}
 
 	@Override
 	protected LevelPuzzle instantiatePuzzle() {
 		random.setSeed(seed);
-		LevelPuzzle puzzle = LevelPuzzleGenerator.generate(this, random, 1.f,
-				1.f);
+		LevelPuzzle puzzle;
+		if (difficulty == null) {
+			puzzle = LevelPuzzleGenerator.generate(this, random, 1.f, 1.f);
+		} else {
+			puzzle = LevelPuzzleGenerator.generate(this, difficulty, random,
+					1.f, 1.f);
+		}
 		if (invisibleTiles != null) {
 			for (int[] coord : invisibleTiles) {
 				puzzle.getTile(coord[0], coord[1]).setType(Type.INVISIBLE);
@@ -38,11 +42,20 @@ public class GeneratedLevel extends Level {
 		return puzzle;
 	}
 
-	protected long getSeed() {
+	public long getSeed() {
 		return seed;
+	}
+
+	public Class<? extends Random> getRandomType() {
+		return random.getClass();
 	}
 
 	protected Random getRandom() {
 		return random;
+	}
+
+	@Override
+	public String toString() {
+		return getSeed() + "@" + getRandomType().getSimpleName();
 	}
 }

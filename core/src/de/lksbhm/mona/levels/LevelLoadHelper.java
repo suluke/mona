@@ -88,8 +88,12 @@ class LevelLoadHelper {
 				i++;
 			}
 		}
+		Difficulty difficulty = null;
+		if (data.has("difficulty")) {
+			difficulty = Difficulty.fromString(data.getString("difficulty"));
+		}
 		r.setSeed(seed);
-		return new GeneratedLevel(seed, r, pack, id, invisibleTiles);
+		return new GeneratedLevel(seed, r, pack, id, difficulty, invisibleTiles);
 	}
 
 	private static Level getLiterallyDefinedLevelFromJson(JsonValue json,

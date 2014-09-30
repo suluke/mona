@@ -26,7 +26,10 @@ public class DailyPackage extends LevelPackage {
 		Difficulty d = getDifficulty();
 		for (int i = 0; i < size; i++) {
 			long seed = QualityPuzzleGenerator.generateSeed(random, random, d);
-			putLevel(new DailyLevel(seed, random, this, Integer.toString(i + 1)));
+			DailyLevel level = new DailyLevel(seed, random, this,
+					Integer.toString(i + 1));
+			System.out.println(level);
+			putLevel(level);
 		}
 	}
 
