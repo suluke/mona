@@ -5,22 +5,10 @@
 		}
 	},
 	"com.badlogic.gdx.graphics.Color": {
-		"green": {
-			"a": 1,
-			"b": 0,
-			"g": 1,
-			"r": 0
-		},
 		"white": {
 			"a": 1,
 			"b": 1,
 			"g": 1,
-			"r": 1
-		},
-		"red": {
-			"a": 1,
-			"b": 0,
-			"g": 0,
 			"r": 1
 		},
 		"black": {
@@ -31,12 +19,20 @@
 		}
 	},
 	"com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable": {
-		"userWhite": {
+		"user.white": {
 			"name": "icons/user",
 			"color": "white"
 		},
-		"userBlack": {
+		"user.black": {
 			"name": "icons/user",
+			"color": "black"
+		},
+		"about.white": {
+			"name": "icons/about",
+			"color": "white"
+		},
+		"about.black": {
+			"name": "icons/about",
 			"color": "black"
 		}
 	},
@@ -78,8 +74,12 @@
 	},
 	"com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle": {
 		"user": {
-			"imageUp": "userBlack",
-			"imageDown": "userWhite"
+			"imageUp": "user.black",
+			"imageDown": "user.white"
+		},
+		"about": {
+			"imageUp": "about.black",
+			"imageDown": "about.white"
 		}
 	},
 	"com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {

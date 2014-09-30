@@ -34,7 +34,7 @@ public class MainMenuScreen extends AbstractScreen {
 	private TextButton playButton;
 	private TextButton dailiesButton;
 	private TextButton randomLevelButton;
-	private TextButton infoButton;
+	private ImageButton infoButton;
 	private ImageButton userButton;
 	private Label title;
 	private final ShowDailyPackagesScreen showDailyPackagesScreen = new ShowDailyPackagesScreen();
@@ -109,7 +109,7 @@ public class MainMenuScreen extends AbstractScreen {
 			}
 		});
 
-		infoButton = new TextButton("?", skin, "play");
+		infoButton = new ImageButton(skin, "about");
 		infoButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -142,9 +142,7 @@ public class MainMenuScreen extends AbstractScreen {
 				.colspan(3).row();
 		w = worldWidth * .2f;
 		h = worldHeight * .05f;
-		userButton.setSize(w, h);
 		base.add(userButton).size(w, h);
-		infoButton.getLabel().setFontScale(.7f);
 		base.add(infoButton).size(w, h);
 	}
 
