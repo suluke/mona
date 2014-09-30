@@ -8,7 +8,8 @@ import de.lksbhm.gdx.Router;
 import de.lksbhm.gdx.ui.screens.transitions.Transition;
 import de.lksbhm.gdx.ui.screens.transitions.TransitionBuilder;
 
-public class InfoScreen extends AbstractScreen {
+public class UserScreen extends AbstractScreen {
+
 	private final AbstractBackButtonHandler backButtonHandler = new AbstractBackButtonHandler() {
 		@Override
 		protected void onBackButtonPressed() {
@@ -19,15 +20,11 @@ public class InfoScreen extends AbstractScreen {
 		}
 	};
 
-	public InfoScreen() {
+	public UserScreen() {
 		setClearColor(.816f, .588f, .29f, 1);
 		InputMultiplexer mux = new InputMultiplexer(getStage(),
 				backButtonHandler);
 		setInputProcessor(mux);
-	}
-
-	@Override
-	protected void onShow() {
 	}
 
 	@Override
@@ -38,19 +35,15 @@ public class InfoScreen extends AbstractScreen {
 
 	@Override
 	public boolean isRequestingLoadingAnimation() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public void setState(Object state) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public Object getState() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

@@ -126,6 +126,15 @@ public class MainMenuScreen extends AbstractScreen {
 		});
 
 		userButton = new ImageButton(skin, "user");
+		userButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				Router router = LksBhmGame.getGame().getRouter();
+				Transition transition = TransitionBuilder.buildNew()
+						.fadeClearColors().fadeOutFadeIn().duration(.6f).get();
+				router.changeScreen(UserScreen.class, null, transition);
+			}
+		});
 	}
 
 	private void layoutWidgets() {
