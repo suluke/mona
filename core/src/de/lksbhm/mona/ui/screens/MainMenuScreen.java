@@ -80,9 +80,14 @@ public class MainMenuScreen extends AbstractScreen {
 				Mona mona = LksBhmGame.getGame(Mona.class);
 				LevelPackageManager pacman = mona.getLevelPackageManager();
 				dailyPackagesLoader = pacman.getDailyPackagesLoader();
-				LoadingScreen.showAsCurrentScreen(dailyPackagesLoader,
-						showDailyPackagesScreen, getClearColor(), .6f,
-						transition);
+				if (dailyPackagesLoader.getProgress() != 1) {
+					LoadingScreen.showAsCurrentScreen(dailyPackagesLoader,
+							showDailyPackagesScreen, getClearColor(), .6f,
+							transition);
+				} else {
+					PackagesListScreen.showAsCurrentScreen(
+							dailyPackagesLoader.get(), transition);
+				}
 			}
 		});
 
