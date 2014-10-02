@@ -7,8 +7,11 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 
 import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.gdx.Router;
@@ -32,7 +35,11 @@ public class SplashScreen extends AbstractScreen implements Context, Callback {
 	private TransitionableResettableConsumerScreen nextScreen = null;
 	private Label moLabel;
 	private Label naLabel;
-	private HorizontalGroup foregroundGroup;
+	private final VerticalGroup leftColumn = new VerticalGroup();
+	private final VerticalGroup rightColumn = new VerticalGroup();
+	private final Container<VerticalGroup> leftContainer = new Container<VerticalGroup>();
+	private final Container<VerticalGroup> rightContainer = new Container<VerticalGroup>();
+	private final HorizontalGroup curtainGroup = new HorizontalGroup();
 	private boolean movedToNextScreen = false;
 	private final ShapeRenderer shapeRenderer;
 	private final Action moveToNextScreenAction = new Action() {
@@ -52,16 +59,26 @@ public class SplashScreen extends AbstractScreen implements Context, Callback {
 		// ShapeRenderer assumes 8 vertices for a quad, and even if it didn't it
 		// still needed 6 vertices for the 2 triangles that make up the quad
 		shapeRenderer = new ShapeRenderer(16);
+		leftColumn.align(Align.right);
+		rightColumn.align(Align.left);
+		leftContainer.setActor(leftColumn);
+		rightContainer.setActor(rightColumn);
+		curtainGroup.addActor(leftContainer);
+		curtainGroup.addActor(rightContainer);
+		getBaseTable().add(curtainGroup);
 	}
 
 	@Override
 	public void onResourcesLoaded(AssetManager manager) {
-		foregroundGroup = new HorizontalGroup();
 		moLabel = new Label("MO", LksBhmGame.getGame().getDefaultSkin());
 		naLabel = new Label("NA", LksBhmGame.getGame().getDefaultSkin());
-		foregroundGroup.addActor(moLabel);
-		foregroundGroup.addActor(naLabel);
-		getBaseTable().add(foregroundGroup);
+		float width = Math.max(moLabel.getWidth(), naLabel.getWidth());
+		moLabel.setAlignment(Align.right, Align.center);
+		naLabel.setAlignment(Align.left, Align.center);
+		leftColumn.addActor(moLabel);
+		rightColumn.addActor(naLabel);
+		leftContainer.width(width);
+		rightContainer.width(width);
 	}
 
 	@Override
@@ -82,14 +99,14 @@ public class SplashScreen extends AbstractScreen implements Context, Callback {
 	protected void onShow() {
 		progress = 0;
 		enterContext();
-		Color color = foregroundGroup.getColor();
+		Color color = curtainGroup.getColor();
 		color.a = 0;
-		foregroundGroup.setColor(color);
+		curtainGroup.setColor(color);
 		movedToNextScreen = false;
 		Action foregroundAlpha = Actions.alpha(1, 1);
 		Action sequence = Actions.sequence(foregroundAlpha, Actions.delay(.6f),
 				moveToNextScreenAction);
-		foregroundGroup.addAction(sequence);
+		curtainGroup.addAction(sequence);
 	}
 
 	@Override
@@ -101,8 +118,8 @@ public class SplashScreen extends AbstractScreen implements Context, Callback {
 
 	@Override
 	public void update(float progress) {
-		foregroundGroup.space(getDefaultViewportWidth() * progress);
-		foregroundGroup.invalidate();
+		curtainGroup.space(getStage().getWidth() * progress);
+		curtainGroup.invalidate();
 		getBaseTable().invalidate();
 		this.progress = progress;
 	}
