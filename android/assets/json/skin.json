@@ -34,6 +34,10 @@
 		"about.black": {
 			"name": "icons/about",
 			"color": "black"
+		},
+		"banner": {
+			"name": "mona-banner",
+			"color": "black"
 		}
 	},
 	"com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle": {
@@ -77,21 +81,47 @@
 			"imageUp": "user.black",
 			"imageDown": "user.white"
 		},
-		"about": {
+		"info": {
 			"imageUp": "about.black",
 			"imageDown": "about.white"
-		}
+		},
 	},
 	"com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
 		"default": {
 			"font": "default-font",
 			"fontColor": "white"
 		},
-		"title": {
+		"default-dark": {
 			"font": "default-font",
 			"fontColor": "black"
 		},
 		"won": {
+			"font": "default-font",
+			"fontColor": "black"
+		}
+	},
+	"com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle": {
+		"aboutTheGame": {
+			"imageUp": "about.black",
+			"imageDown": "about.white",
+			"down": "widgets/button-dark/down",
+			"up": "widgets/button-dark/up",
+			"font": "default-font",
+			"fontColor": "black"
+		},
+		"licenses": {
+			"imageUp": "about.black",
+			"imageDown": "about.white",
+			"down": "widgets/button-dark/down",
+			"up": "widgets/button-dark/up",
+			"font": "default-font",
+			"fontColor": "black"
+		},
+		"howToPlay": {
+			"imageUp": "about.black",
+			"imageDown": "about.white",
+			"down": "widgets/button-dark/down",
+			"up": "widgets/button-dark/up",
 			"font": "default-font",
 			"fontColor": "black"
 		}

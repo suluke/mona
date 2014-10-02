@@ -7,12 +7,11 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.RandomXS128;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.ColorAction;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -36,7 +35,7 @@ public class MainMenuScreen extends AbstractScreen {
 	private TextButton randomLevelButton;
 	private ImageButton infoButton;
 	private ImageButton userButton;
-	private Label title;
+	private Image banner;
 	private final ShowDailyPackagesScreen showDailyPackagesScreen = new ShowDailyPackagesScreen();
 	private Loadable<LevelPackageCollection> dailyPackagesLoader;
 	private final AbstractBackButtonHandler backButtonHandler = new AbstractBackButtonHandler() {
@@ -56,7 +55,7 @@ public class MainMenuScreen extends AbstractScreen {
 
 	private void setupWidgets() {
 		Skin skin = LksBhmGame.getGame().getDefaultSkin();
-		title = new Label("MONA", skin, "title");
+		banner = new Image(skin, "banner");
 
 		playButton = new TextButton("play", skin, "play");
 		playButton.addListener(new ClickListener() {
@@ -114,7 +113,7 @@ public class MainMenuScreen extends AbstractScreen {
 			}
 		});
 
-		infoButton = new ImageButton(skin, "about");
+		infoButton = new ImageButton(skin, "info");
 		infoButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -145,9 +144,7 @@ public class MainMenuScreen extends AbstractScreen {
 		float w, h;
 		w = worldWidth * 0.6f;
 		h = worldHeight * 0.15f;
-		title.setAlignment(Align.center);
-		title.setFontScale(2);
-		base.add(title).size(w, h).top().spaceBottom(50).colspan(3).row();
+		base.add(banner).size(w, h).top().spaceBottom(50).colspan(3).row();
 		base.add(playButton).size(w, h).center().spaceBottom(10).colspan(3)
 				.row();
 		base.add(dailiesButton).size(w, h).center().spaceBottom(10).colspan(3)

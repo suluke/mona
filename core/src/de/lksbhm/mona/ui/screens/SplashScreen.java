@@ -70,8 +70,8 @@ public class SplashScreen extends AbstractScreen implements Context, Callback {
 
 	@Override
 	public void onResourcesLoaded(AssetManager manager) {
-		moLabel = new Label("MO", LksBhmGame.getGame().getDefaultSkin());
-		naLabel = new Label("NA", LksBhmGame.getGame().getDefaultSkin());
+		moLabel = new Label("M  O ", LksBhmGame.getGame().getDefaultSkin());
+		naLabel = new Label(" N  A", LksBhmGame.getGame().getDefaultSkin());
 		float width = Math.max(moLabel.getWidth(), naLabel.getWidth());
 		moLabel.setAlignment(Align.right, Align.center);
 		naLabel.setAlignment(Align.left, Align.center);
