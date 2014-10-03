@@ -19,21 +19,37 @@
 		}
 	},
 	"com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable": {
-		"user.white": {
+		"icon.user.white": {
 			"name": "icons/user",
 			"color": "white"
 		},
-		"user.black": {
+		"icon.user.black": {
 			"name": "icons/user",
 			"color": "black"
 		},
-		"about.white": {
+		"icon.about.white": {
 			"name": "icons/about",
 			"color": "white"
 		},
-		"about.black": {
+		"icon.about.black": {
 			"name": "icons/about",
 			"color": "black"
+		},
+		"icon.doc.black": {
+			"name": "icons/doc",
+			"color": "black"
+		},
+		"icon.doc.white": {
+			"name": "icons/doc",
+			"color": "white"
+		},
+		"icon.controller.black": {
+			"name": "icons/controller",
+			"color": "black"
+		},
+		"icon.controller.white": {
+			"name": "icons/controller",
+			"color": "white"
 		},
 		"banner": {
 			"name": "mona-banner",
@@ -78,12 +94,12 @@
 	},
 	"com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle": {
 		"user": {
-			"imageUp": "user.black",
-			"imageDown": "user.white"
+			"imageUp": "icon.user.black",
+			"imageDown": "icon.user.white"
 		},
 		"info": {
-			"imageUp": "about.black",
-			"imageDown": "about.white"
+			"imageUp": "icon.about.black",
+			"imageDown": "icon.about.white"
 		},
 	},
 	"com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
@@ -102,28 +118,31 @@
 	},
 	"com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle": {
 		"aboutTheGame": {
-			"imageUp": "about.black",
-			"imageDown": "about.white",
+			"imageUp": "icon.about.black",
+			"imageDown": "icon.about.white",
 			"down": "widgets/button-dark/down",
 			"up": "widgets/button-dark/up",
 			"font": "default-font",
-			"fontColor": "black"
+			"fontColor": "black",
+			"downFontColor": "white"
 		},
 		"licenses": {
-			"imageUp": "about.black",
-			"imageDown": "about.white",
+			"imageUp": "icon.doc.black",
+			"imageDown": "icon.doc.white",
 			"down": "widgets/button-dark/down",
 			"up": "widgets/button-dark/up",
 			"font": "default-font",
-			"fontColor": "black"
+			"fontColor": "black",
+			"downFontColor": "white"
 		},
 		"howToPlay": {
-			"imageUp": "about.black",
-			"imageDown": "about.white",
+			"imageUp": "icon.controller.black",
+			"imageDown": "icon.controller.white",
 			"down": "widgets/button-dark/down",
 			"up": "widgets/button-dark/up",
 			"font": "default-font",
-			"fontColor": "black"
+			"fontColor": "black",
+			"downFontColor": "white"
 		}
 	},
 	"com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle": {
