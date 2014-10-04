@@ -181,6 +181,18 @@ abstract class AbstractTransition implements Transition {
 		disposeOnFinish = b;
 	}
 
+	/**
+	 * Sets disposeOnFinish for this transition and all decorated transitions.
+	 * 
+	 * @param b
+	 */
+	public void setDisposeOnFinishRecursive(boolean b) {
+		if (decorated != null) {
+			decorated.setDisposeOnFinishRecursive(b);
+		}
+		disposeOnFinish = b;
+	}
+
 	protected final TransitionableScreen getScreenRenderedBelow() {
 		if (getSharedProperties().drawOrderInverted) {
 			return getToScreen();

@@ -7,7 +7,7 @@ import de.lksbhm.gdx.ui.screens.transitions.CallbackBasedTransition.Callback;
 
 public class TransitionBuilder {
 	private static final TransitionBuilder instance = new TransitionBuilder();
-	private AbstractTransition transition = null;
+
 	private final Pool<BaseTransition> baseTransitionPool = new Pool<BaseTransition>() {
 		@Override
 		public BaseTransition newObject() {
@@ -83,6 +83,10 @@ public class TransitionBuilder {
 		};
 	};
 
+	// Fields
+	private AbstractTransition transition = null;
+	private boolean disposeAllOnFinish = true;
+
 	private TransitionBuilder() {
 
 	}
@@ -102,13 +106,19 @@ public class TransitionBuilder {
 	}
 
 	public Transition get() {
-		Transition result = transition;
+		AbstractTransition result = transition;
+		result.setDisposeOnFinishRecursive(disposeAllOnFinish);
 		transition = null;
 		return result;
 	}
 
 	public TransitionBuilder duration(float duration) {
 		transition.setDuration(duration);
+		return this;
+	}
+
+	public TransitionBuilder disposeAllOnFinish(boolean b) {
+		disposeAllOnFinish = b;
 		return this;
 	}
 
