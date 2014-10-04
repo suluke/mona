@@ -14,7 +14,7 @@
 	<extend-configuration-property name="gdx.reflect.include" value="de.lksbhm.mona.ui.screens.MainMenuScreen" />
 	<extend-configuration-property name="gdx.reflect.include" value="de.lksbhm.mona.ui.screens.PackageScreen" />
 	<extend-configuration-property name="gdx.reflect.include" value="de.lksbhm.mona.ui.screens.PackagesListScreen" />
-	<extend-configuration-property name="gdx.reflect.include" value="de.lksbhm.mona.ui.screens.PuzzleSolvedScreen" />
+	<!-- <extend-configuration-property name="gdx.reflect.include" value="de.lksbhm.mona.ui.screens.PuzzleSolvedScreen" /> -->
 	<extend-configuration-property name="gdx.reflect.include" value="de.lksbhm.mona.ui.screens.AbstractRandomPuzzleScreen" />
 	<extend-configuration-property name="gdx.reflect.include" value="de.lksbhm.mona.ui.screens.RandomPuzzleScreenOne" />
 	<extend-configuration-property name="gdx.reflect.include" value="de.lksbhm.mona.ui.screens.RandomPuzzleScreenTwo" />

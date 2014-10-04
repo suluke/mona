@@ -24,6 +24,8 @@ public class HtmlPlatform extends MonaPlatform {
 		int day = Integer.parseInt(DateTimeFormat.getFormat("d").format(today));
 		int dayOfWeek = Integer.parseInt(DateTimeFormat.getFormat("c").format(
 				today));
+		// Seems like sunday is 0 in GWT
+		dayOfWeek++;
 		cal.setYear(year);
 		cal.setMonth(month);
 		cal.setDayOfMonth(day);
