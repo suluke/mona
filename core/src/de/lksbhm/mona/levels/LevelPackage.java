@@ -1,10 +1,10 @@
 package de.lksbhm.mona.levels;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 
 import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.gdx.users.UserManager;
+import de.lksbhm.gdx.util.ArrayIterator;
 import de.lksbhm.mona.Mona;
 import de.lksbhm.mona.User;
 
@@ -13,7 +13,8 @@ public abstract class LevelPackage implements Iterable<Level> {
 	private final Difficulty difficulty;
 	private final String packageId;
 	private String displayName;
-	private final ArrayList<Level> levels = new ArrayList<Level>();
+	private final Level[] levels;
+	private int levelsInArray = 0;
 	private boolean loaded = false;
 	private final LevelPackageCollection collection;
 
@@ -23,6 +24,7 @@ public abstract class LevelPackage implements Iterable<Level> {
 		displayName = this.packageId;
 		this.difficulty = difficulty;
 		this.size = size;
+		levels = new Level[size];
 		this.collection = collection;
 	}
 
@@ -44,13 +46,14 @@ public abstract class LevelPackage implements Iterable<Level> {
 	protected abstract void loadLevels();
 
 	protected void putLevel(Level l) {
-		levels.add(l);
+		levels[levelsInArray] = l;
+		levelsInArray++;
 	}
 
 	@Override
 	public Iterator<Level> iterator() {
 		assertLevelsLoaded();
-		return levels.iterator();
+		return new ArrayIterator<Level>(levels);
 	}
 
 	private void assertLevelsLoaded() {
@@ -59,30 +62,32 @@ public abstract class LevelPackage implements Iterable<Level> {
 			loaded = true;
 			loadLevels();
 		}
+		if (levelsInArray != size) {
+			throw new RuntimeException();
+		}
 	}
 
 	public Level getLevelAfter(Level level) {
 		assertLevelsLoaded();
-		if (levels.contains(level)) {
-			for (int i = 0; i < size - 1; i++) {
-				if (levels.get(i).equals(level)) {
-					return levels.get(i + 1);
+		for (int i = 0; i < size - 1; i++) {
+			if (levels[i].equals(level)) {
+				if (i + 1 >= size) {
+					return null;
+				} else {
+					return levels[i + 1];
 				}
 			}
-			return null;
-		} else {
-			return levels.get(0);
 		}
+		return levels[0];
 	}
 
 	public LevelPackageCollection getLevelPackageCollection() {
-		assertLevelsLoaded();
 		return collection;
 	}
 
 	public Level getLevel(int index) {
 		assertLevelsLoaded();
-		return levels.get(index);
+		return levels[index];
 	}
 
 	public boolean isSolved() {

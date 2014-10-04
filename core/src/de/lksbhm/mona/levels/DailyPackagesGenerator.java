@@ -9,27 +9,54 @@ import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.gdx.util.GregorianCalendarInterface;
 import de.lksbhm.gdx.util.Loadable;
 import de.lksbhm.mona.Mona;
+import de.lksbhm.mona.puzzle.QualityPuzzleGenerator;
 
 class DailyPackagesGenerator implements Loadable<LevelPackageCollection> {
 	private final Random random = new RandomXS128();
 	private final Difficulty[] difficulties;
 	private final LevelPackageCollection collection;
+	private final String dayName;
+	private final int packageSize = LksBhmGame.getGame(Mona.class)
+			.getSettings().statics.getLevelsPerPackage();
+	private final String dailyPackageIdPrefix = LksBhmGame.getGame(Mona.class)
+			.getSettings().statics.getDailyPackageIdPrefix();
+	private final long millis;
+
 	private float progress = 0;
-	private final GeneratorRunnable generatorRunnable = new GeneratorRunnable();
-	private final Thread generatorThread;
-	private final GregorianCalendarInterface date;
+	private int currentLevelIndex = 0;
+	private DailyPackage pack;
 
 	DailyPackagesGenerator(GregorianCalendarInterface date) {
-		this.date = date;
 		difficulties = getDifficulties(date, random);
 		collection = new LevelPackageCollection(difficulties.length);
-		generatorThread = new Thread(generatorRunnable);
-		generatorThread.start();
+		dayName = shortDayNameFromIndex(date.getDayOfWeek());
+		millis = date.getTimeInMillis();
 	}
 
 	@Override
 	public boolean update() {
-		progress = generatorRunnable.getProgress();
+		if (progress == 1) {
+			return true;
+		}
+		int packageIndex = currentLevelIndex / packageSize;
+		int levelIndex = currentLevelIndex % packageSize;
+		if (pack == null || pack.getNumberOfLevelsPut() == packageSize) {
+			pack = new DailyPackage(dailyPackageIdPrefix + "-" + packageIndex,
+					packageSize, difficulties[packageIndex], collection);
+			pack.setDisplayName(dayName + Integer.toString(packageIndex + 1));
+			collection.setPackage(packageIndex, pack);
+		}
+		Difficulty packageDifficulty = pack.getDifficulty();
+		random.setSeed(millis + currentLevelIndex);
+		long seed = QualityPuzzleGenerator.generateSeed(random, random,
+				packageDifficulty);
+
+		DailyLevel level = new DailyLevel(seed, random, pack,
+				Integer.toString(levelIndex + 1));
+		pack.putLevel(level);
+		currentLevelIndex++;
+		progress = (float) currentLevelIndex
+				/ (packageSize * collection.size());
 		return progress == 1;
 	}
 
@@ -40,11 +67,8 @@ class DailyPackagesGenerator implements Loadable<LevelPackageCollection> {
 
 	@Override
 	public void finish() {
-		try {
-			generatorThread.join();
-			progress = generatorRunnable.getProgress();
-		} catch (InterruptedException e) {
-			throw new RuntimeException(e);
+		while (!update()) {
+			// continue until finished
 		}
 	}
 
@@ -123,40 +147,5 @@ class DailyPackagesGenerator implements Loadable<LevelPackageCollection> {
 			return "SUN";
 		}
 		throw new RuntimeException();
-	}
-
-	private class GeneratorRunnable implements Runnable {
-
-		private float progress = 0;
-
-		public float getProgress() {
-			return progress;
-		}
-
-		@Override
-		public void run() {
-			long seed;
-			long millis = date.getTimeInMillis();
-			String dayName;
-			LevelPackage newPack;
-			String dailyPackageIdPrefix = LksBhmGame.getGame(Mona.class)
-					.getSettings().statics.getDailyPackageIdPrefix();
-			progress = 0;
-			final float progressPerPackage = 1 / difficulties.length;
-			for (int i = 0; i < difficulties.length; i++) {
-				random.setSeed(millis + i);
-				seed = random.nextLong();
-				dayName = shortDayNameFromIndex(date.getDayOfWeek());
-				newPack = new DailyPackage(dailyPackageIdPrefix + "-" + i,
-						difficulties[i], collection, seed, random);
-				newPack.setDisplayName(dayName + Integer.toString(i + 1));
-				// also trigger generation of levels in packages
-				newPack.getLevel(0);
-				collection.setPackage(i, newPack);
-				progress += progressPerPackage;
-			}
-			progress = 1;
-		}
-
 	}
 }
