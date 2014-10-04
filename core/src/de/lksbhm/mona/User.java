@@ -171,4 +171,13 @@ public class User extends de.lksbhm.gdx.users.User {
 			return new User[size];
 		}
 	}
+
+	@Override
+	public void reset() {
+		rewardCount = 0;
+		solvedLevels.clear();
+		solvedPackages.clear();
+		solvedLevelsInPackage.clear();
+		getUserManager().updateUser(this);
+	}
 }

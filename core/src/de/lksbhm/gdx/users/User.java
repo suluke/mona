@@ -57,4 +57,6 @@ public abstract class User {
 		displayName = "";
 		creationTime = TimeUtils.millis();
 	}
+
+	public abstract void reset();
 }

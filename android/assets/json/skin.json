@@ -101,6 +101,22 @@
 			"name": "icons/trash",
 			"color": "white"
 		},
+		"icon.accept.black": {
+			"name": "icons/accept",
+			"color": "black"
+		},
+		"icon.accept.white": {
+			"name": "icons/accept",
+			"color": "white"
+		},
+		"icon.decline.black": {
+			"name": "icons/decline",
+			"color": "black"
+		},
+		"icon.decline.white": {
+			"name": "icons/decline",
+			"color": "white"
+		},
 		"banner": {
 			"name": "mona-banner",
 			"color": "black"
@@ -200,6 +216,10 @@
 		"rewardScreen.unlockedRandom": {
 			"font": "default-font",
 			"fontColor": "white"
+		},
+		"userScreen.resetQuestion": {
+			"font": "default-font",
+			"fontColor": "white"
 		}
 	},
 	"com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle": {
@@ -238,6 +258,24 @@
 			"font": "default-font",
 			"fontColor": "black",
 			"downFontColor": "white"
+		},
+		"userScreen.yes": {
+			"imageUp": "icon.accept.white",
+			"imageDown": "icon.accept.black",
+			"down": "widgets/button-dark/up",
+			"up": "widgets/button-dark/down",
+			"font": "default-font",
+			"fontColor": "white",
+			"downFontColor": "black"
+		},
+		"userScreen.no": {
+			"imageUp": "icon.decline.white",
+			"imageDown": "icon.decline.black",
+			"down": "widgets/button-dark/up",
+			"up": "widgets/button-dark/down",
+			"font": "default-font",
+			"fontColor": "white",
+			"downFontColor": "black"
 		}
 	},
 	"com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle": {

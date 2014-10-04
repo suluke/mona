@@ -219,4 +219,15 @@ public class MainMenuScreen extends AbstractScreen {
 		}
 
 	}
+
+	public static void showAsCurrentScreen(final Transition transition) {
+		final Router router = LksBhmGame.getGame().getRouter();
+		router.obtainScreen(MainMenuScreen.class,
+				new ResourceConsumerObtainedCallback<MainMenuScreen>() {
+					@Override
+					public void onObtained(MainMenuScreen screen) {
+						router.changeScreen(screen, transition);
+					}
+				});
+	}
 }
