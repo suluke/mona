@@ -117,9 +117,13 @@
 			"name": "icons/decline",
 			"color": "white"
 		},
-		"banner": {
+		"banner.black": {
 			"name": "mona-banner",
 			"color": "black"
+		},
+		"banner.white": {
+			"name": "mona-banner",
+			"color": "white"
 		},
 		"puzzleActor.tile": {
 			"name": "widgets/puzzle-actor/tile",
@@ -218,6 +222,10 @@
 			"fontColor": "white"
 		},
 		"userScreen.resetQuestion": {
+			"font": "default-font",
+			"fontColor": "white"
+		},
+		"aboutScreen.version": {
 			"font": "default-font",
 			"fontColor": "white"
 		}

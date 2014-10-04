@@ -45,4 +45,8 @@ public class Version {
 	public GregorianCalendarInterface getReleaseDate() {
 		return realeaseDate;
 	}
+
+	public String majorMinorRevision() {
+		return major + "." + minor + "." + revision;
+	}
 }

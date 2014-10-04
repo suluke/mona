@@ -56,7 +56,7 @@ public class MainMenuScreen extends AbstractScreen {
 	private void setupWidgets() {
 		Mona game = LksBhmGame.getGame(Mona.class);
 		Skin skin = game.getDefaultSkin();
-		banner = new Image(skin, "banner");
+		banner = new Image(skin, "banner.black");
 
 		playButton = new TextButton("play", skin, "play");
 		playButton.addListener(new ClickListener() {
