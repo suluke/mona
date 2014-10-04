@@ -55,7 +55,6 @@ public class MainMenuScreen extends AbstractScreen {
 
 	private void setupWidgets() {
 		Mona game = LksBhmGame.getGame(Mona.class);
-		User user = game.getUserManager().getCurrentUser();
 		Skin skin = game.getDefaultSkin();
 		banner = new Image(skin, "banner");
 
@@ -72,54 +71,48 @@ public class MainMenuScreen extends AbstractScreen {
 			}
 		});
 
-		if (user.isDailiesUnlocked()) {
-			dailiesButton = new TextButton("dailies", skin, "play");
-			dailiesButton.addListener(new ClickListener() {
-				@Override
-				public void clicked(InputEvent event, float x, float y) {
-					Transition transition = TransitionBuilder.buildNew()
-							.slideInRight().fadeClearColors().duration(.6f)
-							.get();
-					Mona mona = LksBhmGame.getGame(Mona.class);
-					LevelPackageManager pacman = mona.getLevelPackageManager();
-					dailyPackagesLoader = pacman.getDailyPackagesLoader();
-					if (dailyPackagesLoader.getProgress() != 1) {
-						LoadingScreen.showAsCurrentScreen(dailyPackagesLoader,
-								showDailyPackagesScreen, getClearColor(), .6f,
-								transition);
-					} else {
-						PackagesListScreen.showAsCurrentScreen(
-								dailyPackagesLoader.get(), transition);
-					}
+		dailiesButton = new TextButton("dailies", skin, "play");
+		dailiesButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				Transition transition = TransitionBuilder.buildNew()
+						.slideInRight().fadeClearColors().duration(.6f).get();
+				Mona mona = LksBhmGame.getGame(Mona.class);
+				LevelPackageManager pacman = mona.getLevelPackageManager();
+				dailyPackagesLoader = pacman.getDailyPackagesLoader();
+				if (dailyPackagesLoader.getProgress() != 1) {
+					LoadingScreen.showAsCurrentScreen(dailyPackagesLoader,
+							showDailyPackagesScreen, getClearColor(), .6f,
+							transition);
+				} else {
+					PackagesListScreen.showAsCurrentScreen(
+							dailyPackagesLoader.get(), transition);
 				}
-			});
-		}
+			}
+		});
 
-		if (user.isRandomUnlocked()) {
-			randomLevelButton = new TextButton("random", skin, "play");
-			randomLevelButton.addListener(new ClickListener() {
-				@Override
-				public void clicked(InputEvent event, float x, float y) {
-					final Router router = LksBhmGame.getGame().getRouter();
-					router.obtainScreen(
-							RandomPuzzleScreen.class,
-							new ResourceConsumerObtainedCallback<RandomPuzzleScreen>() {
-								@Override
-								public void onObtained(RandomPuzzleScreen ps) {
-									Pair<Long, Puzzle> generated = QualityPuzzleGenerator
-											.generateRandomSeedAndPuzzle(new RandomXS128());
-									ps.setPuzzle(generated.getSecond());
-									ps.setSeed(generated.getFirst());
-									Transition transition = TransitionBuilder
-											.buildNew().slideInRight()
-											.fadeClearColors().duration(.6f)
-											.get();
-									router.changeScreen(ps, transition);
-								}
-							});
-				}
-			});
-		}
+		randomLevelButton = new TextButton("random", skin, "play");
+		randomLevelButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				final Router router = LksBhmGame.getGame().getRouter();
+				router.obtainScreen(
+						RandomPuzzleScreen.class,
+						new ResourceConsumerObtainedCallback<RandomPuzzleScreen>() {
+							@Override
+							public void onObtained(RandomPuzzleScreen ps) {
+								Pair<Long, Puzzle> generated = QualityPuzzleGenerator
+										.generateRandomSeedAndPuzzle(new RandomXS128());
+								ps.setPuzzle(generated.getSecond());
+								ps.setSeed(generated.getFirst());
+								Transition transition = TransitionBuilder
+										.buildNew().slideInRight()
+										.fadeClearColors().duration(.6f).get();
+								router.changeScreen(ps, transition);
+							}
+						});
+			}
+		});
 
 		infoButton = new ImageButton(skin, "info");
 		infoButton.addListener(new ClickListener() {
@@ -145,16 +138,30 @@ public class MainMenuScreen extends AbstractScreen {
 	}
 
 	private void layoutWidgets() {
+		Mona game = LksBhmGame.getGame(Mona.class);
+		User user = game.getUserManager().getCurrentUser();
+
 		Table base = getBaseTable();
 		float worldWidth = getStage().getWidth();
 		float worldHeight = getStage().getHeight();
 		float w = worldWidth * 0.6f;
 		float h = worldHeight * 0.15f;
+
 		base.add(banner).size(w, h).top().spaceBottom(50).colspan(3).row();
 		base.add(playButton).size(w, h).center().spaceBottom(10).colspan(3)
 				.row();
+
+		TextButton dailiesButton = null;
+		if (user.isDailiesUnlocked()) {
+			dailiesButton = this.dailiesButton;
+		}
 		base.add(dailiesButton).size(w, h).center().spaceBottom(10).colspan(3)
 				.row();
+
+		TextButton randomLevelButton = null;
+		if (user.isRandomUnlocked()) {
+			randomLevelButton = this.randomLevelButton;
+		}
 		base.add(randomLevelButton).size(w, h).center().spaceBottom(10)
 				.colspan(3).row();
 		w = worldWidth * .2f;

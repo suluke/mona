@@ -195,11 +195,11 @@
 		},
 		"rewardScreen.unlockedDailies": {
 			"font": "default-font",
-			"fontColor": "black",
+			"fontColor": "white",
 		},
 		"rewardScreen.unlockedRandom": {
 			"font": "default-font",
-			"fontColor": "black"
+			"fontColor": "white"
 		}
 	},
 	"com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle": {
