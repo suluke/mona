@@ -22,6 +22,7 @@ import de.lksbhm.gdx.ui.screens.transitions.TransitionBuilder;
 import de.lksbhm.gdx.util.Loadable;
 import de.lksbhm.gdx.util.Pair;
 import de.lksbhm.mona.Mona;
+import de.lksbhm.mona.User;
 import de.lksbhm.mona.levels.LevelPackageCollection;
 import de.lksbhm.mona.levels.LevelPackageManager;
 import de.lksbhm.mona.puzzle.Puzzle;
@@ -53,7 +54,9 @@ public class MainMenuScreen extends AbstractScreen {
 	}
 
 	private void setupWidgets() {
-		Skin skin = LksBhmGame.getGame().getDefaultSkin();
+		Mona game = LksBhmGame.getGame(Mona.class);
+		User user = game.getUserManager().getCurrentUser();
+		Skin skin = game.getDefaultSkin();
 		banner = new Image(skin, "banner");
 
 		playButton = new TextButton("play", skin, "play");
@@ -69,48 +72,54 @@ public class MainMenuScreen extends AbstractScreen {
 			}
 		});
 
-		dailiesButton = new TextButton("dailies", skin, "play");
-		dailiesButton.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				Transition transition = TransitionBuilder.buildNew()
-						.slideInRight().fadeClearColors().duration(.6f).get();
-				Mona mona = LksBhmGame.getGame(Mona.class);
-				LevelPackageManager pacman = mona.getLevelPackageManager();
-				dailyPackagesLoader = pacman.getDailyPackagesLoader();
-				if (dailyPackagesLoader.getProgress() != 1) {
-					LoadingScreen.showAsCurrentScreen(dailyPackagesLoader,
-							showDailyPackagesScreen, getClearColor(), .6f,
-							transition);
-				} else {
-					PackagesListScreen.showAsCurrentScreen(
-							dailyPackagesLoader.get(), transition);
+		if (user.isDailiesUnlocked()) {
+			dailiesButton = new TextButton("dailies", skin, "play");
+			dailiesButton.addListener(new ClickListener() {
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					Transition transition = TransitionBuilder.buildNew()
+							.slideInRight().fadeClearColors().duration(.6f)
+							.get();
+					Mona mona = LksBhmGame.getGame(Mona.class);
+					LevelPackageManager pacman = mona.getLevelPackageManager();
+					dailyPackagesLoader = pacman.getDailyPackagesLoader();
+					if (dailyPackagesLoader.getProgress() != 1) {
+						LoadingScreen.showAsCurrentScreen(dailyPackagesLoader,
+								showDailyPackagesScreen, getClearColor(), .6f,
+								transition);
+					} else {
+						PackagesListScreen.showAsCurrentScreen(
+								dailyPackagesLoader.get(), transition);
+					}
 				}
-			}
-		});
+			});
+		}
 
-		randomLevelButton = new TextButton("random", skin, "play");
-		randomLevelButton.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				final Router router = LksBhmGame.getGame().getRouter();
-				router.obtainScreen(
-						RandomPuzzleScreen.class,
-						new ResourceConsumerObtainedCallback<RandomPuzzleScreen>() {
-							@Override
-							public void onObtained(RandomPuzzleScreen ps) {
-								Pair<Long, Puzzle> generated = QualityPuzzleGenerator
-										.generateRandomSeedAndPuzzle(new RandomXS128());
-								ps.setPuzzle(generated.getSecond());
-								ps.setSeed(generated.getFirst());
-								Transition transition = TransitionBuilder
-										.buildNew().slideInRight()
-										.fadeClearColors().duration(.6f).get();
-								router.changeScreen(ps, transition);
-							}
-						});
-			}
-		});
+		if (user.isRandomUnlocked()) {
+			randomLevelButton = new TextButton("random", skin, "play");
+			randomLevelButton.addListener(new ClickListener() {
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					final Router router = LksBhmGame.getGame().getRouter();
+					router.obtainScreen(
+							RandomPuzzleScreen.class,
+							new ResourceConsumerObtainedCallback<RandomPuzzleScreen>() {
+								@Override
+								public void onObtained(RandomPuzzleScreen ps) {
+									Pair<Long, Puzzle> generated = QualityPuzzleGenerator
+											.generateRandomSeedAndPuzzle(new RandomXS128());
+									ps.setPuzzle(generated.getSecond());
+									ps.setSeed(generated.getFirst());
+									Transition transition = TransitionBuilder
+											.buildNew().slideInRight()
+											.fadeClearColors().duration(.6f)
+											.get();
+									router.changeScreen(ps, transition);
+								}
+							});
+				}
+			});
+		}
 
 		infoButton = new ImageButton(skin, "info");
 		infoButton.addListener(new ClickListener() {

@@ -131,6 +131,16 @@ public class User extends de.lksbhm.gdx.users.User {
 		return rewardCount;
 	}
 
+	public boolean isDailiesUnlocked() {
+		return rewardCount >= LksBhmGame.getGame(Mona.class).getSettings().statics
+				.getRewardsNeededForDailies();
+	}
+
+	public boolean isRandomUnlocked() {
+		return rewardCount >= LksBhmGame.getGame(Mona.class).getSettings().statics
+				.getRewardsNeededForRandom();
+	}
+
 	private UserManager<User> getUserManager() {
 		return LksBhmGame.getGame(Mona.class).getUserManager();
 	}

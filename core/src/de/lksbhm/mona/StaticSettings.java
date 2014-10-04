@@ -98,8 +98,17 @@ public final class StaticSettings {
 		if (idPrefix == null) {
 			MonaPlatform platform = LksBhmGame.getGame(Mona.class)
 					.getPlatformManager().getPlatform();
-			idPrefix = platform.formatCalendarLocalized(platform.getToday(), "yyyyMMdd");
+			idPrefix = platform.formatCalendarLocalized(platform.getToday(),
+					"yyyyMMdd");
 		}
 		return idPrefix;
+	}
+
+	public int getRewardsNeededForDailies() {
+		return 10;
+	}
+
+	public int getRewardsNeededForRandom() {
+		return 20;
 	}
 }

@@ -26,6 +26,9 @@ public class RewardScreen extends AbstractScreen {
 
 	private Label plusXLabel;
 
+	private Label unlockedDailiesLabel;
+	private Label unlockedRandomLabel;
+
 	@Override
 	public void onResourcesLoaded(AssetManager manager) {
 		setupWidgets();
@@ -34,6 +37,10 @@ public class RewardScreen extends AbstractScreen {
 	private void setupWidgets() {
 		Skin skin = LksBhmGame.getGame().getDefaultSkin();
 		plusXLabel = new Label("", skin);
+		unlockedDailiesLabel = new Label("unlocked daily levels", skin,
+				"rewardScreen.unlockedDailies");
+		unlockedRandomLabel = new Label("unlocked random levels", skin,
+				"rewardScreen.unlockedRandom");
 	}
 
 	@Override
