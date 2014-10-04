@@ -87,7 +87,7 @@ public class TransitionBuilder {
 
 	}
 
-	public static TransitionBuilder buildNew() {
+	public static TransitionBuilder newTransition() {
 		if (instance.transition != null) {
 			Gdx.app.error("TransitionBuilder",
 					"Starting a new transition before old one is retrieved");

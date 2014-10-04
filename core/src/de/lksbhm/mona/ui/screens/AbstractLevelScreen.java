@@ -21,7 +21,7 @@ public abstract class AbstractLevelScreen<NextLevelScreenType extends AbstractLe
 	private final AbstractBackButtonHandler backButtonHandler = new AbstractBackButtonHandler() {
 		@Override
 		protected void onBackButtonPressed() {
-			Transition transition = TransitionBuilder.buildNew().slideInLeft()
+			Transition transition = TransitionBuilder.newTransition().slideInLeft()
 					.fadeClearColors().duration(.6f).get();
 			PackageScreen.showAsCurrentScreen(l.getPackage(), transition);
 		}
@@ -101,7 +101,7 @@ public abstract class AbstractLevelScreen<NextLevelScreenType extends AbstractLe
 
 	private void switchToRewardScreen(final Level next, final Router router) {
 		final int reward = l.getPackage().getReward();
-		final Transition transition = TransitionBuilder.buildNew()
+		final Transition transition = TransitionBuilder.newTransition()
 				.fadeClearColors().slideInRight().duration(.6f).get();
 		// TODO which is the better behavior? Currently solved like in lyne
 		// if (next != null) {
@@ -141,7 +141,7 @@ public abstract class AbstractLevelScreen<NextLevelScreenType extends AbstractLe
 					@Override
 					public void onObtained(NextLevelScreenType screen) {
 						screen.setLevel(next);
-						Transition transition = TransitionBuilder.buildNew()
+						Transition transition = TransitionBuilder.newTransition()
 								.slideInRight().fadeClearColors().duration(.6f)
 								.get();
 						router.changeScreen(screen, transition);
@@ -156,7 +156,7 @@ public abstract class AbstractLevelScreen<NextLevelScreenType extends AbstractLe
 					public void onObtained(PackageScreen packageScreen) {
 						LevelPackage pack = l.getPackage();
 						packageScreen.setLevelPackage(pack);
-						Transition transition = TransitionBuilder.buildNew()
+						Transition transition = TransitionBuilder.newTransition()
 								.slideInLeftExtraDistance().fadeClearColors()
 								.duration(.6f).get();
 						router.changeScreen(packageScreen, transition);

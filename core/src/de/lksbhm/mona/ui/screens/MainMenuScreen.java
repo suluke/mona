@@ -63,7 +63,7 @@ public class MainMenuScreen extends AbstractScreen {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				Mona mona = LksBhmGame.getGame(Mona.class);
-				Transition transition = TransitionBuilder.buildNew()
+				Transition transition = TransitionBuilder.newTransition()
 						.slideInRight().fadeClearColors().duration(.6f).get();
 				LevelPackageManager pacman = mona.getLevelPackageManager();
 				PackagesListScreen.showAsCurrentScreen(
@@ -75,7 +75,7 @@ public class MainMenuScreen extends AbstractScreen {
 		dailiesButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				Transition transition = TransitionBuilder.buildNew()
+				Transition transition = TransitionBuilder.newTransition()
 						.slideInRight().fadeClearColors().duration(.6f).get();
 				Mona mona = LksBhmGame.getGame(Mona.class);
 				LevelPackageManager pacman = mona.getLevelPackageManager();
@@ -106,7 +106,7 @@ public class MainMenuScreen extends AbstractScreen {
 								ps.setPuzzle(generated.getSecond());
 								ps.setSeed(generated.getFirst());
 								Transition transition = TransitionBuilder
-										.buildNew().slideInRight()
+										.newTransition().slideInRight()
 										.fadeClearColors().duration(.6f).get();
 								router.changeScreen(ps, transition);
 							}
@@ -119,7 +119,7 @@ public class MainMenuScreen extends AbstractScreen {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				Router router = LksBhmGame.getGame().getRouter();
-				Transition transition = TransitionBuilder.buildNew()
+				Transition transition = TransitionBuilder.newTransition()
 						.fadeClearColors().fadeOutFadeIn().duration(.6f).get();
 				router.changeScreen(InfoScreen.class, null, transition);
 			}
@@ -130,7 +130,7 @@ public class MainMenuScreen extends AbstractScreen {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				Router router = LksBhmGame.getGame().getRouter();
-				Transition transition = TransitionBuilder.buildNew()
+				Transition transition = TransitionBuilder.newTransition()
 						.fadeClearColors().fadeOutFadeIn().duration(.6f).get();
 				router.changeScreen(UserScreen.class, null, transition);
 			}
@@ -212,7 +212,7 @@ public class MainMenuScreen extends AbstractScreen {
 
 		@Override
 		public void run() {
-			Transition transition = TransitionBuilder.buildNew()
+			Transition transition = TransitionBuilder.newTransition()
 					.fadeOutFadeIn().fadeClearColors().duration(.6f).get();
 			PackagesListScreen.showAsCurrentScreen(dailyPackagesLoader.get(),
 					transition);

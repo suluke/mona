@@ -18,7 +18,7 @@ public class RandomPuzzleScreen extends AbstractPuzzleScreen {
 	private final AbstractBackButtonHandler backButtonHandler = new AbstractBackButtonHandler() {
 		@Override
 		protected void onBackButtonPressed() {
-			Transition transition = TransitionBuilder.buildNew().slideInLeft()
+			Transition transition = TransitionBuilder.newTransition().slideInLeft()
 					.fadeClearColors().duration(.6f).get();
 			LksBhmGame.getGame().getRouter()
 					.changeScreen(MainMenuScreen.class, null, transition);
@@ -45,7 +45,7 @@ public class RandomPuzzleScreen extends AbstractPuzzleScreen {
 		super.onWin();
 		disposePuzzle = true;
 		Router router = LksBhmGame.getGame().getRouter();
-		Transition transition = TransitionBuilder.buildNew().slideInRight()
+		Transition transition = TransitionBuilder.newTransition().slideInRight()
 				.fadeClearColors().duration(.6f).get();
 		router.changeScreen(PuzzleSolvedScreen.class, null, transition);
 	}

@@ -17,7 +17,7 @@ public class InfoScreen extends AbstractScreen {
 		@Override
 		protected void onBackButtonPressed() {
 			Router router = LksBhmGame.getGame().getRouter();
-			Transition transition = TransitionBuilder.buildNew()
+			Transition transition = TransitionBuilder.newTransition()
 					.fadeClearColors().fadeOutFadeIn().duration(.6f).get();
 			router.changeScreen(MainMenuScreen.class, null, transition);
 		}

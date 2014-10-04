@@ -27,7 +27,7 @@ public class PackagesListScreen extends AbstractScreen {
 	private final InputAdapter backButtonHandler = new AbstractBackButtonHandler() {
 		@Override
 		protected void onBackButtonPressed() {
-			Transition transition = TransitionBuilder.buildNew().slideInLeft()
+			Transition transition = TransitionBuilder.newTransition().slideInLeft()
 					.fadeClearColors().duration(.6f).get();
 			LksBhmGame.getGame().getRouter()
 					.changeScreen(MainMenuScreen.class, null, transition);
@@ -93,7 +93,7 @@ public class PackagesListScreen extends AbstractScreen {
 			packageButton.addListener(new ClickListener() {
 				@Override
 				public void clicked(InputEvent event, float x, float y) {
-					Transition transition = TransitionBuilder.buildNew()
+					Transition transition = TransitionBuilder.newTransition()
 							.duration(.6f).slideInRight().fadeClearColors()
 							.get();
 					PackageScreen.showAsCurrentScreen(pack, transition);

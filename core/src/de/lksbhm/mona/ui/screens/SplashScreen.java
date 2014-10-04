@@ -135,7 +135,7 @@ public class SplashScreen extends AbstractScreen implements Context, Callback {
 	}
 
 	public void moveTotNextScreen() {
-		Transition transition = TransitionBuilder.buildNew()
+		Transition transition = TransitionBuilder.newTransition()
 				.callbackBasedTransition(SplashScreen.this).cancelOnTap()
 				.duration(2f).get();
 		Router router = LksBhmGame.getGame().getRouter();

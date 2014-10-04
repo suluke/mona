@@ -22,7 +22,7 @@ public class PuzzleSolvedScreen extends AbstractScreen {
 	private final AbstractBackButtonHandler backButtonHandler = new AbstractBackButtonHandler() {
 		@Override
 		protected void onBackButtonPressed() {
-			Transition transition = TransitionBuilder.buildNew()
+			Transition transition = TransitionBuilder.newTransition()
 					.slideInLeftExtraDistance().fadeClearColors().duration(.6f)
 					.get();
 			LksBhmGame.getGame().getRouter()
@@ -48,7 +48,7 @@ public class PuzzleSolvedScreen extends AbstractScreen {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				Router router = LksBhmGame.getGame().getRouter();
-				Transition transition = TransitionBuilder.buildNew()
+				Transition transition = TransitionBuilder.newTransition()
 						.slideInRight().fadeClearColors().duration(.6f).get();
 				router.changeScreen(MainMenuScreen.class, null, transition);
 			}
