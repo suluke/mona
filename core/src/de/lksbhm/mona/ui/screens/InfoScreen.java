@@ -2,13 +2,16 @@ package de.lksbhm.mona.ui.screens;
 
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.gdx.Router;
+import de.lksbhm.gdx.resources.ResourceConsumerObtainedCallback;
 import de.lksbhm.gdx.ui.screens.transitions.Transition;
 import de.lksbhm.gdx.ui.screens.transitions.TransitionBuilder;
 
@@ -61,6 +64,15 @@ public class InfoScreen extends AbstractScreen {
 		howToPlayButton.getLabel().setFontScale(fontScale);
 		howToPlayButton.getLabelCell().height(labelHeight);
 		howToPlayButton.getImageCell().size(imgSize).left().padTop(padTop);
+		howToPlayButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				Transition transition = TransitionBuilder.newTransition()
+						.slideInRight().fadeClearColors().duration(.6f)
+						.disposeAllOnFinish(false).get();
+				HowToPlayScreen.setAsCurrentScreen(transition);
+			}
+		});
 
 		aboutTheGameButton = new ImageTextButton("About the game", skin,
 				"aboutTheGame");
@@ -68,12 +80,30 @@ public class InfoScreen extends AbstractScreen {
 		aboutTheGameButton.getLabel().setFontScale(fontScale);
 		aboutTheGameButton.getLabelCell().height(labelHeight);
 		aboutTheGameButton.getImageCell().size(imgSize).left().padTop(padTop);
+		aboutTheGameButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				Transition transition = TransitionBuilder.newTransition()
+						.slideInRight().fadeClearColors().duration(.6f)
+						.disposeAllOnFinish(false).get();
+				AboutScreen.setAsCurrentScreen(transition);
+			}
+		});
 
 		licensesButton = new ImageTextButton("Licenses", skin, "licenses");
 		licensesButton.align(Align.left);
 		licensesButton.getLabel().setFontScale(fontScale);
 		licensesButton.getLabelCell().height(labelHeight);
 		licensesButton.getImageCell().size(imgSize).left().padTop(padTop);
+		licensesButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				Transition transition = TransitionBuilder.newTransition()
+						.slideInRight().fadeClearColors().duration(.6f)
+						.disposeAllOnFinish(false).get();
+				LicensesScreen.setAsCurrentScreen(transition);
+			}
+		});
 
 		base.add(howToPlayButton).size(w, h).spaceBottom(bottomSpace).row();
 		base.add(aboutTheGameButton).size(w, h).spaceBottom(bottomSpace).row();
@@ -96,6 +126,17 @@ public class InfoScreen extends AbstractScreen {
 	public Object getState() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public static void setAsCurrentScreen(final Transition transition) {
+		final Router router = LksBhmGame.getGame().getRouter();
+		router.obtainScreen(InfoScreen.class,
+				new ResourceConsumerObtainedCallback<InfoScreen>() {
+					@Override
+					public void onObtained(InfoScreen screen) {
+						router.changeScreen(screen, transition);
+					}
+				});
 	}
 
 }

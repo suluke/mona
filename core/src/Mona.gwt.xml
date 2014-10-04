@@ -19,6 +19,10 @@
 	<extend-configuration-property name="gdx.reflect.include" value="de.lksbhm.mona.ui.screens.RewardScreen" />
 	<extend-configuration-property name="gdx.reflect.include" value="de.lksbhm.mona.ui.screens.SplashScreen" />
 	<extend-configuration-property name="gdx.reflect.include" value="de.lksbhm.mona.ui.screens.LoadingScreen" />
+	<extend-configuration-property name="gdx.reflect.include" value="de.lksbhm.mona.ui.screens.RandomSelectionScreen" />
+	<extend-configuration-property name="gdx.reflect.include" value="de.lksbhm.mona.ui.screens.AboutScreen" />
+	<extend-configuration-property name="gdx.reflect.include" value="de.lksbhm.mona.ui.screens.HowToPlayScreen" />
+	<extend-configuration-property name="gdx.reflect.include" value="de.lksbhm.mona.ui.screens.LicensesScreen" />
 	<extend-configuration-property name="gdx.reflect.include" value="de.lksbhm.mona.levels.Level" />
 	<extend-configuration-property name="gdx.reflect.include" value="de.lksbhm.mona.levels.LiterallyDefinedLevel" />
 	<extend-configuration-property name="gdx.reflect.include" value="de.lksbhm.mona.tutorials.Tutorial" />
