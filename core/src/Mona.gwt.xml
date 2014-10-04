@@ -8,6 +8,7 @@
 	<extend-configuration-property name="gdx.reflect.include" value="de.lksbhm.gdx.LksBhmGame" />
 	<extend-configuration-property name="gdx.reflect.include" value="de.lksbhm.mona.ui.screens.AbstractScreen" />
 	<extend-configuration-property name="gdx.reflect.include" value="de.lksbhm.mona.ui.screens.InfoScreen" />
+	<extend-configuration-property name="gdx.reflect.include" value="de.lksbhm.mona.ui.screens.UserScreen" />
 	<extend-configuration-property name="gdx.reflect.include" value="de.lksbhm.mona.ui.screens.LevelScreenOne" />
 	<extend-configuration-property name="gdx.reflect.include" value="de.lksbhm.mona.ui.screens.LevelScreenTwo" />
 	<extend-configuration-property name="gdx.reflect.include" value="de.lksbhm.mona.ui.screens.MainMenuScreen" />

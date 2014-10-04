@@ -117,7 +117,7 @@ public class PackagesListScreen extends AbstractScreen {
 				packagesList.addActor(c);
 			}
 		}
-		baseTable.add(listScroll).center().width(width * .7f).expandY()
+		baseTable.add(listScroll).center().width(width * .7f).fill().expand()
 				.padBottom(height * .1f);
 	}
 
@@ -152,6 +152,7 @@ public class PackagesListScreen extends AbstractScreen {
 	@Override
 	protected void onShow() {
 		layoutWidgets();
+		getStage().setScrollFocus(listScroll);
 	}
 
 	public static void showAsCurrentScreen(

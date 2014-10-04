@@ -13,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
 import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.gdx.Router;
@@ -138,12 +137,10 @@ public class MainMenuScreen extends AbstractScreen {
 
 	private void layoutWidgets() {
 		Table base = getBaseTable();
-		Viewport vp = getViewport();
-		float worldWidth = vp.getWorldWidth();
-		float worldHeight = vp.getWorldHeight();
-		float w, h;
-		w = worldWidth * 0.6f;
-		h = worldHeight * 0.15f;
+		float worldWidth = getStage().getWidth();
+		float worldHeight = getStage().getHeight();
+		float w = worldWidth * 0.6f;
+		float h = worldHeight * 0.15f;
 		base.add(banner).size(w, h).top().spaceBottom(50).colspan(3).row();
 		base.add(playButton).size(w, h).center().spaceBottom(10).colspan(3)
 				.row();

@@ -51,6 +51,22 @@
 			"name": "icons/controller",
 			"color": "white"
 		},
+		"icon.reset.black": {
+			"name": "icons/reset",
+			"color": "black"
+		},
+		"icon.reset.white": {
+			"name": "icons/reset",
+			"color": "white"
+		},
+		"icon.trash.black": {
+			"name": "icons/trash",
+			"color": "black"
+		},
+		"icon.trash.white": {
+			"name": "icons/trash",
+			"color": "white"
+		},
 		"banner": {
 			"name": "mona-banner",
 			"color": "black"
@@ -114,6 +130,10 @@
 		"won": {
 			"font": "default-font",
 			"fontColor": "black"
+		},
+		"userScreen.rewardCount": {
+			"font": "default-font",
+			"fontColor": "black"
 		}
 	},
 	"com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle": {
@@ -138,6 +158,15 @@
 		"howToPlay": {
 			"imageUp": "icon.controller.black",
 			"imageDown": "icon.controller.white",
+			"down": "widgets/button-dark/down",
+			"up": "widgets/button-dark/up",
+			"font": "default-font",
+			"fontColor": "black",
+			"downFontColor": "white"
+		},
+		"userScreen.reset": {
+			"imageUp": "icon.trash.black",
+			"imageDown": "icon.trash.white",
 			"down": "widgets/button-dark/down",
 			"up": "widgets/button-dark/up",
 			"font": "default-font",
