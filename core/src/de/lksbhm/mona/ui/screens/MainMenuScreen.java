@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.RandomXS128;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.ColorAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -20,13 +19,10 @@ import de.lksbhm.gdx.resources.ResourceConsumerObtainedCallback;
 import de.lksbhm.gdx.ui.screens.transitions.Transition;
 import de.lksbhm.gdx.ui.screens.transitions.TransitionBuilder;
 import de.lksbhm.gdx.util.Loadable;
-import de.lksbhm.gdx.util.Pair;
 import de.lksbhm.mona.Mona;
 import de.lksbhm.mona.User;
 import de.lksbhm.mona.levels.LevelPackageCollection;
 import de.lksbhm.mona.levels.LevelPackageManager;
-import de.lksbhm.mona.puzzle.Puzzle;
-import de.lksbhm.mona.puzzle.QualityPuzzleGenerator;
 
 public class MainMenuScreen extends AbstractScreen {
 
@@ -95,22 +91,9 @@ public class MainMenuScreen extends AbstractScreen {
 		randomLevelButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				final Router router = LksBhmGame.getGame().getRouter();
-				router.obtainScreen(
-						RandomPuzzleScreen.class,
-						new ResourceConsumerObtainedCallback<RandomPuzzleScreen>() {
-							@Override
-							public void onObtained(RandomPuzzleScreen ps) {
-								Pair<Long, Puzzle> generated = QualityPuzzleGenerator
-										.generateRandomSeedAndPuzzle(new RandomXS128());
-								ps.setPuzzle(generated.getSecond());
-								ps.setSeed(generated.getFirst());
-								Transition transition = TransitionBuilder
-										.newTransition().slideInRight()
-										.fadeClearColors().duration(.6f).get();
-								router.changeScreen(ps, transition);
-							}
-						});
+				Transition transition = TransitionBuilder.newTransition()
+						.slideInRight().fadeClearColors().duration(.6f).get();
+				RandomSelectionScreen.setAsCurrentScreen(transition);
 			}
 		});
 

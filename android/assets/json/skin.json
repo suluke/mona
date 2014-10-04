@@ -184,6 +184,13 @@
 			"disabled": "widgets/button-dark/disabled",
 			"font": "default-font",
 			"fontColor": "black"
+		},
+		"randomSelectionScreen.button": {
+			"down": "widgets/button-dark/up",
+			"up": "widgets/button-dark/down",
+			"disabled": "widgets/button-dark/disabled",
+			"font": "default-font",
+			"fontColor": "white"
 		}
 	},
 	"com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle": {
