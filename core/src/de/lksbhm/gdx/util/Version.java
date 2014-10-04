@@ -22,6 +22,18 @@ public class Version {
 		this.realeaseDate = releaseDate;
 	}
 
+	public int getMajor() {
+		return major;
+	}
+
+	public int getMinor() {
+		return minor;
+	}
+
+	public int getRevision() {
+		return revision;
+	}
+
 	public String getCodeName() {
 		return codeName;
 	}
