@@ -93,7 +93,7 @@ public class MainMenuScreen extends AbstractScreen {
 			public void clicked(InputEvent event, float x, float y) {
 				Transition transition = TransitionBuilder.newTransition()
 						.slideInRight().fadeClearColors().duration(.6f).get();
-				RandomSelectionScreen.setAsCurrentScreen(transition);
+				RandomSelectionScreen.showAsCurrentScreen(transition);
 			}
 		});
 

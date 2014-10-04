@@ -1,5 +1,6 @@
 package de.lksbhm.mona.ui.screens;
 
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.RandomXS128;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -26,6 +27,21 @@ public class RandomSelectionScreen extends AbstractScreen {
 	private TextButton mediumButton;
 	private TextButton hardButton;
 	private TextButton veryHardButton;
+
+	private final AbstractBackButtonHandler backButtonHandler = new AbstractBackButtonHandler() {
+		@Override
+		protected void onBackButtonPressed() {
+			Transition transition = TransitionBuilder.newTransition()
+					.fadeClearColors().slideInLeft().duration(.6f).get();
+			MainMenuScreen.showAsCurrentScreen(transition);
+		}
+	};
+
+	public RandomSelectionScreen() {
+		InputMultiplexer mux = new InputMultiplexer(getStage(),
+				backButtonHandler);
+		setInputProcessor(mux);
+	}
 
 	@Override
 	public void onResourcesLoaded(AssetManager manager) {
@@ -211,7 +227,7 @@ public class RandomSelectionScreen extends AbstractScreen {
 		return null;
 	}
 
-	public static void setAsCurrentScreen(final Transition transition) {
+	public static void showAsCurrentScreen(final Transition transition) {
 		final Router router = LksBhmGame.getGame().getRouter();
 		router.changeScreen(RandomSelectionScreen.class, null, transition);
 	}

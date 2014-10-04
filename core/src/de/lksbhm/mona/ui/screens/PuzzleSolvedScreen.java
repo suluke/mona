@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import de.lksbhm.gdx.LksBhmGame;
-import de.lksbhm.gdx.Router;
 import de.lksbhm.gdx.ui.screens.transitions.Transition;
 import de.lksbhm.gdx.ui.screens.transitions.TransitionBuilder;
 
@@ -47,21 +46,16 @@ public class PuzzleSolvedScreen extends AbstractScreen {
 		nextButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				Router router = LksBhmGame.getGame().getRouter();
 				Transition transition = TransitionBuilder.newTransition()
 						.slideInRight().fadeClearColors().duration(.6f).get();
-				router.changeScreen(MainMenuScreen.class, null, transition);
+				RandomSelectionScreen.showAsCurrentScreen(transition);
 			}
 		});
-	}
-
-	@Override
-	public void onShow() {
-		getBaseTable().clear();
 		layoutWidgets();
 	}
 
 	private void layoutWidgets() {
+		getBaseTable().clear();
 		Table base = getBaseTable();
 		Viewport vp = getViewport();
 
@@ -85,13 +79,10 @@ public class PuzzleSolvedScreen extends AbstractScreen {
 
 	@Override
 	public void setState(Object state) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public Object getState() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
