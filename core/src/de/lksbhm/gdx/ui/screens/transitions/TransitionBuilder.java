@@ -96,6 +96,8 @@ public class TransitionBuilder {
 			Gdx.app.error("TransitionBuilder",
 					"Starting a new transition before old one is retrieved");
 		}
+		// restore defaults
+		instance.disposeAllOnFinish = true;
 		instance.transition = instance.baseTransitionPool.obtain();
 		return instance;
 	}

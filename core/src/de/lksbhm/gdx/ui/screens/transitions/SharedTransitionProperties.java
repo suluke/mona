@@ -10,6 +10,7 @@ import de.lksbhm.gdx.LksBhmGame;
 class SharedTransitionProperties {
 	float timePassed;
 	float duration;
+	boolean running;
 	boolean finished;
 	TransitionScreen ts;
 	TransitionableScreen fromScreen;
@@ -78,6 +79,14 @@ class SharedTransitionProperties {
 		durationDetermined = true;
 	}
 
+	public boolean isRunning() {
+		return running;
+	}
+
+	public void setRunning(boolean b) {
+		running = b;
+	}
+
 	public void setDrawOrderInverted(boolean inverted) {
 		if (drawOrderInverted != inverted) {
 			if (drawOrderDetermined) {
@@ -130,6 +139,7 @@ class SharedTransitionProperties {
 
 	public void resetBeforeApply() {
 		timePassed = 0;
+		running = false;
 		finished = false;
 		ts = null;
 		fromScreen = null;

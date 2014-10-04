@@ -46,6 +46,7 @@ public abstract class AbstractPuzzleScreen extends AbstractScreen {
 	@Override
 	public void onResourcesLoaded(AssetManager manager) {
 		setupWidgets();
+		layoutWidgets();
 	}
 
 	@Override
@@ -66,12 +67,9 @@ public abstract class AbstractPuzzleScreen extends AbstractScreen {
 		if (state.p != null) {
 			state.p.addWinListener(winListener);
 		}
-		puzzleActor.setPuzzle(state.p);
-	}
-
-	@Override
-	protected void onShow() {
-		layoutWidgets();
+		if (puzzleActor != null) {
+			puzzleActor.setPuzzle(state.p);
+		}
 	}
 
 	protected void onWin() {
@@ -97,7 +95,7 @@ public abstract class AbstractPuzzleScreen extends AbstractScreen {
 	}
 
 	protected void setPuzzle(Puzzle p) {
-		this.state.p = p;
+		state.p = p;
 		applyState();
 	}
 

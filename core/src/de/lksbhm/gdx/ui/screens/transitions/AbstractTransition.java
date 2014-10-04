@@ -17,6 +17,20 @@ abstract class AbstractTransition implements Transition {
 	@Override
 	public final void apply(LksBhmGame<?, ?, ?> game,
 			TransitionableScreen fromScreen, TransitionableScreen toScreen) {
+		if (fromScreen == null) {
+			throw new IllegalArgumentException("FromScreen must not be null");
+		}
+		if (toScreen == null) {
+			throw new IllegalArgumentException("ToScreen must not be null");
+		}
+		if (fromScreen == toScreen) {
+			throw new IllegalArgumentException(
+					"Don't try transitioning between one and the same screen");
+		}
+		if (getSharedProperties().isRunning()) {
+			throw new IllegalStateException(
+					"Are you trying to use this transition twice at the same time?");
+		}
 		SharedTransitionProperties sharedProperties = getSharedProperties();
 		sharedProperties.resetBeforeApply();
 		sharedProperties.setGame(game);
@@ -47,6 +61,7 @@ abstract class AbstractTransition implements Transition {
 		// sets the clear color differently
 		Gdx.gl.glClearColor(fromClearColor.r, fromClearColor.g,
 				fromClearColor.b, fromClearColor.a);
+		getSharedProperties().setRunning(true);
 		start();
 	}
 
@@ -129,7 +144,7 @@ abstract class AbstractTransition implements Transition {
 		commonProperties.setFromScreen(null);
 		commonProperties.setToScreen(null);
 		commonProperties.setGame(null);
-
+		getSharedProperties().setRunning(false);
 	}
 
 	protected SharedTransitionProperties getSharedProperties() {

@@ -58,16 +58,17 @@ public class RandomSelectionScreen extends AbstractScreen {
 			public void clicked(InputEvent event, float x, float y) {
 				final Router router = LksBhmGame.getGame().getRouter();
 				router.obtainScreen(
-						RandomPuzzleScreen.class,
-						new ResourceConsumerObtainedCallback<RandomPuzzleScreen>() {
+						RandomPuzzleScreenOne.class,
+						new ResourceConsumerObtainedCallback<RandomPuzzleScreenOne>() {
 							@Override
-							public void onObtained(RandomPuzzleScreen ps) {
+							public void onObtained(RandomPuzzleScreenOne ps) {
 								Pair<Long, Puzzle> generated = QualityPuzzleGenerator
 										.generateSeedAndPuzzle(
 												Generator.random,
 												new RandomXS128(),
 												Difficulty.VERY_EASY);
-								ps.setPuzzle(generated.getSecond());
+								ps.setup(generated.getSecond(),
+										Difficulty.VERY_EASY);
 								ps.setSeed(generated.getFirst());
 								Transition transition = TransitionBuilder
 										.newTransition().slideInRight()
@@ -85,16 +86,16 @@ public class RandomSelectionScreen extends AbstractScreen {
 			public void clicked(InputEvent event, float x, float y) {
 				final Router router = LksBhmGame.getGame().getRouter();
 				router.obtainScreen(
-						RandomPuzzleScreen.class,
-						new ResourceConsumerObtainedCallback<RandomPuzzleScreen>() {
+						RandomPuzzleScreenOne.class,
+						new ResourceConsumerObtainedCallback<RandomPuzzleScreenOne>() {
 							@Override
-							public void onObtained(RandomPuzzleScreen ps) {
+							public void onObtained(RandomPuzzleScreenOne ps) {
 								Pair<Long, Puzzle> generated = QualityPuzzleGenerator
 										.generateSeedAndPuzzle(
 												Generator.random,
 												new RandomXS128(),
 												Difficulty.EASY);
-								ps.setPuzzle(generated.getSecond());
+								ps.setup(generated.getSecond(), Difficulty.EASY);
 								ps.setSeed(generated.getFirst());
 								Transition transition = TransitionBuilder
 										.newTransition().slideInRight()
@@ -112,16 +113,17 @@ public class RandomSelectionScreen extends AbstractScreen {
 			public void clicked(InputEvent event, float x, float y) {
 				final Router router = LksBhmGame.getGame().getRouter();
 				router.obtainScreen(
-						RandomPuzzleScreen.class,
-						new ResourceConsumerObtainedCallback<RandomPuzzleScreen>() {
+						RandomPuzzleScreenOne.class,
+						new ResourceConsumerObtainedCallback<RandomPuzzleScreenOne>() {
 							@Override
-							public void onObtained(RandomPuzzleScreen ps) {
+							public void onObtained(RandomPuzzleScreenOne ps) {
 								Pair<Long, Puzzle> generated = QualityPuzzleGenerator
 										.generateSeedAndPuzzle(
 												Generator.random,
 												new RandomXS128(),
 												Difficulty.MEDIUM);
-								ps.setPuzzle(generated.getSecond());
+								ps.setup(generated.getSecond(),
+										Difficulty.MEDIUM);
 								ps.setSeed(generated.getFirst());
 								Transition transition = TransitionBuilder
 										.newTransition().slideInRight()
@@ -139,16 +141,16 @@ public class RandomSelectionScreen extends AbstractScreen {
 			public void clicked(InputEvent event, float x, float y) {
 				final Router router = LksBhmGame.getGame().getRouter();
 				router.obtainScreen(
-						RandomPuzzleScreen.class,
-						new ResourceConsumerObtainedCallback<RandomPuzzleScreen>() {
+						RandomPuzzleScreenOne.class,
+						new ResourceConsumerObtainedCallback<RandomPuzzleScreenOne>() {
 							@Override
-							public void onObtained(RandomPuzzleScreen ps) {
+							public void onObtained(RandomPuzzleScreenOne ps) {
 								Pair<Long, Puzzle> generated = QualityPuzzleGenerator
 										.generateSeedAndPuzzle(
 												Generator.random,
 												new RandomXS128(),
 												Difficulty.HARD);
-								ps.setPuzzle(generated.getSecond());
+								ps.setup(generated.getSecond(), Difficulty.HARD);
 								ps.setSeed(generated.getFirst());
 								Transition transition = TransitionBuilder
 										.newTransition().slideInRight()
@@ -166,16 +168,17 @@ public class RandomSelectionScreen extends AbstractScreen {
 			public void clicked(InputEvent event, float x, float y) {
 				final Router router = LksBhmGame.getGame().getRouter();
 				router.obtainScreen(
-						RandomPuzzleScreen.class,
-						new ResourceConsumerObtainedCallback<RandomPuzzleScreen>() {
+						RandomPuzzleScreenOne.class,
+						new ResourceConsumerObtainedCallback<RandomPuzzleScreenOne>() {
 							@Override
-							public void onObtained(RandomPuzzleScreen ps) {
+							public void onObtained(RandomPuzzleScreenOne ps) {
 								Pair<Long, Puzzle> generated = QualityPuzzleGenerator
 										.generateSeedAndPuzzle(
 												Generator.random,
 												new RandomXS128(),
 												Difficulty.VERY_HARD);
-								ps.setPuzzle(generated.getSecond());
+								ps.setup(generated.getSecond(),
+										Difficulty.VERY_HARD);
 								ps.setSeed(generated.getFirst());
 								Transition transition = TransitionBuilder
 										.newTransition().slideInRight()
