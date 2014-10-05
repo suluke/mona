@@ -64,7 +64,7 @@ public class Mona extends LksBhmGame<Mona, User, MonaPlatform> {
 			callback.run();
 		} else {
 			getRouter().saveCurrentScreenInHistory();
-			loadingScreen.setup(loadable, callback, 0);
+			loadingScreen.setup(loadable, callback, 0, .6f);
 			setScreen(loadingScreen);
 		}
 	}

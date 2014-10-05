@@ -31,6 +31,8 @@ public class LoadingScreen extends AbstractScreen {
 	private boolean calledBack = false;
 	private float delayLoading = 0;
 	private float delayed = 0;
+	private float minimalVisibilityTime = 0;
+	private float timeVisible = 0;
 	private final float maxProgressPerFrame = .1f;
 
 	public LoadingScreen() {
@@ -49,11 +51,16 @@ public class LoadingScreen extends AbstractScreen {
 			delayed += delta;
 			return;
 		}
+		timeVisible += delta;
 
 		currentProgress = loadable.getProgress();
 
 		displayedProgress += Math.min(currentProgress - displayedProgress,
 				maxProgressPerFrame);
+		if (minimalVisibilityTime != 0) {
+			displayedProgress = Math.min(displayedProgress, timeVisible
+					/ minimalVisibilityTime);
+		}
 		if (currentProgress - displayedProgress < EPS) {
 			displayedProgress = currentProgress;
 		}
@@ -81,12 +88,16 @@ public class LoadingScreen extends AbstractScreen {
 	}
 
 	public void setup(Loadable<?> loadable, Runnable callback,
-			float delayLoading) {
+			float delayLoading, float minimalVisibilityTime) {
 		this.loadable = loadable;
 		this.onDoneCallback = callback;
-		this.calledBack = false;
 		this.delayLoading = delayLoading;
+		this.minimalVisibilityTime = minimalVisibilityTime;
+
+		// reset variables
+		calledBack = false;
 		delayed = 0;
+		timeVisible = 0;
 	}
 
 	@Override
@@ -109,14 +120,16 @@ public class LoadingScreen extends AbstractScreen {
 
 	public static void showAsCurrentScreen(final Loadable<?> loadable,
 			final Runnable callback, final Color clearColor,
-			final float delayLoading, final Transition transition) {
+			final float delayLoading, final float minimalVisibilityTime,
+			final Transition transition) {
 		Mona mona = LksBhmGame.getGame(Mona.class);
 		final Router router = mona.getRouter();
 		router.obtainScreen(LoadingScreen.class,
 				new ResourceConsumerObtainedCallback<LoadingScreen>() {
 					@Override
 					public void onObtained(LoadingScreen loadingScreen) {
-						loadingScreen.setup(loadable, callback, delayLoading);
+						loadingScreen.setup(loadable, callback, delayLoading,
+								minimalVisibilityTime);
 						loadingScreen.setClearColor(clearColor.r, clearColor.g,
 								clearColor.b, clearColor.a);
 						router.changeScreen(loadingScreen, transition);

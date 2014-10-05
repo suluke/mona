@@ -78,7 +78,7 @@ public class MainMenuScreen extends AbstractScreen {
 				dailyPackagesLoader = pacman.getDailyPackagesLoader();
 				if (dailyPackagesLoader.getProgress() != 1) {
 					LoadingScreen.showAsCurrentScreen(dailyPackagesLoader,
-							showDailyPackagesScreen, getClearColor(), .6f,
+							showDailyPackagesScreen, getClearColor(), .6f, .6f,
 							transition);
 				} else {
 					PackagesListScreen.showAsCurrentScreen(
