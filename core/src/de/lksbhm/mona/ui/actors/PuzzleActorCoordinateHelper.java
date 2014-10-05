@@ -1,5 +1,8 @@
 package de.lksbhm.mona.ui.actors;
 
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+
 import de.lksbhm.mona.puzzle.Piece;
 import de.lksbhm.mona.puzzle.Piece.Type;
 import de.lksbhm.mona.puzzle.Puzzle;
@@ -8,6 +11,17 @@ class PuzzleActorCoordinateHelper {
 	private PuzzleActorCoordinateHelper() {
 	}
 
+	private static final Vector2 tmp = new Vector2(0, 0);
+
+	/**
+	 * 
+	 * @param actor
+	 * @param x
+	 *            in local coordinates
+	 * @param y
+	 *            in local coordinates
+	 * @return
+	 */
 	public static Piece coordsToTile(PuzzleActor actor, float x, float y) {
 		float cellWidth = actor.getCellWidth();
 		float cellHeight = actor.getCellHeight();
@@ -38,6 +52,15 @@ class PuzzleActorCoordinateHelper {
 		return tile;
 	}
 
+	/**
+	 * 
+	 * @param actor
+	 * @param x
+	 *            in local coordinates
+	 * @param y
+	 *            in local coordinates
+	 * @return
+	 */
 	public static Piece coordsToTileIncludingPadding(PuzzleActor actor,
 			float x, float y) {
 		float cellWidth = actor.getCellWidth();
@@ -73,18 +96,55 @@ class PuzzleActorCoordinateHelper {
 		return tile;
 	}
 
-	public static float getTileOriginX(PuzzleActor actor, Piece tile) {
-		return actor.getX() + actor.getMarginLeft() + tile.getX()
+	/**
+	 * 
+	 * @param actor
+	 * @param tile
+	 * @param drawing
+	 *            whether or not the {@link PuzzleActor} is currently being
+	 *            drawn. Necessary because {@link Actor#getX() x} may be
+	 *            temporarily altered during drawing.
+	 * @return x in stage coordinates
+	 */
+	public static float getTileOriginX(PuzzleActor actor, Piece tile,
+			boolean drawing) {
+		float x;
+		if (drawing) {
+			x = actor.getX();
+		} else {
+			tmp.set(0, 0);
+			x = actor.localToStageCoordinates(tmp).x;
+		}
+		return x + actor.getMarginLeft() + tile.getX()
 				* (actor.getCellWidth() + actor.getPaddingWidth());
 	}
 
-	public static float getTileOriginY(PuzzleActor actor, Piece tile) {
+	/**
+	 * 
+	 * @param actor
+	 * @param tile
+	 * @param drawing
+	 *            whether or not the {@link PuzzleActor} is currently being
+	 *            drawn. Necessary because {@link Actor#getY() y} may be
+	 *            temporarily altered during drawing.
+	 * @return y in stage coordinates
+	 */
+	public static float getTileOriginY(PuzzleActor actor, Piece tile,
+			boolean drawing) {
+		float y;
+		if (drawing) {
+			y = actor.getY();
+		} else {
+			tmp.set(0, 0);
+			y = actor.localToStageCoordinates(tmp).y;
+		}
+
 		float result = actor.getMarginTop() + tile.getY()
 				* (actor.getCellHeight() + actor.getPaddingHeight());
 		if (!actor.isInvertY()) {
 			result = actor.getHeight() - result - actor.getCellHeight();
 		}
-		result += actor.getY();
+		result += y;
 		return result;
 	}
 }

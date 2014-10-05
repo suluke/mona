@@ -91,9 +91,13 @@ public class PuzzleActor extends Widget {
 					marker.setCellSize(Math.min(cellWidth, cellHeight));
 					marker.setMid(
 							PuzzleActorCoordinateHelper.getTileOriginX(
-									PuzzleActor.this, tile) + cellWidth / 2,
+									PuzzleActor.this, tile, false)
+									+ cellWidth
+									/ 2,
 							PuzzleActorCoordinateHelper.getTileOriginY(
-									PuzzleActor.this, tile) + cellHeight / 2);
+									PuzzleActor.this, tile, false)
+									+ cellHeight
+									/ 2);
 					markers.add(marker);
 				}
 			}
@@ -344,9 +348,9 @@ public class PuzzleActor extends Widget {
 
 	private void drawType(Batch batch, Piece tile) {
 		final float tileX = PuzzleActorCoordinateHelper.getTileOriginX(this,
-				tile);
+				tile, true);
 		final float tileY = PuzzleActorCoordinateHelper.getTileOriginY(this,
-				tile);
+				tile, true);
 		switch (tile.getType()) {
 		case EDGE: {
 			style.edge.draw(batch, tileX, tileY, cellWidth, cellHeight);

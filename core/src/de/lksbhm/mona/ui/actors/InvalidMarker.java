@@ -69,7 +69,7 @@ public class InvalidMarker {
 		public Drawable texture;
 		public float expandTime = 0.7f;
 		public float aspectRatio = 1;
-		public float maxWidth = 1.3f;
+		public float maxWidth = 1.3f; // percentage of tile size
 		public boolean repeat = true;
 		public Interpolation interpolation = Interpolation.sineOut;
 		public float repeatTimeout = 1;
