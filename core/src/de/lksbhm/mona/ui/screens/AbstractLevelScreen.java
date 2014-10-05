@@ -21,8 +21,8 @@ public abstract class AbstractLevelScreen<NextLevelScreenType extends AbstractLe
 	private final AbstractBackButtonHandler backButtonHandler = new AbstractBackButtonHandler() {
 		@Override
 		protected void onBackButtonPressed() {
-			Transition transition = TransitionBuilder.newTransition().slideInLeft()
-					.fadeClearColors().duration(.6f).get();
+			Transition transition = TransitionBuilder.newTransition()
+					.slideInLeft().fadeClearColors().duration(.6f).get();
 			PackageScreen.showAsCurrentScreen(l.getPackage(), transition);
 		}
 	};
@@ -65,7 +65,7 @@ public abstract class AbstractLevelScreen<NextLevelScreenType extends AbstractLe
 		Table base = getBaseTable();
 		base.clear();
 		base.add(idLabel).row();
-		base.add(getPuzzleActor()).height(0.9f * getDefaultViewportHeight());
+		base.add(getPuzzleActor()).height(0.9f * base.getHeight());
 	}
 
 	@Override
@@ -141,9 +141,9 @@ public abstract class AbstractLevelScreen<NextLevelScreenType extends AbstractLe
 					@Override
 					public void onObtained(NextLevelScreenType screen) {
 						screen.setLevel(next);
-						Transition transition = TransitionBuilder.newTransition()
-								.slideInRight().fadeClearColors().duration(.6f)
-								.get();
+						Transition transition = TransitionBuilder
+								.newTransition().slideInRight()
+								.fadeClearColors().duration(.6f).get();
 						router.changeScreen(screen, transition);
 					}
 				});
@@ -156,9 +156,9 @@ public abstract class AbstractLevelScreen<NextLevelScreenType extends AbstractLe
 					public void onObtained(PackageScreen packageScreen) {
 						LevelPackage pack = l.getPackage();
 						packageScreen.setLevelPackage(pack);
-						Transition transition = TransitionBuilder.newTransition()
-								.slideInLeftExtraDistance().fadeClearColors()
-								.duration(.6f).get();
+						Transition transition = TransitionBuilder
+								.newTransition().slideInLeftExtraDistance()
+								.fadeClearColors().duration(.6f).get();
 						router.changeScreen(packageScreen, transition);
 					}
 				});

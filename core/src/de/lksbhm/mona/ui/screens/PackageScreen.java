@@ -25,8 +25,8 @@ public class PackageScreen extends AbstractScreen {
 	private final InputAdapter backButtonHandler = new AbstractBackButtonHandler() {
 		@Override
 		protected void onBackButtonPressed() {
-			Transition transition = TransitionBuilder.newTransition().slideInLeft()
-					.fadeClearColors().duration(.6f).get();
+			Transition transition = TransitionBuilder.newTransition()
+					.slideInLeft().fadeClearColors().duration(.6f).get();
 			LevelPackageCollection collection = state.pack
 					.getLevelPackageCollection();
 			PackagesListScreen.showAsCurrentScreen(collection, transition);
@@ -143,8 +143,8 @@ public class PackageScreen extends AbstractScreen {
 		Table base = getBaseTable();
 		base.clear();
 		levelButtonGrid.clear();
-		float width = getDefaultViewportWidth();
-		float height = getDefaultViewportHeight();
+		float width = base.getWidth();
+		float height = base.getHeight();
 		Cell<?> cell;
 		for (int i = 0; i < levelButtons.length; i++) {
 			levelButtons[i].getLabel().setFontScale(0.7f);

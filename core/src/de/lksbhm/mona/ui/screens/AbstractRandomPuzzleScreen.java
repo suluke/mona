@@ -105,8 +105,7 @@ public abstract class AbstractRandomPuzzleScreen<NextScreenType extends Abstract
 
 		Table base = getBaseTable();
 		base.clear();
-		base.add(getPuzzleActor()).height(getDefaultViewportHeight() * 0.9f)
-				.row();
+		base.add(getPuzzleActor()).height(base.getHeight() * 0.9f).row();
 		base.add(seedLabel);
 	}
 

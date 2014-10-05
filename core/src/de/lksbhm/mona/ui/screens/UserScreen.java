@@ -85,7 +85,7 @@ public class UserScreen extends AbstractScreen {
 				.width(width * 0.9f);
 
 		float buttonWidth = width * 0.4f;
-		float buttonHeight = getStage().getHeight() * 0.15f;
+		float buttonHeight = getBaseTable().getHeight() * 0.15f;
 		// yes button
 		ImageTextButton yesButton = new ImageTextButton("yes", skin,
 				"userScreen.yes");
@@ -109,8 +109,8 @@ public class UserScreen extends AbstractScreen {
 
 	private void layoutWidgets() {
 		getBaseTable().clear();
-		float worldWidth = getStage().getWidth();
-		float worldHeight = getStage().getHeight();
+		float worldWidth = getBaseTable().getWidth();
+		float worldHeight = getBaseTable().getHeight();
 		float w = worldWidth * 0.9f;
 		float h = worldHeight * 0.15f;
 

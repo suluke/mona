@@ -47,6 +47,7 @@ public abstract class AbstractScreen implements
 			table.debug();
 		}
 		stage.addActor(table);
+		table.validate();
 	}
 
 	public void setClearColor(float r, float g, float b, float a) {

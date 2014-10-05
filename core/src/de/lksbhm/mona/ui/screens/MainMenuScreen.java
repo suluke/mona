@@ -97,7 +97,7 @@ public class MainMenuScreen extends AbstractScreen {
 			}
 		});
 
-		infoButton = new ImageButton(skin, "info");
+		infoButton = new ImageButton(skin, "mainMenuScreen.info");
 		infoButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -108,7 +108,7 @@ public class MainMenuScreen extends AbstractScreen {
 			}
 		});
 
-		userButton = new ImageButton(skin, "user");
+		userButton = new ImageButton(skin, "mainMenuScreen.user");
 		userButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -125,8 +125,8 @@ public class MainMenuScreen extends AbstractScreen {
 		User user = game.getUserManager().getCurrentUser();
 
 		Table base = getBaseTable();
-		float worldWidth = getStage().getWidth();
-		float worldHeight = getStage().getHeight();
+		float worldWidth = getBaseTable().getWidth();
+		float worldHeight = getBaseTable().getHeight();
 		float w = worldWidth * 0.6f;
 		float h = worldHeight * 0.15f;
 

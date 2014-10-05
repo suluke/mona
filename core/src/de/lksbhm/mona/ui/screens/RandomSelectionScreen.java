@@ -196,8 +196,8 @@ public class RandomSelectionScreen extends AbstractScreen {
 		Table base = getBaseTable();
 		base.clear();
 
-		final float width = getStage().getWidth();
-		final float height = getStage().getHeight();
+		final float width = getBaseTable().getWidth();
+		final float height = getBaseTable().getHeight();
 
 		final float buttonWidth = width * .9f;
 		final float buttonHeight = height * .15f;

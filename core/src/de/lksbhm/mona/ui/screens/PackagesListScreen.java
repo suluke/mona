@@ -27,8 +27,8 @@ public class PackagesListScreen extends AbstractScreen {
 	private final InputAdapter backButtonHandler = new AbstractBackButtonHandler() {
 		@Override
 		protected void onBackButtonPressed() {
-			Transition transition = TransitionBuilder.newTransition().slideInLeft()
-					.fadeClearColors().duration(.6f).get();
+			Transition transition = TransitionBuilder.newTransition()
+					.slideInLeft().fadeClearColors().duration(.6f).get();
 			LksBhmGame.getGame().getRouter()
 					.changeScreen(MainMenuScreen.class, null, transition);
 		}
@@ -43,7 +43,6 @@ public class PackagesListScreen extends AbstractScreen {
 	public PackagesListScreen() {
 		state = new PackagesListScreenState();
 		setClearColor(.6f, .6f, .6f, 1);
-		packagesList.setWidth(getDefaultViewportWidth() * .7f);
 		InputMultiplexer mux = new InputMultiplexer();
 		mux.addProcessor(getStage());
 		mux.addProcessor(backButtonHandler);
@@ -108,8 +107,11 @@ public class PackagesListScreen extends AbstractScreen {
 		Table baseTable = getBaseTable();
 		baseTable.clear();
 		packagesList.clear();
-		float width = getDefaultViewportWidth();
-		float height = getDefaultViewportHeight();
+		float width = baseTable.getWidth();
+		float height = baseTable.getHeight();
+
+		packagesList.setHeight(height);
+		packagesList.setWidth(width);
 		if (packageButtons != null) {
 			for (@SuppressWarnings("rawtypes")
 			Container c : packageButtons) {
@@ -117,8 +119,7 @@ public class PackagesListScreen extends AbstractScreen {
 				packagesList.addActor(c);
 			}
 		}
-		baseTable.add(listScroll).center().width(width * .7f).fill().expand()
-				.padBottom(height * .1f);
+		baseTable.add(listScroll).center().width(width).fill().expand();
 	}
 
 	private void applyState() {

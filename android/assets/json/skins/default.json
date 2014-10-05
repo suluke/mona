@@ -93,6 +93,14 @@
 			"name": "icons/decline",
 			"color": "white"
 		},
+		"icon.back.black": {
+			"name": "icons/back",
+			"color": "black"
+		},
+		"icon.back.white": {
+			"name": "icons/back",
+			"color": "white"
+		},
 		"banner.black": {
 			"name": "mona-banner",
 			"color": "black"
@@ -170,14 +178,20 @@
 		}
 	},
 	"com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle": {
-		"user": {
+		"mainMenuScreen.user": {
 			"imageUp": "icon.user.black",
 			"imageDown": "icon.user.white"
 		},
-		"info": {
+		"mainMenuScreen.info": {
 			"imageUp": "icon.about.black",
 			"imageDown": "icon.about.white"
 		},
+		"abstractScreen.backButton": {
+			"imageUp": "icon.back.white",
+			"imageDown": "icon.back.black",
+			"up": "black",
+			"down": "black"
+		}
 	},
 	"com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
 		"default": {
@@ -214,7 +228,7 @@
 		}
 	},
 	"com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle": {
-		"aboutTheGame": {
+		"infoScreen.aboutTheGame": {
 			"imageUp": "icon.about.black",
 			"imageDown": "icon.about.white",
 			"down": "widgets/button-dark/down",
@@ -223,7 +237,7 @@
 			"fontColor": "black",
 			"downFontColor": "white"
 		},
-		"licenses": {
+		"infoScreen.licenses": {
 			"imageUp": "icon.doc.black",
 			"imageDown": "icon.doc.white",
 			"down": "widgets/button-dark/down",
@@ -232,7 +246,7 @@
 			"fontColor": "black",
 			"downFontColor": "white"
 		},
-		"howToPlay": {
+		"infoScreen.howToPlay": {
 			"imageUp": "icon.controller.black",
 			"imageDown": "icon.controller.white",
 			"down": "widgets/button-dark/down",

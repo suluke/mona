@@ -50,8 +50,8 @@ public class InfoScreen extends AbstractScreen {
 		Skin skin = LksBhmGame.getGame().getDefaultSkin();
 		Table base = getBaseTable();
 
-		float w = getStage().getWidth() * .9f;
-		float h = getStage().getHeight() * 0.1f;
+		float w = getBaseTable().getWidth() * .9f;
+		float h = getBaseTable().getHeight() * 0.1f;
 		float bottomSpace = h * .8f;
 		float padTop = h * .15f;
 		float fontScale = .7f;
@@ -59,7 +59,8 @@ public class InfoScreen extends AbstractScreen {
 		float labelHeight = h * .7f;
 
 		// create and add outer widgets first so they get a size
-		howToPlayButton = new ImageTextButton("How to play", skin, "howToPlay");
+		howToPlayButton = new ImageTextButton("How to play", skin,
+				"infoScreen.howToPlay");
 		howToPlayButton.align(Align.left);
 		howToPlayButton.getLabel().setFontScale(fontScale);
 		howToPlayButton.getLabelCell().height(labelHeight);
@@ -75,7 +76,7 @@ public class InfoScreen extends AbstractScreen {
 		});
 
 		aboutTheGameButton = new ImageTextButton("About the game", skin,
-				"aboutTheGame");
+				"infoScreen.aboutTheGame");
 		aboutTheGameButton.align(Align.left);
 		aboutTheGameButton.getLabel().setFontScale(fontScale);
 		aboutTheGameButton.getLabelCell().height(labelHeight);
@@ -90,7 +91,8 @@ public class InfoScreen extends AbstractScreen {
 			}
 		});
 
-		licensesButton = new ImageTextButton("Licenses", skin, "licenses");
+		licensesButton = new ImageTextButton("Licenses", skin,
+				"infoScreen.licenses");
 		licensesButton.align(Align.left);
 		licensesButton.getLabel().setFontScale(fontScale);
 		licensesButton.getLabelCell().height(labelHeight);
