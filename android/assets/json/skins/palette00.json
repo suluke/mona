@@ -1,0 +1,28 @@
+{
+	"com.badlogic.gdx.graphics.Color": {
+		"puzzleActor.tile": {
+			"a": 0.729,
+			"b": 0.729,
+			"g": 0.729,
+			"r": 0.729
+		},
+		"puzzleActor.edge": {
+			"a": 1,
+			"b": 0.537,
+			"g": 0.373,
+			"r": 0.835
+		},
+		"puzzleActor.straight": {
+			"a": 1,
+			"b": 0.796,
+			"g": 0.863,
+			"r": 0.518
+		},
+		"puzzleActor.invalidMarker": {
+			"r": 0.85,
+			"g": 0.38,
+			"b": 0.23,
+			"a": 1
+		}
+	}
+}

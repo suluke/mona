@@ -27,8 +27,8 @@ public abstract class LksBhmGame<GameImplementation extends LksBhmGame, UserImpl
 		extends Game implements Context {
 	private static LksBhmGame instance;
 
-	private final String defaultSkinPath;
-	private final String defaultSkinAtlasPath;
+	private String defaultSkinPath = "json/skins/default.json";
+	private String defaultSkinAtlasPath = "textures/main.atlas";
 
 	private final AssetManager assetManager = new AssetManager();
 	private final ResourceConsumerManager resourceConsumerManager = new ResourceConsumerManager(
@@ -43,12 +43,11 @@ public abstract class LksBhmGame<GameImplementation extends LksBhmGame, UserImpl
 	private final PlatformManager<PlatformImplementation> platformManager = new PlatformManager<PlatformImplementation>();
 
 	public LksBhmGame(Instantiator<UserImplementation> userInstantiator) {
-		this("json/skin.json", "textures/main.atlas", userInstantiator);
+		this(null, null, userInstantiator);
 	}
 
 	public LksBhmGame(String defaultSkinPath, String defaultSkinAtlasPath,
-
-	Instantiator<UserImplementation> userInstantiator) {
+			Instantiator<UserImplementation> userInstantiator) {
 		this(defaultSkinPath, defaultSkinAtlasPath, 0, userInstantiator);
 	}
 
@@ -56,8 +55,12 @@ public abstract class LksBhmGame<GameImplementation extends LksBhmGame, UserImpl
 			int routerHistorySize,
 			Instantiator<UserImplementation> userInstantiator) {
 		instance = this;
-		this.defaultSkinPath = defaultSkinPath;
-		this.defaultSkinAtlasPath = defaultSkinAtlasPath;
+		if (defaultSkinPath != null) {
+			this.defaultSkinPath = defaultSkinPath;
+		}
+		if (defaultSkinAtlasPath != null) {
+			this.defaultSkinAtlasPath = defaultSkinAtlasPath;
+		}
 		this.routerHistorySize = routerHistorySize;
 		this.userInstantiator = userInstantiator;
 	}
@@ -77,8 +80,7 @@ public abstract class LksBhmGame<GameImplementation extends LksBhmGame, UserImpl
 	}
 
 	private void loadAndStart() {
-		SkinParameter skinParam = new SkinParameter(defaultSkinAtlasPath);
-		assetManager.load(defaultSkinPath, Skin.class, skinParam);
+		registerDefaultSkinForLoad(assetManager);
 		final TransitionableResettableConsumerScreen screen = resourceConsumerManager
 				.obtainConsumerInstanceWithoutLoadingResources(getFirstScreen());
 		// don't need to have screen request resources as this is done in
@@ -88,12 +90,28 @@ public abstract class LksBhmGame<GameImplementation extends LksBhmGame, UserImpl
 				new Runnable() {
 					@Override
 					public void run() {
-						defaultSkin = assetManager.get(defaultSkinPath);
+						defaultSkin = getDefaultSkinAfterLoad(assetManager);
 						screen.onResourcesLoaded(assetManager);
 						setScreen(screen);
 						enterContext();
 					}
 				});
+	}
+
+	/**
+	 * Overwrite this method and {@link #getDefaultSkinAfterLoad(AssetManager)}
+	 * if you want to custom skin logic. E.g. this can be used to load multiple
+	 * json files into one single skin to have a merged "master" skin
+	 * 
+	 * @param assetManager
+	 */
+	protected void registerDefaultSkinForLoad(AssetManager assetManager) {
+		SkinParameter skinParam = new SkinParameter(defaultSkinAtlasPath);
+		assetManager.load(defaultSkinPath, Skin.class, skinParam);
+	}
+
+	protected Skin getDefaultSkinAfterLoad(AssetManager assetManager) {
+		return assetManager.get(defaultSkinPath);
 	}
 
 	protected void initialize() {

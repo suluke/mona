@@ -5,6 +5,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics.DisplayMode;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.TextureAtlasLoader.TextureAtlasParameter;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.gdx.resources.ResourceConsumer;
@@ -26,6 +29,7 @@ public class Mona extends LksBhmGame<Mona, User, MonaPlatform> {
 	private final DropInBehavior dropinBehavior = new DropInBehavior();
 	private final Version version = new Version("", 0, 0, 3, Status.ALPHA,
 			new GregorianCalendarValue(2014, 10, 5, 1412461592L * 1000));
+	private final Skin skin = new Skin();
 
 	public Mona() {
 		super(User.instantiator);
@@ -109,5 +113,22 @@ public class Mona extends LksBhmGame<Mona, User, MonaPlatform> {
 	@Override
 	public Version getVersion() {
 		return version;
+	}
+
+	@Override
+	protected void registerDefaultSkinForLoad(AssetManager assetManager) {
+		TextureAtlasParameter atlasParam = new TextureAtlasParameter();
+		assetManager
+				.load("textures/main.atlas", TextureAtlas.class, atlasParam);
+	}
+
+	@Override
+	protected Skin getDefaultSkinAfterLoad(AssetManager assetManager) {
+		TextureAtlas atlas = assetManager.get("textures/main.atlas");
+		skin.addRegions(atlas);
+		skin.load(Gdx.files.internal("json/skins/"
+				+ getUserManager().getCurrentUser().getPaletteName() + ".json"));
+		skin.load(Gdx.files.internal("json/skins/default.json"));
+		return skin;
 	}
 }

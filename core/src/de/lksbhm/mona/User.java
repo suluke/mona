@@ -180,4 +180,8 @@ public class User extends de.lksbhm.gdx.users.User {
 		solvedLevelsInPackage.clear();
 		getUserManager().updateUser(this);
 	}
+
+	public String getPaletteName() {
+		return "palette00";
+	}
 }
