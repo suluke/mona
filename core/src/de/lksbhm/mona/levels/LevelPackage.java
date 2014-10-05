@@ -69,7 +69,7 @@ public abstract class LevelPackage implements Iterable<Level> {
 
 	public Level getLevelAfter(Level level) {
 		assertLevelsLoaded();
-		for (int i = 0; i < size - 1; i++) {
+		for (int i = 0; i < size; i++) {
 			if (levels[i].equals(level)) {
 				if (i + 1 >= size) {
 					return null;

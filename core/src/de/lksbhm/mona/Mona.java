@@ -1,6 +1,8 @@
 package de.lksbhm.mona;
 
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics.DisplayMode;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 
@@ -31,6 +33,11 @@ public class Mona extends LksBhmGame<Mona, User, MonaPlatform> {
 
 	@Override
 	protected void initialize() {
+		DisplayMode[] displayModes = Gdx.graphics.getDisplayModes();
+		if (Gdx.app.getType() == ApplicationType.WebGL
+				&& displayModes.length > 0) {
+			Gdx.graphics.setDisplayMode(Gdx.graphics.getDisplayModes()[0]);
+		}
 		Gdx.input.setCatchBackKey(true);
 		loadingScreen = new LoadingScreen();
 		UserManager<User> userManager = getUserManager();
