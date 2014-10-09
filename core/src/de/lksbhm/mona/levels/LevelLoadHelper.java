@@ -12,8 +12,9 @@ import com.badlogic.gdx.utils.reflect.ReflectionException;
 import de.lksbhm.mona.puzzle.Piece.Type;
 import de.lksbhm.mona.puzzle.representations.directional.DirectionalTileBoard;
 
-class LevelLoadHelper {
-	private final static String nameSpace = "de.lksbhm.mona";
+public class LevelLoadHelper {
+
+	public final static String nameSpace = "de.lksbhm.mona";
 
 	private LevelLoadHelper() {
 

@@ -19,7 +19,7 @@ import de.lksbhm.mona.ui.screens.AbstractLevelScreen;
 abstract class AbstractTutorial<Part extends Iterator<Part>> extends Tutorial {
 	private Window overlay;
 	private final Table content = new Table();
-	private final Skin skin = LksBhmGame.getGame().getDefaultSkin();;
+	private Skin skin;
 	private Part currentPart;
 
 	private final Action applyCurrentPartAction = new ApplyCurrentPartAction();
@@ -102,6 +102,8 @@ abstract class AbstractTutorial<Part extends Iterator<Part>> extends Tutorial {
 
 	@Override
 	protected void start() {
+		skin = LksBhmGame.getGame().getDefaultSkin();
+
 		if (overlay == null) {
 			// Setup overlay
 			overlay = new Window("", skin);

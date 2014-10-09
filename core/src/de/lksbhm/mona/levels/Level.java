@@ -34,7 +34,11 @@ public abstract class Level extends ContextImplementation implements Disposable 
 	public Level(LevelPackage pack, String id) {
 		this.pack = pack;
 		this.id = id;
-		this.canonicalId = pack.getPackageId() + packageIdSeparator + id;
+		if (pack != null) {
+			canonicalId = pack.getPackageId() + packageIdSeparator + id;
+		} else {
+			canonicalId = id;
+		}
 	}
 
 	public boolean isSolved() {
@@ -80,7 +84,7 @@ public abstract class Level extends ContextImplementation implements Disposable 
 			p.dispose();
 			p = null;
 		}
-		if (tutorial != null) {
+		if (hasTutorial()) {
 			tutorial.dispose();
 		}
 	}
@@ -110,11 +114,14 @@ public abstract class Level extends ContextImplementation implements Disposable 
 		} catch (ReflectionException e) {
 			throw new RuntimeException();
 		}
+		if (constructor == null) {
+			throw new RuntimeException("Tutorial not found: " + name);
+		}
 		Tutorial tut;
 		try {
 			tut = (Tutorial) constructor.newInstance(this);
 		} catch (ReflectionException e) {
-			throw new RuntimeException();
+			throw new RuntimeException(e);
 		}
 		removeTutorial();
 		tut.load();
@@ -122,9 +129,24 @@ public abstract class Level extends ContextImplementation implements Disposable 
 	}
 
 	public void removeTutorial() {
-		if (tutorial != null) {
+		if (hasTutorial()) {
 			tutorial.dispose();
 			tutorial = null;
+		}
+	}
+
+	public boolean hasTutorial() {
+		return tutorial != null;
+	}
+
+	public String getTutorialName() {
+		if (hasTutorial()) {
+			return tutorial.getClass().getCanonicalName()
+					.substring(tutorialPackage.length() + 1);
+			// +1 because of additional '.'
+		} else {
+			throw new RuntimeException(
+					"No tutorial has been set for this level");
 		}
 	}
 

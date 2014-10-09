@@ -54,6 +54,9 @@ public abstract class LksBhmGame<GameImplementation extends LksBhmGame, UserImpl
 	public LksBhmGame(String defaultSkinPath, String defaultSkinAtlasPath,
 			int routerHistorySize,
 			Instantiator<UserImplementation> userInstantiator) {
+		if (instance != null) {
+			throw new IllegalStateException();
+		}
 		instance = this;
 		if (defaultSkinPath != null) {
 			this.defaultSkinPath = defaultSkinPath;
