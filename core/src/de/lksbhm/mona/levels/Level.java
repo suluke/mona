@@ -9,6 +9,7 @@ import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.gdx.contexts.ContextImplementation;
 import de.lksbhm.mona.Mona;
 import de.lksbhm.mona.puzzle.Puzzle;
+import de.lksbhm.mona.puzzle.representations.directional.DirectionalTileBoard;
 import de.lksbhm.mona.tutorials.Tutorial;
 import de.lksbhm.mona.ui.screens.AbstractLevelScreen;
 
@@ -26,6 +27,7 @@ public abstract class Level extends ContextImplementation implements Disposable 
 	private LevelPuzzle p;
 	private Tutorial tutorial;
 	private final String canonicalId;
+	private DirectionalTileBoard solution;
 
 	private AbstractLevelScreen<?> view;
 
@@ -47,7 +49,16 @@ public abstract class Level extends ContextImplementation implements Disposable 
 		return p;
 	}
 
+	public DirectionalTileBoard getSolution() {
+		if (solution == null) {
+			solution = instantiateSolution();
+		}
+		return solution;
+	}
+
 	protected abstract LevelPuzzle instantiatePuzzle();
+
+	protected abstract DirectionalTileBoard instantiateSolution();
 
 	public String getLevelId() {
 		return id;

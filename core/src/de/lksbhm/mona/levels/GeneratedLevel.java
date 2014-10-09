@@ -3,6 +3,7 @@ package de.lksbhm.mona.levels;
 import java.util.Random;
 
 import de.lksbhm.mona.puzzle.Piece.Type;
+import de.lksbhm.mona.puzzle.representations.directional.DirectionalTileBoard;
 
 public class GeneratedLevel extends Level {
 
@@ -10,6 +11,7 @@ public class GeneratedLevel extends Level {
 	private final Random random;
 	private final int[][] invisibleTiles;
 	private final Difficulty difficulty;
+	private DirectionalTileBoard solution;
 
 	public GeneratedLevel(long seed, Random random, LevelPackage pack, String id) {
 		this(seed, random, pack, id, null, null);
@@ -21,7 +23,22 @@ public class GeneratedLevel extends Level {
 		this.random = random;
 		this.seed = seed;
 		this.difficulty = d;
-		this.invisibleTiles = invisibleTiles;
+		random.setSeed(seed);
+		if (invisibleTiles != null) {
+			this.invisibleTiles = invisibleTiles;
+
+			// We need the solution now already to check that invisibleTiles are
+			// compatible with it
+			instantiateSolution();
+			for (int[] coords : invisibleTiles) {
+				if (!solution.getTile(coords[0], coords[1]).isEmpty()) {
+					throw new RuntimeException(
+							"Solution not compatible with given invisible Tiles");
+				}
+			}
+		} else {
+			this.invisibleTiles = null;
+		}
 	}
 
 	@Override
@@ -53,5 +70,18 @@ public class GeneratedLevel extends Level {
 	@Override
 	public String toString() {
 		return seed + "@" + getRandomType().getSimpleName();
+	}
+
+	@Override
+	protected DirectionalTileBoard instantiateSolution() {
+		if (solution == null) {
+			if (difficulty == null) {
+				solution = LevelPuzzleGenerator.generateSolution(random);
+			} else {
+				solution = LevelPuzzleGenerator.generateSolution(difficulty,
+						random);
+			}
+		}
+		return solution;
 	}
 }

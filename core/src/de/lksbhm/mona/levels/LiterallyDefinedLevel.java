@@ -11,8 +11,8 @@ public class LiterallyDefinedLevel extends Level {
 	public LiterallyDefinedLevel(Piece.Type[][] tileTypes,
 			DirectionalTileBoard solution, LevelPackage pack, String id) {
 		super(pack, id);
-		this.tileTypes = tileTypes;
 		this.solution = solution;
+		this.tileTypes = tileTypes;
 	}
 
 	@Override
@@ -25,5 +25,10 @@ public class LiterallyDefinedLevel extends Level {
 			piece.setType(tileTypes[piece.getX()][piece.getY()]);
 		}
 		return puzzle;
+	}
+
+	@Override
+	protected DirectionalTileBoard instantiateSolution() {
+		return solution;
 	}
 }

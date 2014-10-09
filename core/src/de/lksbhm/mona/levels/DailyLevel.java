@@ -2,6 +2,8 @@ package de.lksbhm.mona.levels;
 
 import java.util.Random;
 
+import de.lksbhm.mona.puzzle.representations.directional.DirectionalTileBoard;
+
 public class DailyLevel extends Level {
 
 	private final long seed;
@@ -18,5 +20,12 @@ public class DailyLevel extends Level {
 		random.setSeed(seed);
 		return LevelPuzzleGenerator.generate(this,
 				getPackage().getDifficulty(), random, 1.f, 1.f);
+	}
+
+	@Override
+	protected DirectionalTileBoard instantiateSolution() {
+		random.setSeed(seed);
+		return LevelPuzzleGenerator.generateSolution(getPackage()
+				.getDifficulty(), random);
 	}
 }
