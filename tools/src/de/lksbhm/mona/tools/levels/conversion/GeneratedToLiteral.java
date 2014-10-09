@@ -22,8 +22,9 @@ class GeneratedToLiteral {
 	}
 
 	private void makeSolution() {
-		// TODO Auto-generated method stub
-
+		// TODO decide whether or not create a copy. Maybe add an immutable
+		// switch to the board
+		solution = original.getSolution().shallowCopy();
 	}
 
 	private void makeTileTypes() {

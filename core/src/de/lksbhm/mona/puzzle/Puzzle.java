@@ -12,7 +12,15 @@ import de.lksbhm.mona.Mona;
 import de.lksbhm.mona.puzzle.Piece.Type;
 import de.lksbhm.mona.puzzle.representations.Board;
 import de.lksbhm.mona.puzzle.representations.Direction;
+import de.lksbhm.mona.puzzle.representations.directional.BottomLeftTile;
+import de.lksbhm.mona.puzzle.representations.directional.BottomRightTile;
 import de.lksbhm.mona.puzzle.representations.directional.DirectionalTileBoard;
+import de.lksbhm.mona.puzzle.representations.directional.DirectionalTileVisitor;
+import de.lksbhm.mona.puzzle.representations.directional.LeftRightTile;
+import de.lksbhm.mona.puzzle.representations.directional.NoDirectionTile;
+import de.lksbhm.mona.puzzle.representations.directional.TopBottomTile;
+import de.lksbhm.mona.puzzle.representations.directional.TopLeftTile;
+import de.lksbhm.mona.puzzle.representations.directional.TopRightTile;
 
 public class Puzzle extends Board<Piece> implements Disposable {
 	static final Pool<Piece> fieldPool = new Pool<Piece>() {
@@ -454,5 +462,68 @@ public class Puzzle extends Board<Piece> implements Disposable {
 			return false;
 		}
 		return true;
+	}
+
+	private class DirectionApplier implements DirectionalTileVisitor {
+
+		@Override
+		public void visitTopLeft(TopLeftTile topLeft) {
+			getTile(topLeft.getX(), topLeft.getY()).setInOutDirection(
+					Direction.UP, Direction.LEFT, false);
+		}
+
+		@Override
+		public void visitTopBottom(TopBottomTile topBottom) {
+			getTile(topBottom.getX(), topBottom.getY()).setInOutDirection(
+					Direction.UP, Direction.DOWN, false);
+		}
+
+		@Override
+		public void visitLeftRight(LeftRightTile leftRight) {
+			getTile(leftRight.getX(), leftRight.getY()).setInOutDirection(
+					Direction.LEFT, Direction.RIGHT, false);
+		}
+
+		@Override
+		public void visitBottomRight(BottomRightTile bottomRight) {
+			getTile(bottomRight.getX(), bottomRight.getY()).setInOutDirection(
+					Direction.DOWN, Direction.RIGHT, false);
+		}
+
+		@Override
+		public void visitBottomLeft(BottomLeftTile bottomLeft) {
+			getTile(bottomLeft.getX(), bottomLeft.getY()).setInOutDirection(
+					Direction.DOWN, Direction.LEFT, false);
+		}
+
+		@Override
+		public void visitTopRight(TopRightTile topRight) {
+			getTile(topRight.getX(), topRight.getY()).setInOutDirection(
+					Direction.UP, Direction.RIGHT, false);
+		}
+
+		@Override
+		public void visitEmpty(NoDirectionTile empty) {
+			getTile(empty.getX(), empty.getY()).setInOutDirection(
+					Direction.NONE, Direction.NONE, false);
+		}
+
+	}
+
+	public void applyDirections(DirectionalTileBoard directions, boolean notifyChanges) {
+		if (directions.getWidth() != getWidth()
+				|| directions.getHeight() != getHeight()) {
+			throw new IllegalArgumentException(
+					"Given DirectionalTileBoard has incorrect size to be applied on this puzzle");
+		}
+		DirectionApplier directionApplier = new DirectionApplier();
+		for (int x = 0; x < getWidth(); x++) {
+			for (int y = 0; y < getHeight(); y++) {
+				directions.getTile(x, y).acceptVisitor(directionApplier);
+			}
+		}
+		if (notifyChanges) {
+			notifyOnChange();
+		}
 	}
 }

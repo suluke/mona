@@ -155,4 +155,10 @@ public abstract class Level extends ContextImplementation implements Disposable 
 	public AbstractLevelScreen<?> getView() {
 		return view;
 	}
+
+	public void applySolution() {
+		Puzzle puzzle = getPuzzle();
+		DirectionalTileBoard solution = getSolution();
+		puzzle.applyDirections(solution, false);
+	}
 }
