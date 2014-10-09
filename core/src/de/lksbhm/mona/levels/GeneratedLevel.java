@@ -42,10 +42,6 @@ public class GeneratedLevel extends Level {
 		return puzzle;
 	}
 
-	public long getSeed() {
-		return seed;
-	}
-
 	public Class<? extends Random> getRandomType() {
 		return random.getClass();
 	}
@@ -56,6 +52,6 @@ public class GeneratedLevel extends Level {
 
 	@Override
 	public String toString() {
-		return getSeed() + "@" + getRandomType().getSimpleName();
+		return seed + "@" + getRandomType().getSimpleName();
 	}
 }
