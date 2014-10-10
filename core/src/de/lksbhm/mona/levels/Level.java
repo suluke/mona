@@ -183,4 +183,14 @@ public abstract class Level extends ContextImplementation implements Disposable 
 		DirectionalTileBoard solution = getSolution();
 		puzzle.applyDirections(solution, false);
 	}
+
+	/**
+	 * 
+	 * @param solution
+	 * @deprecated only for testing purposes
+	 */
+	@Deprecated
+	void setSolution(DirectionalTileBoard solution) {
+		this.solution = solution;
+	}
 }

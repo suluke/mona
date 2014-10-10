@@ -98,13 +98,7 @@ public class Puzzle extends Board<Piece> implements Disposable {
 		if (isSolved) {
 			return;
 		}
-		for (Piece tile : this) {
-			if (!tile.isValid()) {
-				isSolved = false;
-				return;
-			}
-		}
-		isSolved = isAllConnectedInOneCircle();
+		isSolved = isSolved();
 		if (isSolved) {
 			onSolved();
 			for (PuzzleWonListener listener : winListeners) {
@@ -117,7 +111,7 @@ public class Puzzle extends Board<Piece> implements Disposable {
 	protected void onSolved() {
 	}
 
-	private boolean isAllConnectedInOneCircle() {
+	private boolean isAllConnectedInSingleCircle() {
 		resetIsValidArray();
 		// find a tile that is not empty
 		Piece root = null;
@@ -510,7 +504,8 @@ public class Puzzle extends Board<Piece> implements Disposable {
 
 	}
 
-	public void applyDirections(DirectionalTileBoard directions, boolean notifyChanges) {
+	public void applyDirections(DirectionalTileBoard directions,
+			boolean notifyChanges) {
 		if (directions.getWidth() != getWidth()
 				|| directions.getHeight() != getHeight()) {
 			throw new IllegalArgumentException(
@@ -525,5 +520,20 @@ public class Puzzle extends Board<Piece> implements Disposable {
 		if (notifyChanges) {
 			notifyOnChange();
 		}
+	}
+
+	/**
+	 * 
+	 * @return
+	 * @deprecated only for testing purposes
+	 */
+	@Deprecated
+	boolean isSolved() {
+		for (Piece tile : this) {
+			if (!tile.isValid()) {
+				return false;
+			}
+		}
+		return isAllConnectedInSingleCircle();
 	}
 }
