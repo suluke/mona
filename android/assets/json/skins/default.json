@@ -25,6 +25,10 @@
 		}
 	},
 	"com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable": {
+		"white": {
+			"name": "tintable",
+			"color": "white"
+		},
 		"black": {
 			"name": "tintable",
 			"color": "black"
@@ -132,6 +136,10 @@
 		"puzzleActor.invalidMarker": {
 			"name": "tintable",
 			"color": "puzzleActor.invalidMarker"
+		},
+		"licensesScreen.banner.libgdx": {
+			"name": "libgdx-logo",
+			"color": "white"
 		}
 	},
 	"com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle": {
@@ -225,6 +233,18 @@
 		"aboutScreen.version": {
 			"font": "default-font",
 			"fontColor": "white"
+		},
+		"licensesScreen.banner": {
+			"font": "default-font",
+			"fontColor": "black"
+		},
+		"licensesScreen.license": {
+			"font": "default-font",
+			"fontColor": "black"
+		},
+		"licensesScreen.version": {
+			"font": "default-font",
+			"fontColor": "black"
 		}
 	},
 	"com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle": {
