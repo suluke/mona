@@ -75,6 +75,7 @@ public class GeneratedLevel extends Level {
 	@Override
 	protected DirectionalTileBoard instantiateSolution() {
 		if (solution == null) {
+			random.setSeed(seed);
 			if (difficulty == null) {
 				solution = LevelPuzzleGenerator.generateSolution(random);
 			} else {
