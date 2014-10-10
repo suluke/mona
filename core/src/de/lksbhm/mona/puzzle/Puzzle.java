@@ -422,7 +422,7 @@ public class Puzzle extends Board<Piece> implements Disposable {
 			}
 			Piece tile1;
 			Piece tile2;
-			for (int y = startY; y < endY - 1; y++) {
+			for (int y = startY; y <= endY - 1; y++) {
 				tile1 = getTile(x, y);
 				tile2 = getTile(x, y + 1);
 				tile1.pushInOutDirection(Direction.DOWN, false);
@@ -446,11 +446,11 @@ public class Puzzle extends Board<Piece> implements Disposable {
 			}
 			Piece tile1;
 			Piece tile2;
-			for (int x = startX; x < endX - 1; x++) {
+			for (int x = startX; x <= endX - 1; x++) {
 				tile1 = getTile(x, y);
 				tile2 = getTile(x + 1, y);
-				tile1.pushInOutDirection(Direction.DOWN, false);
-				tile2.pushInOutDirection(Direction.UP, false);
+				tile1.pushInOutDirection(Direction.RIGHT, false);
+				tile2.pushInOutDirection(Direction.LEFT, false);
 			}
 		} else {
 			return false;
