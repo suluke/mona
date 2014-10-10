@@ -1,13 +1,16 @@
 package de.lksbhm.mona.ui.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Version;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
+import com.badlogic.gdx.utils.Scaling;
 
 import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.gdx.Router;
@@ -29,6 +32,7 @@ public class LicensesScreen extends AbstractScreen {
 
 	private final PagedScrollPane scrollPane = new PagedScrollPane();
 	private final Table libgdxPage = new Table();
+	private final ScrollPane libgdxLicenseScroll = new ScrollPane(null);
 	private Image libgdxBanner;
 	private Label libgdxVersion;
 	private Label libgdxLicense;
@@ -54,11 +58,12 @@ public class LicensesScreen extends AbstractScreen {
 		libgdxPage.setBackground(skin.getDrawable("white"));
 
 		libgdxBanner = new Image(skin, "licensesScreen.banner.libgdx");
+		libgdxBanner.setScaling(Scaling.fit);
 		libgdxVersion = new Label(Version.VERSION, skin,
 				"licensesScreen.version");
-		// TODO
-		libgdxLicense = new Label("<Enter license here>", skin,
-				"licensesScreen.license");
+		// TODO load the text in a loading screen or something
+		libgdxLicense = new Label(Gdx.files.internal("text/libgdx-license.txt")
+				.readString(), skin, "licensesScreen.license");
 	}
 
 	private void layoutWidgets() {
@@ -78,7 +83,8 @@ public class LicensesScreen extends AbstractScreen {
 		float height = base.getHeight();
 		libgdxPage.setSize(width, height);
 
-		libgdxPage.add(libgdxBanner).padTop(height * 0.1f).row();
+		libgdxPage.add(libgdxBanner).height(height * 0.2f)
+				.spaceTop(height * 0.1f).row();
 
 		libgdxVersion.setFontScale(.7f);
 		libgdxVersion.setAlignment(Align.center);
@@ -86,7 +92,8 @@ public class LicensesScreen extends AbstractScreen {
 
 		libgdxLicense.setWrap(true);
 		libgdxLicense.setFontScale(.4f);
-		libgdxPage.add(libgdxLicense).width(width * .9f).expandY().row();
+		libgdxPage.add(libgdxLicenseScroll).width(width * .9f).expandY().row();
+		libgdxLicenseScroll.setWidget(libgdxLicense);
 	}
 
 	@Override

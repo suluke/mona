@@ -1,7 +1,13 @@
 /**
  * Taken from https://gist.github.com/MobiDevelop/5540815
  * Copyright MobiDevelop
- * With minor changes: removed unused fields, add <?> to cell where necessary, add relativePageWidth option, applyPageBounds(), remove default space(50)
+ * With minor changes: 
+ * removed unused fields, 
+ * add <?> to cell where necessary, 
+ * add relativePageWidth option, 
+ * applyPageBounds(), 
+ * remove default space(50), 
+ * init()
  */
 
 package de.lksbhm.mona.ui.actors;
@@ -24,25 +30,29 @@ public class PagedScrollPane extends ScrollPane {
 	public PagedScrollPane() {
 		super(null);
 		content = new Table();
-		setWidget(content);
+		init();
 	}
 
 	public PagedScrollPane(Skin skin) {
-		super(null, skin);
-		content = new Table();
-		setWidget(content);
+		this(skin, "default");
 	}
 
 	public PagedScrollPane(Skin skin, String styleName) {
 		super(null, skin, styleName);
 		content = new Table();
-		setWidget(content);
+		init();
 	}
 
 	public PagedScrollPane(Actor widget, ScrollPaneStyle style) {
 		super(null, style);
 		content = new Table();
+		init();
+	}
+
+	private final void init() {
 		setWidget(content);
+		setOverscroll(true, false);
+		setScrollingDisabled(false, true);
 	}
 
 	public void addPages(Actor... pages) {
