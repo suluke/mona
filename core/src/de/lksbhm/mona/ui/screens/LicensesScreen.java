@@ -55,6 +55,8 @@ public class LicensesScreen extends AbstractScreen {
 	}
 
 	private void setupLibGDXPage(Skin skin) {
+		scrollPane.setCancelTouchFocus(false);
+
 		libgdxPage.setBackground(skin.getDrawable("white"));
 
 		libgdxBanner = new Image(skin, "licensesScreen.banner.libgdx");
