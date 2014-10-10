@@ -1,4 +1,4 @@
-package de.lksbhm.test.util;
+package de.lksbhm.util;
 
 import java.io.File;
 import java.io.FileNotFoundException;

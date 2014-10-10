@@ -10,7 +10,7 @@ import de.lksbhm.mona.levels.LevelLoadHelper;
 import de.lksbhm.mona.levels.LevelMethodAccessHelper;
 import de.lksbhm.mona.puzzle.PuzzleMethodAccessHelper;
 import de.lksbhm.mona.tools.levels.serialization.LevelSerializer;
-import de.lksbhm.test.util.FileUtils;
+import de.lksbhm.util.FileUtils;
 
 public class LevelSerializerTest extends TestCase {
 	public void testLiteralToJson() {
