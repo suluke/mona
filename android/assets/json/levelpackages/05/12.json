@@ -1,12 +1,68 @@
 {
-	"de.lksbhm.mona":  {
+	"de.lksbhm.mona": {
 		"levels": [
 			{
 				"id": "13",
-				"type": "Generated",
+				"type": "LiterallyDefined",
 				"data": {
-					"seed": -755562427363896782,
-					"generator": "com.badlogic.gdx.math.RandomXS128"
+					"tileTypes": [
+						[
+							"EMPTY", "EMPTY", "EDGE", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY"
+						],
+						[
+							"EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "STRAIGHT", "EMPTY", "STRAIGHT", "EMPTY"
+						],
+						[
+							"EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY"
+						],
+						[
+							"EDGE", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY"
+						],
+						[
+							"EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY"
+						],
+						[
+							"EMPTY", "EDGE", "STRAIGHT", "STRAIGHT", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EDGE"
+						],
+						[
+							"EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY"
+						],
+						[
+							"EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY"
+						],
+						[
+							"EMPTY", "EMPTY", "EMPTY", "EMPTY", "STRAIGHT", "STRAIGHT", "EMPTY", "EMPTY", "EMPTY"
+						]
+					],
+					"solution": [
+						[
+							"NoDirection", "NoDirection", "BottomRight", "TopBottom", "TopRight", "NoDirection", "NoDirection", "NoDirection", "NoDirection"
+						],
+						[
+							"BottomRight", "TopRight", "LeftRight", "NoDirection", "BottomLeft", "TopBottom", "TopBottom", "TopBottom", "TopRight"
+						],
+						[
+							"LeftRight", "BottomLeft", "TopLeft", "NoDirection", "NoDirection", "NoDirection", "BottomRight", "TopBottom", "TopLeft"
+						],
+						[
+							"BottomLeft", "TopBottom", "TopRight", "NoDirection", "NoDirection", "BottomRight", "TopLeft", "BottomRight", "TopRight"
+						],
+						[
+							"NoDirection", "NoDirection", "BottomLeft", "TopBottom", "TopRight", "BottomLeft", "TopBottom", "TopLeft", "LeftRight"
+						],
+						[
+							"NoDirection", "BottomRight", "TopBottom", "TopBottom", "TopLeft", "NoDirection", "BottomRight", "TopBottom", "TopLeft"
+						],
+						[
+							"NoDirection", "LeftRight", "NoDirection", "NoDirection", "NoDirection", "BottomRight", "TopLeft", "NoDirection", "NoDirection"
+						],
+						[
+							"BottomRight", "TopLeft", "BottomRight", "TopRight", "NoDirection", "BottomLeft", "TopRight", "NoDirection", "NoDirection"
+						],
+						[
+							"BottomLeft", "TopBottom", "TopLeft", "BottomLeft", "TopBottom", "TopBottom", "TopLeft", "NoDirection", "NoDirection"
+						]
+					]
 				}
 			}
 		]
