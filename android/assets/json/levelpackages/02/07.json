@@ -1,13 +1,44 @@
 {
-	"de.lksbhm.mona":  {
+	"de.lksbhm.mona": {
 		"levels": [
 			{
 				"id": "8",
-				"type": "Generated",
+				"type": "LiterallyDefined",
 				"data": {
-					"seed": 2388453424043476784,
-					"generator": "com.badlogic.gdx.math.RandomXS128",
-					"difficulty": "EASY"
+					"tileTypes": [
+						[
+							"EMPTY", "STRAIGHT", "EMPTY", "EMPTY", "STRAIGHT", "EDGE"
+						],
+						[
+							"EMPTY", "STRAIGHT", "STRAIGHT", "EDGE", "EMPTY", "STRAIGHT"
+						],
+						[
+							"EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY"
+						],
+						[
+							"EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "STRAIGHT"
+						],
+						[
+							"EMPTY", "EMPTY", "EMPTY", "STRAIGHT", "STRAIGHT", "EDGE"
+						]
+					],
+					"solution": [
+						[
+							"BottomRight", "TopBottom", "TopBottom", "TopBottom", "TopBottom", "TopRight"
+						],
+						[
+							"BottomLeft", "TopBottom", "TopBottom", "TopRight", "NoDirection", "LeftRight"
+						],
+						[
+							"NoDirection", "NoDirection", "NoDirection", "LeftRight", "NoDirection", "LeftRight"
+						],
+						[
+							"NoDirection", "NoDirection", "BottomRight", "TopLeft", "NoDirection", "LeftRight"
+						],
+						[
+							"NoDirection", "NoDirection", "BottomLeft", "TopBottom", "TopBottom", "TopLeft"
+						]
+					]
 				}
 			}
 		]
