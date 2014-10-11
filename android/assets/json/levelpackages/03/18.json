@@ -1,12 +1,50 @@
 {
-	"de.lksbhm.mona":  {
+	"de.lksbhm.mona": {
 		"levels": [
 			{
 				"id": "19",
-				"type": "Generated",
+				"type": "LiterallyDefined",
 				"data": {
-					"seed": -5735773224142743122,
-					"generator": "com.badlogic.gdx.math.RandomXS128"
+					"tileTypes": [
+						[
+							"EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EDGE", "EMPTY"
+						],
+						[
+							"EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY"
+						],
+						[
+							"EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EDGE", "EMPTY"
+						],
+						[
+							"EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY"
+						],
+						[
+							"EMPTY", "EMPTY", "EMPTY", "STRAIGHT", "STRAIGHT", "EMPTY", "EMPTY"
+						],
+						[
+							"EMPTY", "STRAIGHT", "EMPTY", "EMPTY", "STRAIGHT", "EMPTY", "EMPTY"
+						]
+					],
+					"solution": [
+						[
+							"NoDirection", "BottomRight", "TopRight", "BottomRight", "TopBottom", "TopRight", "NoDirection"
+						],
+						[
+							"BottomRight", "TopLeft", "BottomLeft", "TopLeft", "NoDirection", "LeftRight", "NoDirection"
+						],
+						[
+							"LeftRight", "NoDirection", "NoDirection", "BottomRight", "TopBottom", "TopLeft", "NoDirection"
+						],
+						[
+							"BottomLeft", "TopRight", "BottomRight", "TopLeft", "NoDirection", "NoDirection", "NoDirection"
+						],
+						[
+							"BottomRight", "TopLeft", "BottomLeft", "TopBottom", "TopBottom", "TopRight", "NoDirection"
+						],
+						[
+							"BottomLeft", "TopBottom", "TopBottom", "TopBottom", "TopBottom", "TopLeft", "NoDirection"
+						]
+					]
 				}
 			}
 		]
