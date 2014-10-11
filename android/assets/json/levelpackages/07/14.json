@@ -1,12 +1,74 @@
 {
-	"de.lksbhm.mona":  {
+	"de.lksbhm.mona": {
 		"levels": [
 			{
 				"id": "15",
-				"type": "Generated",
+				"type": "LiterallyDefined",
 				"data": {
-					"seed": -1520546329428612500,
-					"generator": "com.badlogic.gdx.math.RandomXS128"
+					"tileTypes": [
+						[
+							"EMPTY", "EMPTY", "EMPTY", "EMPTY", "STRAIGHT", "STRAIGHT", "EDGE", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY"
+						],
+						[
+							"EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY"
+						],
+						[
+							"EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EDGE", "STRAIGHT", "STRAIGHT", "EDGE", "EMPTY", "EMPTY"
+						],
+						[
+							"STRAIGHT", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY"
+						],
+						[
+							"EMPTY", "EDGE", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY"
+						],
+						[
+							"EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY"
+						],
+						[
+							"STRAIGHT", "EDGE", "EMPTY", "EDGE", "EMPTY", "EMPTY", "EMPTY", "EDGE", "EMPTY", "EMPTY", "EDGE", "EMPTY"
+						],
+						[
+							"EMPTY", "EMPTY", "EMPTY", "STRAIGHT", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "STRAIGHT", "STRAIGHT", "EMPTY"
+						],
+						[
+							"EMPTY", "EMPTY", "EMPTY", "STRAIGHT", "EMPTY", "STRAIGHT", "STRAIGHT", "EDGE", "EMPTY", "EMPTY", "EMPTY", "EMPTY"
+						],
+						[
+							"EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "STRAIGHT", "EMPTY", "STRAIGHT", "EMPTY", "EMPTY", "EMPTY", "EMPTY"
+						]
+					],
+					"solution": [
+						[
+							"BottomRight", "TopBottom", "TopRight", "BottomRight", "TopBottom", "TopBottom", "TopRight", "NoDirection", "NoDirection", "BottomRight", "TopRight", "NoDirection"
+						],
+						[
+							"BottomLeft", "TopRight", "BottomLeft", "TopLeft", "NoDirection", "NoDirection", "LeftRight", "NoDirection", "NoDirection", "LeftRight", "LeftRight", "NoDirection"
+						],
+						[
+							"BottomRight", "TopLeft", "NoDirection", "NoDirection", "NoDirection", "NoDirection", "BottomLeft", "TopBottom", "TopBottom", "TopLeft", "BottomLeft", "TopRight"
+						],
+						[
+							"LeftRight", "NoDirection", "NoDirection", "NoDirection", "NoDirection", "NoDirection", "NoDirection", "NoDirection", "NoDirection", "NoDirection", "NoDirection", "LeftRight"
+						],
+						[
+							"LeftRight", "BottomRight", "TopBottom", "TopRight", "NoDirection", "NoDirection", "NoDirection", "NoDirection", "NoDirection", "NoDirection", "BottomRight", "TopLeft"
+						],
+						[
+							"LeftRight", "LeftRight", "NoDirection", "BottomLeft", "TopBottom", "TopRight", "NoDirection", "NoDirection", "NoDirection", "NoDirection", "LeftRight", "NoDirection"
+						],
+						[
+							"LeftRight", "BottomLeft", "TopBottom", "TopRight", "NoDirection", "BottomLeft", "TopBottom", "TopRight", "BottomRight", "TopBottom", "TopLeft", "NoDirection"
+						],
+						[
+							"BottomLeft", "TopRight", "NoDirection", "LeftRight", "NoDirection", "NoDirection", "NoDirection", "LeftRight", "BottomLeft", "TopBottom", "TopBottom", "TopRight"
+						],
+						[
+							"NoDirection", "BottomLeft", "TopRight", "LeftRight", "BottomRight", "TopBottom", "TopBottom", "TopLeft", "BottomRight", "TopRight", "BottomRight", "TopLeft"
+						],
+						[
+							"NoDirection", "NoDirection", "BottomLeft", "TopLeft", "BottomLeft", "TopBottom", "TopBottom", "TopBottom", "TopLeft", "BottomLeft", "TopLeft", "NoDirection"
+						]
+					]
 				}
 			}
 		]
