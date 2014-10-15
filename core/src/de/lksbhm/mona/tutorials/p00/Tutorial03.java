@@ -134,4 +134,8 @@ public class Tutorial03 extends
 		getContent().add(continueHint);
 	}
 
+	@Override
+	public String getCanonicalClassName() {
+		return "de.lksbhm.mona.tutorials.p00.Tutorial03";
+	}
 }

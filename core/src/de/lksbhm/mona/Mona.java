@@ -27,8 +27,8 @@ public class Mona extends LksBhmGame<Mona, User, MonaPlatform> {
 	private final Settings settings = new Settings();
 	private final LevelPackageManager packageManager = new LevelPackageManager();
 	private final DropInBehavior dropinBehavior = new DropInBehavior();
-	private final Version version = new Version("", 0, 0, 3, Status.ALPHA,
-			new GregorianCalendarValue(2014, 10, 5, 1412461592L * 1000));
+	private final Version version = new Version("", 0, 0, 4, Status.ALPHA,
+			new GregorianCalendarValue(2014, 10, 11, 1412979361 * 1000L));
 	private final Skin skin = new Skin();
 
 	public Mona() {

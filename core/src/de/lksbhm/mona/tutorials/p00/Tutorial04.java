@@ -93,4 +93,9 @@ public class Tutorial04 extends
 		getContent().add(introText).width(width * .9f).row();
 		getContent().add(continueHint);
 	}
+	
+	@Override
+	public String getCanonicalClassName() {
+		return "de.lksbhm.mona.tutorials.p00.Tutorial04";
+	}
 }

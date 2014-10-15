@@ -182,4 +182,9 @@ public class Tutorial00 extends
 		getLevel().getPuzzle().removeChangeListener(puzzleChangedListener);
 		super.end();
 	}
+
+	@Override
+	public String getCanonicalClassName() {
+		return "de.lksbhm.mona.tutorials.p00.Tutorial00";
+	}
 }

@@ -51,6 +51,8 @@ public abstract class Tutorial implements Disposable {
 			throw new RuntimeException("Leaking ContextListeners");
 		}
 	}
+	
+	public abstract String getCanonicalClassName();
 
 	protected abstract void start();
 

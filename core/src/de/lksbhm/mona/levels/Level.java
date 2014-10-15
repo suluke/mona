@@ -141,7 +141,7 @@ public abstract class Level extends ContextImplementation implements Disposable 
 
 	public String getTutorialName() {
 		if (hasTutorial()) {
-			return tutorial.getClass().getCanonicalName()
+			return tutorial.getCanonicalClassName()
 					.substring(tutorialPackage.length() + 1);
 			// +1 because of additional '.'
 		} else {
