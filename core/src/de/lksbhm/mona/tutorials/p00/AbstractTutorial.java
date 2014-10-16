@@ -26,6 +26,7 @@ abstract class AbstractTutorial<Part extends Iterator<Part>> extends Tutorial {
 
 	public AbstractTutorial(Level level) {
 		super(level);
+		skin = LksBhmGame.getGame().getDefaultSkin();
 	}
 
 	protected class ClickForNextListener extends ClickListener {
@@ -102,8 +103,6 @@ abstract class AbstractTutorial<Part extends Iterator<Part>> extends Tutorial {
 
 	@Override
 	protected void start() {
-		skin = LksBhmGame.getGame().getDefaultSkin();
-
 		if (overlay == null) {
 			// Setup overlay
 			overlay = new Window("", skin);
