@@ -4,6 +4,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
@@ -28,13 +29,25 @@ public class AboutScreen extends AbstractScreen {
 		}
 	};
 
+	private final Table contentTable = new Table();
+	private final ScrollPane scrollPane = new ScrollPane(contentTable);
+
 	private Image bannerImage;
 	private Label versionLabel;
+	private Label createdByLabel;
+	private Label createdByNameLabel;
+	private Label artworkByLabel;
+	private Label artworkByNameLabel;
+	private Label musicByLabel;
+	private Label musicByNameLabel;
 
 	public AboutScreen() {
 		InputMultiplexer mux = new InputMultiplexer(getStage(),
 				backButtonHandler);
 		setInputProcessor(mux);
+
+		scrollPane.setScrollingDisabled(true, false);
+		scrollPane.setOverscroll(false, false);
 	}
 
 	@Override
@@ -53,21 +66,53 @@ public class AboutScreen extends AbstractScreen {
 				+ "\n(" + version.getStatus().toString().toLowerCase() + ")",
 				skin, "aboutScreen.version");
 
+		createdByLabel = new Label("Created by:", skin);
+		createdByNameLabel = new Label("Lukas Böhm", skin);
+
+		artworkByLabel = new Label("Artwork by:", skin);
+		artworkByNameLabel = new Label("???", skin);
+
+		musicByLabel = new Label("Music by:", skin);
+		musicByNameLabel = new Label("???", skin);
+
 		// Only needed once
 		layoutWidgets();
 	}
 
 	private void layoutWidgets() {
-		Table base = getBaseTable();
-		base.clear();
-		base.align(Align.center);
-		float width = getStage().getWidth();
+		final float width = getBaseTable().getWidth();
+		final float height = getBaseTable().getHeight();
+
+		getBaseTable().add(scrollPane).fill();
+		contentTable.align(Align.center);
+		contentTable.padLeft(width * .05f);
+		contentTable.padRight(width * .05f);
 
 		bannerImage.setScaling(Scaling.fit);
-		base.add(bannerImage).row();
+		contentTable.add(bannerImage).height(height * .2f).colspan(2).row();
 
 		versionLabel.setAlignment(Align.center);
-		base.add(versionLabel).width(width * .9f);
+		versionLabel.setFontScale(.8f);
+		contentTable.add(versionLabel).width(width * .9f).colspan(2)
+				.spaceBottom(height * 0.2f).row();
+
+		createdByLabel.setFontScale(.6f);
+		contentTable.add(createdByLabel);
+
+		createdByNameLabel.setFontScale(.6f);
+		contentTable.add(createdByNameLabel).expandX().row();
+
+		artworkByLabel.setFontScale(.6f);
+		contentTable.add(artworkByLabel);
+
+		artworkByNameLabel.setFontScale(.6f);
+		contentTable.add(artworkByNameLabel).expandX().row();
+
+		musicByLabel.setFontScale(.6f);
+		contentTable.add(musicByLabel);
+
+		musicByNameLabel.setFontScale(.6f);
+		contentTable.add(musicByNameLabel).expandX().row();
 	}
 
 	@Override
