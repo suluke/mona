@@ -7,7 +7,6 @@ import java.util.LinkedList;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Pool;
 
-import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.mona.Mona;
 import de.lksbhm.mona.puzzle.Piece.Type;
 import de.lksbhm.mona.puzzle.representations.Board;
@@ -313,8 +312,8 @@ public class Puzzle extends Board<Piece> implements Disposable {
 		int width = getWidth();
 		int height = getHeight();
 		Piece p;
-		String lineSeparator = LksBhmGame.getGame(Mona.class)
-				.getPlatformManager().getPlatform().getLineSeparator();
+		String lineSeparator = Mona.getGame().getPlatformManager()
+				.getPlatform().getLineSeparator();
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				p = getTile(x, y);

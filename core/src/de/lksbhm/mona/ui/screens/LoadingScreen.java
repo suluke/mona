@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
-import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.gdx.Router;
 import de.lksbhm.gdx.resources.ResourceConsumerObtainedCallback;
 import de.lksbhm.gdx.ui.screens.transitions.Transition;
@@ -122,7 +121,7 @@ public class LoadingScreen extends AbstractScreen {
 			final Runnable callback, final Color clearColor,
 			final float delayLoading, final float minimalVisibilityTime,
 			final Transition transition) {
-		Mona mona = LksBhmGame.getGame(Mona.class);
+		Mona mona = Mona.getGame();
 		final Router router = mona.getRouter();
 		router.obtainScreen(LoadingScreen.class,
 				new ResourceConsumerObtainedCallback<LoadingScreen>() {

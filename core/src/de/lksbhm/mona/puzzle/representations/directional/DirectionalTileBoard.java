@@ -3,7 +3,6 @@ package de.lksbhm.mona.puzzle.representations.directional;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Pool;
 
-import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.mona.Mona;
 import de.lksbhm.mona.puzzle.representations.Board;
 import de.lksbhm.mona.puzzle.representations.grouped.GroupedTileBoard;
@@ -265,8 +264,8 @@ public class DirectionalTileBoard extends Board<DirectionalTile> implements
 
 	@Override
 	public String toString() {
-		String lineSeparator = LksBhmGame.getGame(Mona.class)
-				.getPlatformManager().getPlatform().getLineSeparator();
+		String lineSeparator = Mona.getGame().getPlatformManager()
+				.getPlatform().getLineSeparator();
 		StringBuilder sb = new StringBuilder();
 		final char[] character = new char[1];
 		DirectionalTileVisitor visitor = new DirectionalTileVisitor() {

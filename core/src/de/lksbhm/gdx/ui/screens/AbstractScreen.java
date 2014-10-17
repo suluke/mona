@@ -37,13 +37,13 @@ public abstract class AbstractScreen implements
 		viewport = new ScalingViewport(Scaling.fit, defaultWidth, defaultHeight);
 		stage = new Stage(viewport);
 		inputProcessor = stage;
-		if (game.isDebug()) {
+		if (game.drawDebug()) {
 			stage.setDebugAll(true);
 		}
 
 		table = new Table();
 		table.setFillParent(true);
-		if (game.isDebug()) {
+		if (game.drawDebug()) {
 			table.debug();
 		}
 		stage.addActor(table);

@@ -115,8 +115,8 @@ public class UserScreen extends AbstractScreen {
 		float h = worldHeight * 0.15f;
 
 		rewardCountLabel.setText("Rewards: "
-				+ LksBhmGame.getGame(Mona.class).getUserManager()
-						.getCurrentUser().getRewardCount());
+				+ Mona.getGame().getUserManager().getCurrentUser()
+						.getRewardCount());
 		getBaseTable().add(rewardCountLabel).spaceBottom(h).row();
 
 		resetButton.getLabel().setFontScale(.75f);

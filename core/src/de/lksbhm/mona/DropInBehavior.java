@@ -1,6 +1,5 @@
 package de.lksbhm.mona;
 
-import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.gdx.contexts.AbstractContextListenerAdapter;
 import de.lksbhm.mona.levels.Level;
 import de.lksbhm.mona.ui.screens.LevelScreenOne;
@@ -20,8 +19,7 @@ class DropInBehavior {
 	}
 
 	private void loadTutorialsOnFirstStartBehavior() {
-		LksBhmGame
-				.getGame(Mona.class)
+		Mona.getGame()
 				.getContextManager()
 				.addListener(
 						new AbstractContextListenerAdapter<SplashScreen>(
@@ -29,8 +27,7 @@ class DropInBehavior {
 							@Override
 							protected void onEnterContext(
 									final SplashScreen screen) {
-								final Mona mona = LksBhmGame
-										.getGame(Mona.class);
+								final Mona mona = Mona.getGame();
 								final Level firstLevel = mona
 										.getLevelPackageManager()
 										.getInternalPackages().getPackage(0)

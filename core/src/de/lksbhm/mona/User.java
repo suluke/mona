@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.gdx.users.UserManager;
 import de.lksbhm.gdx.util.KeyValueStore;
 import de.lksbhm.mona.levels.Level;
@@ -75,7 +74,7 @@ public class User extends de.lksbhm.gdx.users.User {
 
 	private boolean isLevelRelevantForPersisting(String packageId) {
 		boolean result = !solvedPackages.contains(packageId);
-		String dailyPrefix = LksBhmGame.getGame(Mona.class).getSettings().statics
+		String dailyPrefix = Mona.getGame().getSettings().statics
 				.getDailyPackageIdPrefix();
 		if (isDailyPackageId(packageId)) {
 			if (!packageId.startsWith(dailyPrefix)) {
@@ -132,17 +131,17 @@ public class User extends de.lksbhm.gdx.users.User {
 	}
 
 	public boolean isDailiesUnlocked() {
-		return rewardCount >= LksBhmGame.getGame(Mona.class).getSettings().statics
+		return rewardCount >= Mona.getGame().getSettings().statics
 				.getRewardsNeededForDailies();
 	}
 
 	public boolean isRandomUnlocked() {
-		return rewardCount >= LksBhmGame.getGame(Mona.class).getSettings().statics
+		return rewardCount >= Mona.getGame().getSettings().statics
 				.getRewardsNeededForRandom();
 	}
 
 	private UserManager<User> getUserManager() {
-		return LksBhmGame.getGame(Mona.class).getUserManager();
+		return Mona.getGame().getUserManager();
 	}
 
 	public void addReward(int reward) {

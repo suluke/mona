@@ -71,9 +71,8 @@ public class RewardScreen extends AbstractScreen {
 		Table base = getBaseTable();
 		base.clear();
 		base.add(plusXLabel);
-		User user = LksBhmGame.getGame(Mona.class).getUserManager()
-				.getCurrentUser();
-		StaticSettings settings = LksBhmGame.getGame(Mona.class).getSettings().statics;
+		User user = Mona.getGame().getUserManager().getCurrentUser();
+		StaticSettings settings = Mona.getGame().getSettings().statics;
 		int currentRewards = user.getRewardCount();
 		float labelWidth = getStage().getWidth() * 0.9f;
 		if (currentRewards >= settings.getRewardsNeededForDailies()

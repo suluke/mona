@@ -2,7 +2,6 @@ package de.lksbhm.mona.levels;
 
 import java.util.Iterator;
 
-import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.gdx.users.UserManager;
 import de.lksbhm.gdx.util.ArrayIterator;
 import de.lksbhm.mona.Mona;
@@ -91,14 +90,13 @@ public abstract class LevelPackage implements Iterable<Level> {
 	}
 
 	public boolean isSolved() {
-		boolean solved = LksBhmGame.getGame(Mona.class).getUserManager()
-				.getCurrentUser().isPackageSolved(this);
+		boolean solved = Mona.getGame().getUserManager().getCurrentUser()
+				.isPackageSolved(this);
 		return solved;
 	}
 
 	public void notifySolved() {
-		UserManager<User> userManager = LksBhmGame.getGame(Mona.class)
-				.getUserManager();
+		UserManager<User> userManager = Mona.getGame().getUserManager();
 		User user = userManager.getCurrentUser();
 		user.addReward(getReward());
 	}

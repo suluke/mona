@@ -73,8 +73,8 @@ public class PackagesListScreen extends AbstractScreen {
 		Container<TextButton> buttonContainer;
 		packageButtons = new Container[state.levelPackages.size()];
 		StringBuilder sb = new StringBuilder();
-		String lineSeparator = LksBhmGame.getGame(Mona.class)
-				.getPlatformManager().getPlatform().getLineSeparator();
+		String lineSeparator = Mona.getGame().getPlatformManager()
+				.getPlatform().getLineSeparator();
 		for (int i = 0; i < state.levelPackages.size(); i++) {
 			final LevelPackage pack = state.levelPackages.getPackage(i);
 			sb.setLength(0);
@@ -158,7 +158,7 @@ public class PackagesListScreen extends AbstractScreen {
 
 	public static void showAsCurrentScreen(
 			final LevelPackageCollection collection, final Transition transition) {
-		Mona mona = LksBhmGame.getGame(Mona.class);
+		Mona mona = Mona.getGame();
 		final Router router = mona.getRouter();
 		router.obtainScreen(PackagesListScreen.class,
 				new ResourceConsumerObtainedCallback<PackagesListScreen>() {

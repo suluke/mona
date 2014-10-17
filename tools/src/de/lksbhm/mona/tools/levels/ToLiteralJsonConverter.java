@@ -14,7 +14,7 @@ import de.lksbhm.util.FileUtils;
 
 public class ToLiteralJsonConverter {
 	public static void main(String[] args) throws IOException {
-		Mock.simpleMock();
+		Mock.simpleInstantiationMock();
 
 		String pack = args[0];
 		String levelName = args[1];

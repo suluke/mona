@@ -50,7 +50,7 @@ public class MainMenuScreen extends AbstractScreen {
 	}
 
 	private void setupWidgets() {
-		Mona game = LksBhmGame.getGame(Mona.class);
+		Mona game = Mona.getGame();
 		Skin skin = game.getDefaultSkin();
 		banner = new Image(skin, "banner.black");
 
@@ -58,7 +58,7 @@ public class MainMenuScreen extends AbstractScreen {
 		playButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				Mona mona = LksBhmGame.getGame(Mona.class);
+				Mona mona = Mona.getGame();
 				Transition transition = TransitionBuilder.newTransition()
 						.slideInRight().fadeClearColors().duration(.6f).get();
 				LevelPackageManager pacman = mona.getLevelPackageManager();
@@ -73,7 +73,7 @@ public class MainMenuScreen extends AbstractScreen {
 			public void clicked(InputEvent event, float x, float y) {
 				Transition transition = TransitionBuilder.newTransition()
 						.slideInRight().fadeClearColors().duration(.6f).get();
-				Mona mona = LksBhmGame.getGame(Mona.class);
+				Mona mona = Mona.getGame();
 				LevelPackageManager pacman = mona.getLevelPackageManager();
 				dailyPackagesLoader = pacman.getDailyPackagesLoader();
 				if (dailyPackagesLoader.getProgress() != 1) {
@@ -121,7 +121,7 @@ public class MainMenuScreen extends AbstractScreen {
 	}
 
 	private void layoutWidgets() {
-		Mona game = LksBhmGame.getGame(Mona.class);
+		Mona game = Mona.getGame();
 		User user = game.getUserManager().getCurrentUser();
 
 		Table base = getBaseTable();

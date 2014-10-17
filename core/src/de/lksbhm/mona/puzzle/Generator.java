@@ -4,7 +4,6 @@ import java.util.Random;
 
 import com.badlogic.gdx.math.RandomXS128;
 
-import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.mona.Mona;
 import de.lksbhm.mona.Settings;
 import de.lksbhm.mona.levels.Difficulty;
@@ -49,7 +48,7 @@ public class Generator {
 
 	public static Puzzle generate(Difficulty d, Random random,
 			float straightStoneProbability, float edgeStoneProbability) {
-		Settings settings = LksBhmGame.getGame(Mona.class).getSettings();
+		Settings settings = Mona.getGame().getSettings();
 		int minWidth = settings.statics.getMinPuzzleWidthForDifficulty(d);
 		int maxWidth = settings.statics.getMaxPuzzleWidthForDifficulty(d);
 		int width = minWidth + random.nextInt(maxWidth - minWidth + 1);

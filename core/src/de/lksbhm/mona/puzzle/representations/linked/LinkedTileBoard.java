@@ -3,7 +3,6 @@ package de.lksbhm.mona.puzzle.representations.linked;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Pool;
 
-import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.mona.Mona;
 import de.lksbhm.mona.puzzle.representations.Board;
 import de.lksbhm.mona.puzzle.representations.Direction;
@@ -152,8 +151,8 @@ public class LinkedTileBoard extends Board<LinkedTile> implements Disposable {
 
 	@Override
 	public String toString() {
-		String lineSeparator = LksBhmGame.getGame(Mona.class)
-				.getPlatformManager().getPlatform().getLineSeparator();
+		String lineSeparator = Mona.getGame().getPlatformManager()
+				.getPlatform().getLineSeparator();
 		StringBuilder builder = new StringBuilder();
 		int height = getHeight();
 		int width = getWidth();

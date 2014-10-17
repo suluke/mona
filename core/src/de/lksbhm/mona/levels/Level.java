@@ -5,7 +5,6 @@ import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.reflect.Constructor;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
 
-import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.gdx.contexts.ContextImplementation;
 import de.lksbhm.mona.Mona;
 import de.lksbhm.mona.puzzle.Puzzle;
@@ -42,7 +41,7 @@ public abstract class Level extends ContextImplementation implements Disposable 
 	}
 
 	public boolean isSolved() {
-		return LksBhmGame.getGame(Mona.class).getUserManager().getCurrentUser()
+		return Mona.getGame().getUserManager().getCurrentUser()
 				.isLevelSolved(this);
 	}
 
@@ -141,8 +140,8 @@ public abstract class Level extends ContextImplementation implements Disposable 
 
 	public String getTutorialName() {
 		if (hasTutorial()) {
-			return tutorial.getCanonicalClassName()
-					.substring(tutorialPackage.length() + 1);
+			return tutorial.getCanonicalClassName().substring(
+					tutorialPackage.length() + 1);
 			// +1 because of additional '.'
 		} else {
 			throw new RuntimeException(
@@ -165,7 +164,7 @@ public abstract class Level extends ContextImplementation implements Disposable 
 
 	public void notifySolved() {
 		if (!isSolved()) {
-			LksBhmGame.getGame(Mona.class).getUserManager().getCurrentUser()
+			Mona.getGame().getUserManager().getCurrentUser()
 					.setLevelSolved(Level.this);
 		}
 	}

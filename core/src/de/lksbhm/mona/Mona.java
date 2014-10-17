@@ -17,6 +17,7 @@ import de.lksbhm.gdx.util.GregorianCalendarValue;
 import de.lksbhm.gdx.util.Loadable;
 import de.lksbhm.gdx.util.Version;
 import de.lksbhm.gdx.util.Version.Status;
+import de.lksbhm.gdx.util.Version.Visibility;
 import de.lksbhm.mona.levels.LevelPackageManager;
 import de.lksbhm.mona.ui.screens.LoadingScreen;
 import de.lksbhm.mona.ui.screens.SplashScreen;
@@ -28,7 +29,8 @@ public class Mona extends LksBhmGame<Mona, User, MonaPlatform> {
 	private final LevelPackageManager packageManager = new LevelPackageManager();
 	private final DropInBehavior dropinBehavior = new DropInBehavior();
 	private final Version version = new Version("", 0, 0, 4, Status.ALPHA,
-			new GregorianCalendarValue(2014, 10, 11, 1412979361 * 1000L));
+			Visibility.INTERNAL, new GregorianCalendarValue(2014, 10, 11,
+					1412979361 * 1000L));
 	private final Skin skin = new Skin();
 
 	public Mona() {
@@ -80,25 +82,13 @@ public class Mona extends LksBhmGame<Mona, User, MonaPlatform> {
 
 	@Override
 	public void setScreen(TransitionableResettableConsumerScreen screen) {
-		if (screen != null) {
-			Gdx.app.log(screen.getClass().getSimpleName(), "set screen");
-		}
 		super.setScreen(screen);
 	}
 
 	@SuppressWarnings("deprecation")
 	@Override
 	public void setScreen(Screen screen) {
-		if (screen != null) {
-			Gdx.app.log("setScreen", "deprecated function call");
-			Gdx.app.log(screen.getClass().getSimpleName(), "set screen");
-		}
 		super.setScreen(screen);
-	}
-
-	@Override
-	public boolean isDebug() {
-		return false;
 	}
 
 	@Override
@@ -130,5 +120,14 @@ public class Mona extends LksBhmGame<Mona, User, MonaPlatform> {
 				+ getUserManager().getCurrentUser().getPaletteName() + ".json"));
 		skin.load(Gdx.files.internal("json/skins/default.json"));
 		return skin;
+	}
+
+	@Override
+	public boolean drawDebug() {
+		return false;
+	}
+
+	public static Mona getGame() {
+		return (Mona) LksBhmGame.getGame();
 	}
 }

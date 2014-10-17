@@ -5,7 +5,6 @@ import java.util.Random;
 
 import com.badlogic.gdx.math.RandomXS128;
 
-import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.gdx.util.GregorianCalendarInterface;
 import de.lksbhm.gdx.util.Loadable;
 import de.lksbhm.mona.Mona;
@@ -16,10 +15,10 @@ class DailyPackagesGenerator implements Loadable<LevelPackageCollection> {
 	private final Difficulty[] difficulties;
 	private final LevelPackageCollection collection;
 	private final String dayName;
-	private final int packageSize = LksBhmGame.getGame(Mona.class)
-			.getSettings().statics.getLevelsPerPackage();
-	private final String dailyPackageIdPrefix = LksBhmGame.getGame(Mona.class)
-			.getSettings().statics.getDailyPackageIdPrefix();
+	private final int packageSize = Mona.getGame().getSettings().statics
+			.getLevelsPerPackage();
+	private final String dailyPackageIdPrefix = Mona.getGame().getSettings().statics
+			.getDailyPackageIdPrefix();
 	private final long millis;
 
 	private float progress = 0;
@@ -82,9 +81,9 @@ class DailyPackagesGenerator implements Loadable<LevelPackageCollection> {
 
 	private static int getNumberOfPackages(GregorianCalendarInterface date,
 			Random random) {
-		int minPackages = LksBhmGame.getGame(Mona.class).getSettings().statics
+		int minPackages = Mona.getGame().getSettings().statics
 				.getMinimumNumberOfDailyPackages();
-		int maxPackages = LksBhmGame.getGame(Mona.class).getSettings().statics
+		int maxPackages = Mona.getGame().getSettings().statics
 				.getMaximumNumberOfDailyPackages();
 		random.setSeed(date.getTimeInMillis());
 		return random.nextInt(maxPackages - minPackages) + minPackages;

@@ -1,6 +1,5 @@
 package de.lksbhm.mona.levels;
 
-import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.gdx.util.GregorianCalendarInterface;
 import de.lksbhm.gdx.util.Loadable;
 import de.lksbhm.mona.Mona;
@@ -11,7 +10,7 @@ public class LevelPackageManager {
 
 	public Loadable<LevelPackageCollection> getDailyPackagesLoader() {
 		if (dailyPackagesLoader == null) {
-			GregorianCalendarInterface today = LksBhmGame.getGame(Mona.class)
+			GregorianCalendarInterface today = Mona.getGame()
 					.getPlatformManager().getPlatform().getToday();
 			dailyPackagesLoader = new DailyPackagesGenerator(today);
 		}

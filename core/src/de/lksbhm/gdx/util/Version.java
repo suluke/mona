@@ -5,7 +5,12 @@ public class Version {
 		ALPHA, BETA, RELEASE_CANDIDATE, STABLE
 	}
 
+	public enum Visibility {
+		INTERNAL, TESTING, PUBLIC
+	}
+
 	private final Status status;
+	private final Visibility visibility;
 	private final int major;
 	private final int minor;
 	private final int revision;
@@ -13,12 +18,14 @@ public class Version {
 	private final String codeName;
 
 	public Version(String codeName, int major, int minor, int revision,
-			Status status, GregorianCalendarInterface releaseDate) {
+			Status status, Visibility visibility,
+			GregorianCalendarInterface releaseDate) {
 		this.codeName = codeName;
 		this.major = major;
 		this.minor = minor;
 		this.revision = revision;
 		this.status = status;
+		this.visibility = visibility;
 		this.realeaseDate = releaseDate;
 	}
 
@@ -48,5 +55,9 @@ public class Version {
 
 	public String majorMinorRevision() {
 		return major + "." + minor + "." + revision;
+	}
+
+	public Visibility getVisibility() {
+		return visibility;
 	}
 }

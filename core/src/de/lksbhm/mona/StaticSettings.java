@@ -1,6 +1,5 @@
 package de.lksbhm.mona;
 
-import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.mona.levels.Difficulty;
 
 public final class StaticSettings {
@@ -165,8 +164,8 @@ public final class StaticSettings {
 
 	public String getDailyPackageIdPrefix() {
 		if (idPrefix == null) {
-			MonaPlatform platform = LksBhmGame.getGame(Mona.class)
-					.getPlatformManager().getPlatform();
+			MonaPlatform platform = Mona.getGame().getPlatformManager()
+					.getPlatform();
 			idPrefix = platform.formatCalendarLocalized(platform.getToday(),
 					"yyyyMMdd");
 		}

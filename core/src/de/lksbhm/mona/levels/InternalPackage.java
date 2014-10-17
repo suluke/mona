@@ -5,7 +5,6 @@ import java.io.FileFilter;
 
 import com.badlogic.gdx.files.FileHandle;
 
-import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.mona.Mona;
 import de.lksbhm.mona.MonaPlatform;
 
@@ -47,8 +46,8 @@ public class InternalPackage extends LevelPackage {
 	}
 
 	private void loadLevelsAccordingToSize() {
-		MonaPlatform platform = LksBhmGame.getGame(Mona.class)
-				.getPlatformManager().getPlatform();
+		MonaPlatform platform = Mona.getGame().getPlatformManager()
+				.getPlatform();
 		int size = getSize();
 		FileHandle[] levelFiles = new FileHandle[size];
 		FileHandle current;

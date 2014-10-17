@@ -2,7 +2,6 @@ package de.lksbhm.mona.levels;
 
 import java.util.Random;
 
-import de.lksbhm.gdx.LksBhmGame;
 import de.lksbhm.mona.Mona;
 import de.lksbhm.mona.Settings;
 import de.lksbhm.mona.puzzle.Generator;
@@ -13,7 +12,7 @@ import de.lksbhm.mona.puzzle.representations.linked.LinkedTileBoardGenerator;
 public class LevelPuzzleGenerator {
 
 	private static int generateWidth(Difficulty difficulty, Random random) {
-		Settings settings = LksBhmGame.getGame(Mona.class).getSettings();
+		Settings settings = Mona.getGame().getSettings();
 		int minWidth = settings.statics
 				.getMinPuzzleWidthForDifficulty(difficulty);
 		int maxWidth = settings.statics
@@ -23,7 +22,7 @@ public class LevelPuzzleGenerator {
 	}
 
 	private static int generateHeight(Difficulty difficulty, Random random) {
-		Settings settings = LksBhmGame.getGame(Mona.class).getSettings();
+		Settings settings = Mona.getGame().getSettings();
 		int minHeight = settings.statics
 				.getMinPuzzleHeightForDifficulty(difficulty);
 		int maxHeight = settings.statics

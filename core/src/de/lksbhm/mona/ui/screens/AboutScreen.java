@@ -43,7 +43,7 @@ public class AboutScreen extends AbstractScreen {
 	}
 
 	private void setupWidgets() {
-		Mona game = LksBhmGame.getGame(Mona.class);
+		Mona game = Mona.getGame();
 		Skin skin = game.getDefaultSkin();
 		Version version = game.getVersion();
 

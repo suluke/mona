@@ -70,10 +70,18 @@ public abstract class LksBhmGame<GameImplementation extends LksBhmGame, UserImpl
 
 	@Override
 	public final void create() {
-		if (isDebug()) {
+		switch (getVersion().getVisibility()) {
+		case INTERNAL:
 			Gdx.app.setLogLevel(Application.LOG_DEBUG);
-		} else {
+			break;
+		case PUBLIC:
 			Gdx.app.setLogLevel(Application.LOG_NONE);
+			break;
+		case TESTING:
+			Gdx.app.setLogLevel(Application.LOG_ERROR);
+			break;
+		default:
+			break;
 		}
 		router = new Router(this, routerHistorySize);
 		userManager = new UserManager<UserImplementation>(userInstantiator);
@@ -129,12 +137,6 @@ public abstract class LksBhmGame<GameImplementation extends LksBhmGame, UserImpl
 		return instance;
 	}
 
-	@SuppressWarnings({ "unchecked" })
-	public static <GameImplementation extends LksBhmGame> GameImplementation getGame(
-			Class<GameImplementation> clazz) {
-		return (GameImplementation) instance;
-	}
-
 	public AssetManager getAssetManager() {
 		return assetManager;
 	}
@@ -170,10 +172,6 @@ public abstract class LksBhmGame<GameImplementation extends LksBhmGame, UserImpl
 		return (TransitionableResettableConsumerScreen) super.getScreen();
 	}
 
-	public boolean isDebug() {
-		return false;
-	}
-
 	public abstract Settings getSettings();
 
 	public abstract void animateLoad(Loadable<?> loadable,
@@ -202,4 +200,8 @@ public abstract class LksBhmGame<GameImplementation extends LksBhmGame, UserImpl
 	}
 
 	public abstract Version getVersion();
+
+	public boolean drawDebug() {
+		return false;
+	}
 }
