@@ -31,7 +31,7 @@ public class Mona extends LksBhmGame<Mona, User, MonaPlatform> {
 	private final Version version = new Version("", 0, 0, 4, Status.ALPHA,
 			Visibility.INTERNAL, new GregorianCalendarValue(2014, 10, 11,
 					1412979361 * 1000L));
-	private final Skin skin = new Skin();
+	private Skin skin;
 
 	public Mona() {
 		super(User.instantiator);
@@ -107,6 +107,7 @@ public class Mona extends LksBhmGame<Mona, User, MonaPlatform> {
 
 	@Override
 	protected void registerDefaultSkinForLoad(AssetManager assetManager) {
+		this.skin = new Skin();
 		TextureAtlasParameter atlasParam = new TextureAtlasParameter();
 		assetManager
 				.load("textures/main.atlas", TextureAtlas.class, atlasParam);

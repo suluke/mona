@@ -125,6 +125,23 @@ public abstract class LksBhmGame<GameImplementation extends LksBhmGame, UserImpl
 		return assetManager.get(defaultSkinPath);
 	}
 
+	protected void reloadDefaultSkin() {
+		defaultSkin.dispose();
+		registerDefaultSkinForLoad(assetManager);
+		assetManager.finishLoading();
+		defaultSkin = getDefaultSkinAfterLoad(assetManager);
+	}
+
+	/**
+	 * Reloads all resources. Mainly used on android after resource handles have
+	 * been lost.
+	 */
+	public void reloadResources() {
+		resourceConsumerManager.disposeAll();
+		assetManager.clear();
+		reloadDefaultSkin();
+	}
+
 	protected void initialize() {
 
 	}

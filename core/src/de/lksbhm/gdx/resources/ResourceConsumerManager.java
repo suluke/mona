@@ -128,4 +128,10 @@ public class ResourceConsumerManager {
 	public void dispose(Class<? extends ResourceConsumer> class1) {
 		lruCache.remove(class1).dispose();
 	}
+
+	public void disposeAll() {
+		while (!lruCache.isEmpty()) {
+			lruCache.evict().dispose();
+		}
+	}
 }

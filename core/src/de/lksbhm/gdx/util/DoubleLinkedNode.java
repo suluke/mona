@@ -58,4 +58,14 @@ public class DoubleLinkedNode<T> {
 		this.data = data;
 	}
 
+	public void detach() {
+		if (previous != null) {
+			previous.setNext(next);
+		}
+		if (next != null) {
+			next.setPrevious(previous);
+		}
+		previous = null;
+		next = null;
+	}
 }

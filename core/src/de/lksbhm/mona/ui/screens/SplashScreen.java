@@ -46,7 +46,7 @@ public class SplashScreen extends AbstractScreen implements Context, Callback {
 		@Override
 		public boolean act(float delta) {
 			if (!movedToNextScreen) {
-				moveTotNextScreen();
+				moveToNextScreen();
 				movedToNextScreen = true;
 			}
 			return true;
@@ -134,7 +134,7 @@ public class SplashScreen extends AbstractScreen implements Context, Callback {
 		contextImplementation.leaveContext();
 	}
 
-	public void moveTotNextScreen() {
+	public void moveToNextScreen() {
 		Transition transition = TransitionBuilder.newTransition()
 				.callbackBasedTransition(SplashScreen.this).cancelOnTap()
 				.duration(2f).get();
